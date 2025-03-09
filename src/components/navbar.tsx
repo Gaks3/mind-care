@@ -14,8 +14,8 @@ export default function Navbar() {
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="container mx-auto px-4 md:px-0">
+        <div className="flex justify-between lg:justify-around items-center h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center">
               <Brain className="h-6 w-6 text-primary mr-2" />
