@@ -57,6 +57,20 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
     },
+    keyframes: {
+      float: {
+        "0%, 100%": { transform: "translateY(0)" },
+        "50%": { transform: "translateY(-10px)" },
+      },
+      "pulse-light": {
+        "0%, 100%": { opacity: "1" },
+        "50%": { opacity: "0.8" },
+      },
+    },
+    animation: {
+      float: "float 6s ease-in-out infinite",
+      "pulse-light": "pulse-light 4s ease-in-out infinite",
+    },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
