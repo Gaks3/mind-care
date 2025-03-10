@@ -3,7 +3,7 @@ import { Activity, ArrowRight, Brain, HeartPulse, MessageCircle, MessageCircleHe
 
 export default function Hero() {
   return (
-    <section id="hero" className="pt-16 md:pt-24 lg:pt-44 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden mb-10">
+    <section id="hero" className="pt-16 md:pt-24 lg:pt-44 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden mb-14 md: lg:mb-64">
       <div className="max-w-7xl mx-auto px-5 md:px-0 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="order-2 md:order-1 z-10">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
