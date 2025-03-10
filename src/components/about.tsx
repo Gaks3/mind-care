@@ -2,12 +2,12 @@ import Image from "next/image";
 
 export default function About() {
   return (
-    <section id="tentang" className="px-6 md:px-12 h-screen">
+    <section id="tentang" className="px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-40 items-center">
           <div className="relative">
             <div className="w-full h-96 bg-mental-100 rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary to-blue-500/20"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 to-blue-500/20"></div>
               <Image
                 src="/about-picture.webp"
                 alt="Ketenangan Mental"
