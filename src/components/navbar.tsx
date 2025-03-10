@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown, Brain, CalendarHeart, BrainCircuit, HeartPulse, UserRoundSearch, Hospital } from "lucide-react"
+import { Menu, X, ChevronDown, Brain, CalendarHeart, BrainCircuit, HeartPulse, UserRoundSearch, Hospital, ScanHeart, Laugh, PersonStanding, HandHeart } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -35,22 +35,22 @@ export default function Navbar() {
               <DropdownMenuContent align="center">
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Mental Health Test
+                    <ScanHeart className="ml-2 h-4 w-4" />Mental Health Test
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Happiness Test
+                    <Laugh className="ml-2 h-4 w-4" />Happiness Test
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Loneliness Test
+                    <PersonStanding className="ml-2 h-4 w-4" />Loneliness Test
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Love Language Test
+                    <HandHeart className="ml-2 h-4 w-4" />Love Language Test
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
