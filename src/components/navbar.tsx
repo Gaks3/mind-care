@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown, Brain, CalendarHeart, BrainCircuit, HeartPulse, UserRoundSearch, Building2 } from "lucide-react"
+import { Menu, X, ChevronDown, Brain, CalendarHeart, BrainCircuit, HeartPulse, UserRoundSearch, Hospital } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -19,7 +19,7 @@ export default function Navbar() {
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center">
               <Brain className="h-6 w-6 text-primary mr-2" />
-              <span className="text-primary font-bold text-xl">MindCare</span>
+              <span className="text-gray-700 font-bold text-xl">MindCare</span>
             </Link>
           </div>
 
@@ -57,10 +57,12 @@ export default function Navbar() {
             </DropdownMenu>
 
             <Link href="#" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
-              <Building2 className="ml-2 h-4 w-4" />Tentang Kami
+              <Hospital className="ml-2 h-4 w-4" />
+              Tentang Kami
             </Link>
             <Link href="#" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
-              <UserRoundSearch className="ml-2 h-4 w-4" />List Psikolog
+              <UserRoundSearch className="ml-2 h-4 w-4" />
+              List Psikolog
             </Link>
           </nav>
 
@@ -163,4 +165,3 @@ export default function Navbar() {
     </header>
   )
 }
-
