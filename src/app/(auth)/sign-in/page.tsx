@@ -72,7 +72,7 @@ export default function SignInPage() {
         <CardHeader className="space-y-1 pb-2 pt-4">
           <CardTitle className="text-2xl font-bold text-center">Sign In</CardTitle>
           <CardDescription className="text-center text-gray-500">
-            Enter your credentials to access your account
+            Yuk, Masuk ke Akunmu Dulu!
           </CardDescription>
         </CardHeader>
 
@@ -91,7 +91,7 @@ export default function SignInPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="johndoe@gmail.com"
+                          placeholder="Masukkan Email"
                           className="pl-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
                         />
@@ -110,7 +110,7 @@ export default function SignInPage() {
                     <div className="flex justify-between items-center">
                       <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
                       <Link href="/forgot-password" className="text-sm text-primary hover:underline">
-                        Forgot password?
+                        Lupa Kata Sandi?
                       </Link>
                     </div>
                     <div className="relative">
@@ -119,7 +119,7 @@ export default function SignInPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="Enter your password"
+                          placeholder="Masukkan Kata Sandi"
                           type={showPassword ? "text" : "password"}
                           className="pl-10 pr-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
@@ -160,9 +160,9 @@ export default function SignInPage() {
 
         <CardFooter className="flex justify-center px-8 py-6">
           <p className="text-sm text-gray-600">
-            Don&apos;t have an account yet?{" "}
+            Belum punya akun?{" "}
             <Link href="/sign-up" className="text-primary font-medium hover:underline">
-              Sign up
+              Sign Up
             </Link>
           </p>
         </CardFooter>

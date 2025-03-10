@@ -35,22 +35,22 @@ export default function Navbar() {
               <DropdownMenuContent align="center">
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Tes Mental
+                    Mental Health Test
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Tes Mental
+                    Happiness Test
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Tes Mental
+                    Loneliness Test
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    Tes Mental
+                    Love Language Test
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -72,7 +72,7 @@ export default function Navbar() {
               className="text-primary border-primary rounded-xl"
               onClick={() => push("/sign-in")}
             >
-              Login
+              Sign In
             </Button>
             <Button className="bg-primary hover:bg-primary/90 rounded-xl" onClick={() => push("/booking")}>
               Booking
@@ -125,16 +125,16 @@ export default function Navbar() {
                 </button>
                 <div className="hidden pl-4 mt-2 space-y-1">
                   <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Tes Mental
+                    Mental Health Test
                   </Link>
                   <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Tes Mental
+                    Happiness Test
                   </Link>
                   <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Tes Mental
+                    Loneliness Test
                   </Link>
                   <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Tes Mental
+                    Love Language Test
                   </Link>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function Navbar() {
                   className="w-full mb-2 text-primary border-primary rounded-lg"
                   onClick={() => push("/sign-in")}
                 >
-                  Login
+                  Sign In
                 </Button>
                 <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg" onClick={() => push("/booking")}>
                   Booking
