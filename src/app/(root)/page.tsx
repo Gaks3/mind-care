@@ -2,6 +2,7 @@ import About from "@/components/about";
 import Hero from "@/components/hero";
 import Topik from "@/components/topik";
 import Popularity from "@/components/popularity";
+import ArticleSection from "@/components/articles";
 
 export default function Home() {
   return (
@@ -9,7 +10,8 @@ export default function Home() {
       <Hero />
       <About />
       <Topik />
-      <Popularity/>
+      <Popularity />
+      <ArticleSection />
     </main>
   );
 }
