@@ -97,10 +97,10 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="lg:hidden overflow-hidden"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            className="lg:hidden absolute w-full z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
