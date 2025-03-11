@@ -14,17 +14,39 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  email         String    @unique
+  id            String      @id
+  email         String      @unique
   name          String?
   emailVerified Boolean
   image         String?
+  role          UserRole    @default(USER)
+  description   String      @db.VarChar(500)
+  birthDate     DateTime    @db.Date
+  gender        Gender?
+  phoneNumber   String?
+  status        StatusUser?
   createdAt     DateTime
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
 
   @@map("user")
+}
+
+enum UserRole {
+  USER
+  PSYCHOLOGY
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum StatusUser {
+  WORKER
+  STUDENT
 }
 
 model Session {
@@ -60,4 +82,3 @@ model Account {
 
   @@map("account")
 }
-
