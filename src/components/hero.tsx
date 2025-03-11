@@ -18,11 +18,10 @@ export default function Hero() {
             mental dan menemukan keseimbangan dalam hidup.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base">
+            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base">
               Mulai Sekarang <ArrowRight className="ml-2" />
             </Button>
             <Button
-              size="lg"
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 rounded-xl text-base"
             >
