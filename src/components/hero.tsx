@@ -32,7 +32,7 @@ export default function Hero() {
         </div>
         <div className="order-1 md:order-2 relative h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px]">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="absolute bg-white/90 shadow-xl rounded-2xl p-6 sm:p-8 w-64 sm:w-72 animate-float z-20">
+            <div className="absolute bg-white/90 shadow-xl rounded-2xl p-6 sm:p-8 w-64 sm:w-72 animate-float">
               <div className="flex items-center gap-4 mb-4 sm:mb-6">
                 <div className="h-10 sm:h-12 w-10 sm:w-12 bg-gradient-to-br from-primary to-blue-300 rounded-full flex items-center justify-center">
                   <Brain className="h-5 sm:h-6 w-5 sm:w-6 text-white" />
