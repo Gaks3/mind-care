@@ -1,35 +1,49 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import type { z } from "zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { signInSchema } from "@/lib/auth-schema"
-import { authClient } from "@/lib/auth-client"
-import { toast } from "sonner"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { AtSign, KeyRound, LogIn, Brain, Eye, EyeOff } from "lucide-react"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import type { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { signInSchema } from "@/lib/auth-schema";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { AtSign, KeyRound, LogIn, Brain, Eye, EyeOff } from "lucide-react";
 
 export default function SignInPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof signInSchema>) {
-    const { email, password } = values
+    const { email, password } = values;
     const { data, error } = await authClient.signIn.email(
       {
         email,
@@ -37,26 +51,26 @@ export default function SignInPage() {
       },
       {
         onRequest: () => {
-          toast("Please wait...")
-          setIsSubmitting(true)
+          toast("Please wait...");
+          setIsSubmitting(true);
         },
         onSuccess: () => {
-          form.reset()
-          toast("Sign in success")
-          router.push("/dashboard")
-          router.refresh()
+          form.reset();
+          toast("Sign in success");
+          router.push("/dashboard");
+          router.refresh();
         },
         onError: () => {
-          toast("Invalid Email or Password")
-          setIsSubmitting(false)
+          toast("Invalid Email or Password");
+          setIsSubmitting(false);
         },
-      },
-    )
+      }
+    );
   }
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
@@ -65,13 +79,12 @@ export default function SignInPage() {
           <div className="h-16 w-16 bg-gradient-to-br from-primary to-blue-300 rounded-full flex items-center justify-center mb-4">
             <Brain className="h-8 w-8 text-white" />
           </div>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-primary">MindCare</h1>
-          </div>
         </div>
 
         <CardHeader className="space-y-1 pb-2 pt-4">
-          <CardTitle className="text-2xl font-bold text-center">Sign In</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">
+            Sign In
+          </CardTitle>
           <CardDescription className="text-center text-gray-500">
             Yuk, Masuk ke Akunmu Dulu!
           </CardDescription>
@@ -85,7 +98,9 @@ export default function SignInPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">Email</FormLabel>
+                    <FormLabel className="text-gray-700 font-medium">
+                      Email
+                    </FormLabel>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <AtSign className="h-5 w-5 text-gray-400" />
@@ -109,8 +124,13 @@ export default function SignInPage() {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex justify-between items-center">
-                      <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
-                      <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                      <FormLabel className="text-gray-700 font-medium">
+                        Password
+                      </FormLabel>
+                      <Link
+                        href="/forgot-password"
+                        className="text-sm text-primary hover:underline"
+                      >
                         Lupa Kata Sandi?
                       </Link>
                     </div>
@@ -130,9 +150,15 @@ export default function SignInPage() {
                         type="button"
                         onClick={togglePasswordVisibility}
                         className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
                       >
-                        {!showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        {!showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
                       </button>
                     </div>
                     <FormMessage className="text-red-500" />
@@ -146,9 +172,7 @@ export default function SignInPage() {
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
-                  <div className="flex items-center">
-                    Signing In...
-                  </div>
+                  <div className="flex items-center">Signing In...</div>
                 ) : (
                   <>
                     Sign In <LogIn className="ml-2 h-5 w-5" />
@@ -162,13 +186,15 @@ export default function SignInPage() {
         <CardFooter className="flex justify-center px-8 py-6">
           <p className="text-sm text-gray-600">
             Belum punya akun?{" "}
-            <Link href="/sign-up" className="text-primary font-medium hover:underline">
+            <Link
+              href="/sign-up"
+              className="text-primary font-medium hover:underline"
+            >
               Sign Up
             </Link>
           </p>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
-

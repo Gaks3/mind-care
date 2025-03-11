@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "next/image";
 
 const topikTypes = [
   "Depresi",
@@ -12,9 +12,14 @@ const topikTypes = [
   "Keluarga",
   "Trust Issue",
   "Insomnia",
-]
+];
 
-const images = ["/dokter1.webp", "/dokter2.webp", "/dokter3.webp", "/dokter4.webp"]
+const images = [
+  "/dokter1.webp",
+  "/dokter2.webp",
+  "/dokter3.webp",
+  "/dokter4.webp",
+];
 
 const Topik = () => {
   return (
@@ -26,8 +31,8 @@ const Topik = () => {
             Psikolog MindCare siap mendengarkanmu!
           </h1>
           <p className="text-base lg:w-[80%] mb-3">
-            Kamu bisa bebas memilih psikolog berlisensi sesuai preferensi, pengalaman, serta topik keahlian yang sesuai
-            dengan kebutuhamu.
+            Kamu bisa bebas memilih psikolog berlisensi sesuai preferensi,
+            pengalaman, serta topik keahlian yang sesuai dengan kebutuhamu.
           </p>
           <div className="flex gap-2 sm:gap-3.5 flex-wrap lg:w-[80%]">
             {topikTypes.map((e, i) => (
@@ -50,15 +55,14 @@ const Topik = () => {
                 height={1000}
                 alt={`foto docter ${i + 1}`}
                 loading="lazy"
-                className="block object-cover w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-[195px] lg:h-[195px] rounded-xl"
+                className="block hover:ring-2 ring-offset-4 hover:ring-primary object-cover w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-[195px] lg:h-[195px] rounded-xl"
               />
             ))}
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Topik
-
+export default Topik;
