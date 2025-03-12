@@ -3,6 +3,7 @@ import Hero from "@/components/hero";
 import Topik from "@/components/topik";
 import Popularity from "@/components/popularity";
 import ArticleSection from "@/components/articles";
+import Ulasan from "@/components/ulasan";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Topik />
       <Popularity />
       <ArticleSection />
+      <Ulasan />
     </main>
   );
 }
