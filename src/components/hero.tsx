@@ -1,9 +1,19 @@
-import { Button } from "@/components/ui/button"
-import { Activity, ArrowRight, Brain, HeartPulse, MessageCircle, MessageCircleHeart } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import {
+  Activity,
+  ArrowRight,
+  Brain,
+  HeartPulse,
+  MessageCircle,
+  MessageCircleHeart,
+} from "lucide-react";
 
 export default function Hero() {
   return (
-    <section id="hero" className="pt-16 md:pt-24 lg:pt-44 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden mb-14 md: lg:mb-64">
+    <section
+      id="hero"
+      className="pt-16 md:pt-24 lg:pt-44 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden mb-14 md: lg:mb-64"
+    >
       <div className="max-w-7xl mx-auto px-5 md:px-0 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="order-2 md:order-1 z-10">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
@@ -11,15 +21,19 @@ export default function Hero() {
               Kesehatan Mental
             </span>
             <br className="hidden sm:block" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400"> Bersama AI</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">
+              {" "}
+              Bersama AI
+            </span>
           </h1>
           <p className="text-base sm:text-lg text-foreground/70 mb-8 leading-relaxed max-w-xl">
-            Temukan ketenangan dan dukungan melalui asisten AI kami yang dirancang untuk membantu Anda menjaga kesehatan
-            mental dan menemukan keseimbangan dalam hidup.
+            Temukan ketenangan dan dukungan melalui asisten AI kami yang
+            dirancang untuk membantu Anda menjaga kesehatan mental dan menemukan
+            keseimbangan dalam hidup.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base">
-              Mulai Sekarang <ArrowRight className="ml-2" />
+            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base group ">
+              Mulai Sekarang <ArrowRight className="ml-2 group-hover:ml-3" />
             </Button>
             <Button
               variant="outline"
@@ -39,10 +53,14 @@ export default function Hero() {
                 <h3 className="font-semibold text-base sm:text-lg">MindCare</h3>
               </div>
               <p className="text-sm sm:text-base text-foreground/70 mb-4 sm:mb-6">
-                Bagaimana perasaan Anda hari ini? Saya di sini untuk mendengarkan.
+                Bagaimana perasaan Anda hari ini? Saya di sini untuk
+                mendengarkan.
               </p>
               <div className="flex justify-end">
-                <Button size="sm" className="bg-primary hover:bg-primary/90 text-white">
+                <Button
+                  size="sm"
+                  className="bg-primary hover:bg-primary/90 text-white"
+                >
                   <MessageCircle className="h-4 w-4 mr-2" /> Chat Sekarang
                 </Button>
               </div>
@@ -70,6 +88,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

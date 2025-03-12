@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-
 const topikTypes = [
   "Depresi",
   "Anxiety",
@@ -31,7 +30,7 @@ const Topik = () => {
             Tak perlu ragu bercerita, <br className="hidden sm:inline" />
             Psikolog MindCare siap mendengarkanmu!
           </h1>
-          <p className="text-base lg:w-[80%] mb-3">
+          <p className="text-base lg:w-[80%] mb-3 text-gray-700">
             Kamu bisa bebas memilih psikolog berlisensi sesuai preferensi,
             pengalaman, serta topik keahlian yang sesuai dengan kebutuhamu.
           </p>
@@ -39,7 +38,7 @@ const Topik = () => {
             {topikTypes.map((e, i) => (
               <div
                 key={i}
-                className="text-xs font-medium bg-gray-200 px-3 py-2 rounded-xl flex items-center justify-center"
+                className="text-xs font-medium bg-blue-100 text-gray-800 px-3 py-2 rounded-xl flex items-center justify-center"
               >
                 {e}
               </div>
