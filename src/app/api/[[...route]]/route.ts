@@ -1,11 +1,10 @@
-import { Hono } from 'hono'
-import { handle } from 'hono/vercel'
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
+export const runtime = "nodejs";
 
-export const runtime = 'nodejs'
+export const app = new Hono().basePath("/api");
 
-export const app = new Hono().basePath('/api')
-
-export const GET = handle(app)
-export const POST = handle(app)
-export const PATCH = handle(app)
-export const DELETE = handle(app)
+export const GET = handle(app);
+export const POST = handle(app);
+export const PATCH = handle(app);
+export const DELETE = handle(app);
