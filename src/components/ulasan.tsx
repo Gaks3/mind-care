@@ -23,6 +23,27 @@ const datas = [
       "Sesi yang sangat membantu! Psikolognya membimbing saya menemukan akar masalah dan memberikan solusi yang tepat.",
     date: "Rabu, 12 Maret 2025",
   },
+  {
+    name: "LY",
+    service: "e-conseling",
+    review:
+      "Pelayanan luar biasa! Psikolognya sangat mendukung dan benar-benar mendengarkan dengan empati.",
+    date: "Rabu, 12 Maret 2025",
+  },
+  {
+    name: "LY",
+    service: "e-conseling",
+    review:
+      "Awalnya ragu dan cemas, tapi ternyata psikolognya sangat ramah, mendengarkan dengan baik, dan tidak menghakimi.",
+    date: "Rabu, 12 Maret 2025",
+  },
+  {
+    name: "LY",
+    service: "e-conseling",
+    review:
+      "Sesi yang sangat membantu! Psikolognya membimbing saya menemukan akar masalah dan memberikan solusi yang tepat.",
+    date: "Rabu, 12 Maret 2025",
+  },
 ];
 
 const Ulasan = () => {
@@ -41,10 +62,9 @@ const Ulasan = () => {
             {datas.map(({ name, service, review, date }, i) => (
               <div
                 key={i}
-                className={`w-full h-full xl:w-96 xl:h-64 border-2 border-primary rounded-xl p-6 hover:bg-gradient-to-br hover:from-primary hover:to-blue-400 hover:text-white transition-colors duration-150 ${
-                  i == 1 &&
+                className={`w-full h-full xl:w-96 xl:h-64 border-2 border-primary rounded-xl p-6 hover:bg-gradient-to-br hover:from-primary hover:to-blue-400 hover:text-white transition-colors duration-150 ${i == 1 &&
                   "bg-gradient-to-br from-primary to-blue-400 hover:from-white text-white hover:bg-white hover:text-black group-hover:bg-white group-hover:text-black group-hover:from-white"
-                }`}
+                  }`}
               >
                 <h2 className="text-2xl font-semibold">{name}</h2>
                 <p className="text-sm">{service}</p>
