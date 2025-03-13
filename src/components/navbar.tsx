@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, ChevronDown, Brain, CalendarHeart, BrainCircuit, HeartPulse, UserRoundSearch, Hospital, ScanHeart, Laugh, PersonStanding, HandHeart } from "lucide-react"
 import Link from "next/link"
@@ -11,9 +11,21 @@ import { useRouter } from "next/navigation"
 export default function Navbar() {
   const { push } = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+  const navRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50" ref={navRef}>
       <div className="container mx-auto px-4 md:px-0">
         <div className="flex justify-between lg:justify-around items-center h-16">
           <div className="flex-shrink-0 flex items-center">
@@ -67,27 +79,14 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <Button
-              variant="outline"
-              className="text-primary border-primary rounded-xl"
-              onClick={() => push("/sign-in")}
-            >
+            <Button variant="outline" className="text-primary border-primary rounded-xl" onClick={() => push("/sign-in")}>
               Sign In
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 rounded-xl" onClick={() => push("/booking")}>
-              Booking
-              <CalendarHeart className="ml-2 h-4 w-4" />
-            </Button>
+            <Button className="bg-primary hover:bg-primary/90 rounded-xl" onClick={() => push("/booking")}>Booking <CalendarHeart className="ml-2 h-4 w-4" /></Button>
           </div>
 
           <div className="lg:hidden">
-            <button
-              type="button"
-              className="text-gray-600 hover:text-primary p-2"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-expanded={isOpen}
-              aria-label="Toggle menu"
-            >
+            <button type="button" className="text-gray-600 hover:text-primary p-2" onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen} aria-label="Toggle menu">
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -96,67 +95,16 @@ export default function Navbar() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            className="lg:hidden absolute w-full z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
+          <motion.div className="lg:hidden absolute w-full z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, ease: "easeInOut" }}>
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">
-                Home
-              </Link>
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">
-                Konseling
-              </Link>
-
-              <div className="block px-3 py-2">
-                <button
-                  className="inline-flex items-center w-full text-left text-gray-600 hover:text-primary font-medium bg-transparent border-none p-0"
-                  onClick={(e) => {
-                    const target = e.currentTarget.nextElementSibling
-                    if (target) {
-                      target.classList.toggle("hidden")
-                    }
-                  }}
-                >
-                  <span>Tes Psikologi</span> <ChevronDown className="ml-1 h-4 w-4" />
-                </button>
-                <div className="hidden pl-4 mt-2 space-y-1">
-                  <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Mental Health Test
-                  </Link>
-                  <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Happiness Test
-                  </Link>
-                  <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Loneliness Test
-                  </Link>
-                  <Link href="#" className="block py-2 text-gray-600 hover:text-primary">
-                    Love Language Test
-                  </Link>
-                </div>
-              </div>
-
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">
-                Tentang Kami
-              </Link>
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">
-                List Psikolog
-              </Link>
+              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Home</Link>
+              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Konseling</Link>
+              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Tentang Kami</Link>
+              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">List Psikolog</Link>
 
               <div className="pt-4 pb-3 border-t border-gray-200">
-                <Button
-                  variant="outline"
-                  className="w-full mb-2 text-primary border-primary rounded-lg"
-                  onClick={() => push("/sign-in")}
-                >
-                  Sign In
-                </Button>
-                <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg" onClick={() => push("/booking")}>
-                  Booking
-                </Button>
+                <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg" onClick={() => push("/sign-in")}>Sign In</Button>
+                <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg" onClick={() => push("/booking")}>Booking</Button>
               </div>
             </div>
           </motion.div>
