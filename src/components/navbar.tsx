@@ -103,8 +103,12 @@ export default function Navbar() {
               <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">List Psikolog</Link>
 
               <div className="pt-4 pb-3 border-t border-gray-200">
-                <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg" onClick={() => push("/sign-in")}>Sign In</Button>
-                <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg" onClick={() => push("/booking")}>Booking</Button>
+                <Link href="/sign-in">
+                  <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg">Sign In</Button>
+                </Link>
+                <Link href="/booking">
+                  <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg">Booking</Button>
+                </Link>
               </div>
             </div>
           </motion.div>
