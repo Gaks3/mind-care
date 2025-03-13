@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Facebook, Instagram, Youtube, Brain, Activity } from "lucide-react"
+import { Facebook, Instagram, Youtube, Brain, Activity, CalendarHeart } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -301,7 +301,7 @@ export default function Footer() {
           <div className="border-t border-b border-blue-400 py-6 mb-6">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
-                <h3 className="text-xl font-bold mb-2">Konsultasi dengan Psikolog di Mindcare</h3>
+                <h3 className="text-xl font-bold mb-2">Konsultasi dengan Psikolog di MindCare</h3>
                 <p className="max-w-2xl">
                   Butuh tempat bercerita dan solusi dari ahlinya? Yuk, booking sesi konsultasimu sekarang dan dapatkan
                   dukungan yang kamu butuhkan!
@@ -309,16 +309,16 @@ export default function Footer() {
               </div>
               <Link
                 href="#"
-                className="bg-white text-blue-600 px-8 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
+                className="bg-white text-blue-600 px-8 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors flex items-center gap-2"
               >
-                Booking
+                Booking <CalendarHeart className="w-4 h-4" />
               </Link>
             </div>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p>Copyright {new Date().getFullYear()} ibunda.id</p>
+              <p>Copyright {new Date().getFullYear()} MindCare.</p>
             </div>
             <div className="flex space-x-4">
               <Link href="#" aria-label="Instagram" className="hover:text-blue-200 transition-colors">

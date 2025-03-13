@@ -32,7 +32,7 @@ export default function Hero() {
             keseimbangan dalam hidup.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base group ">
+            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base group">
               Mulai Sekarang <ArrowRight className="ml-2 group-hover:ml-3" />
             </Button>
             <Button
