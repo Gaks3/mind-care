@@ -46,13 +46,13 @@ const datas = [
   },
 ];
 
-const Ulasan = () => {
+export default function Testimonials() {
   return (
     <section className="w-full py-24 px-4 md:px-12">
       <div className="max-w-7xl mx-auto">
         <div className="w-full flex flex-col items-center">
           <h1 className="text-3xl md:text-4xl font-bold text-primary mb-3">
-            Perjalanan Mereka Bersama Mindcare
+            Perjalanan Mereka Bersama MindCare
           </h1>
           <p className="text-gray-600 max-w-2xl sm:text-center mb-10">
             Cerita #PejuangKesehatanMental yang telah merasakan manfaat layanan
@@ -82,4 +82,3 @@ const Ulasan = () => {
   );
 };
 
-export default Ulasan;
