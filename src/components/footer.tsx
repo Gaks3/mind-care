@@ -24,82 +24,41 @@ export default function Footer() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="hidden md:grid md:grid-cols-4 md:gap-8 md:mb-12">
+          <div className="hidden md:grid md:grid-cols-3 md:gap-9 md:mb-12">
             <div>
-              <h3 className="text-xl font-semibold mb-4">Lainnya</h3>
+              <h3 className="text-xl font-semibold mb-4">Tes Psikologi</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link href="#" className="hover:underline">
-                    Yogyakarta
+                  <Link href="/mental-health" className="hover:underline">
+                    Mental Health Test
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:underline">
-                    Bandung
+                  <Link href="/happiness" className="hover:underline">
+                    Happiness Test
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:underline">
-                    Lampung
+                  <Link href="/loneliness" className="hover:underline">
+                    Loneliness Test
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:underline">
-                    Palembang
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Jakarta Selatan
+                  <Link href="/love-language" className="hover:underline">
+                    Love Language Test
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold mb-4">Layanan</h3>
+              <h3 className="text-xl font-semibold mb-4">Navigasi</h3>
               <ul className="space-y-2">
                 <li>
                   <Link href="#" className="hover:underline">
-                    Konseling Individu
+                    Home
                   </Link>
                 </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Konseling Pasangan
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Konseling Keluarga
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Konseling Online
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Hipnoterapi
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Konseling Gratis
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Konseling Yogyakarta
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Kenali Kami</h3>
-              <ul className="space-y-2">
                 <li>
                   <Link href="#" className="hover:underline">
                     Tentang Kami
@@ -107,34 +66,19 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="#" className="hover:underline">
-                    FAQ
+                    Testimonial
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:underline">
-                    Hubungi Kami
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Daftar Psikolog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Karir
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:underline">
-                    Daftar Volunteer
+                    List Psikolog
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold mb-4">Article</h3>
+              <h3 className="text-xl font-semibold mb-4">Artikel Menarik</h3>
               <ul className="space-y-3">
                 <li>
                   <Link href="#" className="hover:underline block border border-blue-400 p-3 rounded-md bg-blue-700/30">
@@ -163,80 +107,39 @@ export default function Footer() {
           <div className="md:hidden">
             <div className="grid grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-xl font-semibold mb-4">Lainnya</h3>
+                <h3 className="text-xl font-semibold mb-4">Tes Psikologi</h3>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="#" className="hover:underline">
-                      Yogyakarta
+                    <Link href="/mental-health" className="hover:underline">
+                      Mental Health Test
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="hover:underline">
-                      Bandung
+                    <Link href="/happiness" className="hover:underline">
+                      Happiness Test
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="hover:underline">
-                      Lampung
+                    <Link href="/loneliness" className="hover:underline">
+                      Loneliness Test
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="hover:underline">
-                      Palembang
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Jakarta Selatan
+                    <Link href="/love-language" className="hover:underline">
+                      Love Language Test
                     </Link>
                   </li>
                 </ul>
               </div>
 
               <div>
-                <h3 className="text-xl font-semibold mb-4">Layanan</h3>
+                <h3 className="text-xl font-semibold mb-4">Navigasi</h3>
                 <ul className="space-y-2">
                   <li>
                     <Link href="#" className="hover:underline">
-                      Konseling Individu
+                      Home
                     </Link>
                   </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Konseling Pasangan
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Konseling Keluarga
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Konseling Online
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Hipnoterapi
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Konseling Gratis
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Konseling Yogyakarta
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Kenali Kami</h3>
-                <ul className="space-y-2">
                   <li>
                     <Link href="#" className="hover:underline">
                       Tentang Kami
@@ -244,27 +147,12 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link href="#" className="hover:underline">
-                      FAQ
+                      Testimonial
                     </Link>
                   </li>
                   <li>
                     <Link href="#" className="hover:underline">
-                      Hubungi Kami
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Daftar Psikolog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Karir
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:underline">
-                      Daftar Volunteer
+                      List Psikolog
                     </Link>
                   </li>
                 </ul>
@@ -272,7 +160,7 @@ export default function Footer() {
             </div>
 
             <div className="mb-12">
-              <h3 className="text-xl font-semibold mb-4">Article</h3>
+              <h3 className="text-xl font-semibold mb-4">Artikel Menarik</h3>
               <ul className="space-y-3">
                 <li>
                   <Link href="#" className="hover:underline block border border-blue-400 p-3 rounded-md bg-blue-700/30">
