@@ -5,3 +5,19 @@ export type Article = {
   thumbnail: string;
   createdAt: string;
 };
+
+export enum UserRole {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  PSYCHOLOGY = 'PSYCHOLOGY',
+}
+
+export enum GenderUser {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+}
+
+export enum StatusUser {
+  WORKER = 'WORKER',
+  STUDENT = 'STUDENT',
+}
