@@ -70,7 +70,7 @@ export default function Testimonials() {
                 <p className="text-sm">{service}</p>
                 <p className="text-xl py-4">{review}</p>
                 <div className="flex w-full justify-end items-center">
-                  <Calendar className="w-4 h-4 mr-1 mb-[2.3px]" />
+                  <Calendar className="w-4 h-4 mr-1 mb-[2px]" />
                   <p className="text-sm">{date}</p>
                 </div>
               </div>
