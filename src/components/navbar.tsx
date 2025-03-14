@@ -2,10 +2,9 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown, Brain, CalendarHeart, BrainCircuit, UserRoundSearch, Hospital, ScanHeart, Laugh, PersonStanding, HandHeart, Newspaper } from "lucide-react"
+import { Menu, X, Brain, CalendarHeart, BrainCircuit, UserRoundSearch, Hospital, Newspaper } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
 
 export default function Navbar() {
@@ -40,33 +39,9 @@ export default function Navbar() {
               <Newspaper className="ml-2 h-4 w-4" />Artikel
             </Link>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="inline-flex items-center text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium focus:outline-none">
-                <BrainCircuit className="ml-2 h-4 w-4" /><span className="ml-2">Tes Psikologi</span> <ChevronDown className="ml-1 h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    <ScanHeart className="ml-2 h-4 w-4" />Mental Health Test
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    <Laugh className="ml-2 h-4 w-4" />Happiness Test
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    <PersonStanding className="ml-2 h-4 w-4" />Loneliness Test
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="#" className="cursor-pointer flex items-center gap-2">
-                    <HandHeart className="ml-2 h-4 w-4" />Love Language Test
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link href="/test-psychology" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
+              <BrainCircuit className="ml-2 h-4 w-4" /><span className="ml-2">Tes Psikologi</span>
+            </Link>
 
             <Link href="#" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
               <Hospital className="ml-2 h-4 w-4" />
@@ -97,8 +72,8 @@ export default function Navbar() {
         {isOpen && (
           <motion.div className="lg:hidden absolute w-full z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, ease: "easeInOut" }}>
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Home</Link>
               <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Artikel</Link>
+              <Link href="/test-psychology" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Tes Psikologi</Link>
               <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Tentang Kami</Link>
               <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">List Psikolog</Link>
 
