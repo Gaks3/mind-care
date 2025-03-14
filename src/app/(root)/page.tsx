@@ -1,9 +1,9 @@
 import About from "@/components/about";
 import Hero from "@/components/hero";
-import Topik from "@/components/topik";
+import Topik from "@/components/topic";
 import Popularity from "@/components/popularity";
 import ArticleSection from "@/components/articles";
-import Ulasan from "@/components/ulasan";
+import Ulasan from "@/components/testimonials";
 
 export default function Home() {
   return (

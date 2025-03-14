@@ -21,7 +21,7 @@ const images = [
   "/dokter4.webp",
 ];
 
-const Topik = () => {
+export default function Topic() {
   return (
     <section className="w-full px-6 md:px-12 py-16 md:py-24 lg:py-40">
       <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row gap-16">
@@ -65,4 +65,3 @@ const Topik = () => {
   );
 };
 
-export default Topik;
