@@ -1,25 +1,26 @@
 import { Hono } from 'hono';
-import { mustBeAnAdmin, mustBeAuthenticated } from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 import db from '@/lib/db';
 import { hasRole, uploadFile } from '../../lib/utils';
 import { zValidator } from '@hono/zod-validator';
 import { createUserSchema, updateUserSchema } from './user.type';
 import { generateId } from 'better-auth';
+import { hashPassword } from 'better-auth/crypto';
 import { UserRole } from '@/types';
 
 const users = new Hono()
-  .get('/', mustBeAnAdmin(), async (c) => {
+  .get('/', authMiddleware(UserRole.ADMIN), async (c) => {
     const users = await db.user.findMany();
 
     return c.json({
       data: users,
     });
   })
-  .get('/:id', mustBeAuthenticated(), async (c) => {
+  .get('/:id', authMiddleware(), async (c) => {
     const { id } = c.req.param();
     const session = c.get('user')!;
 
-    if (id !== session.id && !hasRole(session, 'ADMIN'))
+    if (id !== session.id && !hasRole(session, UserRole.ADMIN))
       return c.json({ error: 'Unauthorized' }, 401);
 
     const user = await db.user.findUnique({
@@ -34,7 +35,7 @@ const users = new Hono()
   })
   .post(
     '/',
-    mustBeAnAdmin(),
+    authMiddleware(UserRole.ADMIN),
     zValidator('json', createUserSchema),
     async (c) => {
       const data = c.req.valid('json');
@@ -46,7 +47,7 @@ const users = new Hono()
       });
       if (alreadyExist) return c.json({ error: 'Email already exist' }, 400);
 
-      await db.user.create({
+      const user = await db.user.create({
         data: {
           id: generateId(),
           email: data.email,
@@ -56,17 +57,29 @@ const users = new Hono()
         },
       });
 
+      const hashedPassword = await hashPassword(data.password);
+
+      await db.account.create({
+        data: {
+          id: generateId(),
+          accountId: generateId(),
+          providerId: 'credential',
+          userId: user.id,
+          password: hashedPassword,
+        },
+      });
+
       return c.json({ message: 'Sucessfully to create user' }, 200);
     },
   )
   .patch(
     '/:id',
-    mustBeAuthenticated(),
+    authMiddleware(),
     zValidator('form', updateUserSchema),
     async (c) => {
       const { id } = c.req.param();
       const data = c.req.valid('form');
-      const session = c.get('session')!;
+      const session = c.get('user')!;
 
       if (
         (id !== session!.id || data.role) &&
@@ -95,11 +108,11 @@ const users = new Hono()
       return c.json({ message: 'Sucessfully to update user' }, 200);
     },
   )
-  .delete('/:id', mustBeAuthenticated(), async (c) => {
+  .delete('/:id', authMiddleware(), async (c) => {
     const { id } = c.req.param();
-    const session = c.get('session')!;
+    const session = c.get('user')!;
 
-    if (id !== session!.id && !hasRole(session!, 'ADMIN'))
+    if (id !== session!.id && !hasRole(session!, UserRole.ADMIN))
       return c.json({ error: 'Unauthorized' }, 401);
 
     await db.user.delete({

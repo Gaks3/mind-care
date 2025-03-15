@@ -1,29 +1,12 @@
-import { createMiddleware } from 'hono/factory';
-import { hasRole } from '../../lib/utils';
+import { createMiddleware } from "hono/factory";
+import { hasRole } from "../../lib/utils";
+import { UserRole } from "@/types";
 
-export const mustBeAuthenticated = () => {
+export const authMiddleware = (roles: UserRole[] | UserRole = []) => {
   return createMiddleware(async (c, next) => {
-    const user = c.get('user');
-    if (!user) return c.text('Unauthorized', 401);
-
-    await next();
-  });
-};
-
-export const mustBeAnAdmin = () => {
-  return createMiddleware(async (c, next) => {
-    const user = c.get('user');
-    if (!user || !hasRole(user, 'ADMIN')) return c.text('Unauthorized', 401);
-
-    await next();
-  });
-};
-
-export const mustBeAnPsychology = () => {
-  return createMiddleware(async (c, next) => {
-    const user = c.get('user');
-    if (!user || !hasRole(user, 'PSYCHOLOGY'))
-      return c.text('Unauthorized', 401);
+    const user = c.get("user");
+    if (!user || !hasRole(user, roles))
+      return c.json({ error: "Unauthorized" }, 401);
 
     await next();
   });
