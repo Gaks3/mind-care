@@ -1,11 +1,11 @@
-import type { UserRole } from "@prisma/client";
-import { auth } from "@/lib/auth";
-import { join } from "path";
-import { writeFile } from "fs/promises";
+import type { UserRole } from '@/types';
+import { auth } from '@/lib/auth';
+import { join } from 'path';
+import { writeFile } from 'fs/promises';
 
 export function hasRole(
-  user: auth.$Infer.Session.user,
-  role: UserRole[] | UserRole
+  user: typeof auth.$Infer.Session.user,
+  role: UserRole[] | UserRole,
 ) {
   if (Array.isArray(role)) {
     return role.includes(user.role as UserRole);
@@ -29,9 +29,9 @@ export const uploadFile = async (file: File) => {
   const buffer = Buffer.from(bytes);
 
   const randomString = crypto.randomUUID();
-  const fileName = `${randomString.slice(0, 10)}.${file.name.split(".")[1]}`;
+  const fileName = `${randomString.slice(0, 10)}.${file.name.split('.')[1]}`;
 
-  const path = join("./", "public", fileName);
+  const path = join('./', 'public', fileName);
 
   await writeFile(path, buffer);
 
