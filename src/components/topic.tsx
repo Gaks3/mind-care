@@ -35,24 +35,24 @@ export default function Topic() {
             pengalaman, serta topik keahlian yang sesuai dengan kebutuhamu.
           </p>
           <div className="flex gap-2 sm:gap-3.5 flex-wrap lg:w-[80%]">
-            {topikTypes.map((e, i) => (
+            {topikTypes.map((topik, i) => (
               <div
                 key={i}
                 className="text-xs font-medium bg-blue-100 text-gray-800 px-3 py-2 rounded-xl flex items-center justify-center"
               >
-                {e}
+                {topik}
               </div>
             ))}
           </div>
         </div>
         <div className="mt-8 lg:mt-0 flex justify-center lg:justify-start items-center">
           <div className="grid grid-cols-2 gap-3 sm:gap-5">
-            {images.map((e, i) => (
+            {images.map((image, i) => (
               <Image
                 key={i}
-                src={e || "/placeholder.svg"}
-                width={1000}
-                height={1000}
+                src={image || "/placeholder.svg"}
+                width={400}
+                height={400}
                 alt={`foto docter ${i + 1}`}
                 loading="lazy"
                 className="block hover:ring-2 ring-offset-4 hover:ring-primary object-cover w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-[195px] lg:h-[195px] rounded-xl"
