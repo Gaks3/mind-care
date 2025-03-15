@@ -1,7 +1,10 @@
-import type { UserRole } from '@/types';
-import { auth } from '@/lib/auth';
-import { join } from 'path';
-import { writeFile } from 'fs/promises';
+import type { UserRole } from "@/types";
+import { auth } from "@/lib/auth";
+import { join } from "path";
+import { writeFile } from "fs/promises";
+import slug from "slug";
+import db from "@/lib/db";
+import { generateRandomString } from "better-auth/crypto";
 
 export function hasRole(
   user: typeof auth.$Infer.Session.user,
@@ -37,3 +40,28 @@ export const uploadFile = async (file: File) => {
 
   return { fileName };
 };
+
+export async function generateSlugArticle(title: string) {
+  let titleSlug = slug(title, {
+    charmap: slug.charmap,
+    fallback: true,
+    lower: true,
+    multicharmap: slug.multicharmap,
+    replacement: "-",
+    symbols: true,
+    trim: true,
+  });
+
+  const getArticleBySlug = async (slug: string) =>
+    await db.article.findUnique({ where: { slug } });
+
+  let slugAlreadyExist = Boolean(getArticleBySlug(titleSlug));
+
+  while (slugAlreadyExist) {
+    titleSlug = titleSlug.concat("-", generateRandomString(4, "a-z"));
+
+    slugAlreadyExist = Boolean(getArticleBySlug(titleSlug));
+  }
+
+  return titleSlug;
+}

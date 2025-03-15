@@ -5,6 +5,7 @@ import {
   containsUppercase,
 } from "../../lib/utils";
 import { GenderUser, StatusUser, UserRole } from "@/types";
+import { imageSchema } from "../type/image.type";
 
 export const passwordSchema = z.string().superRefine((value, ctx) => {
   if (value.length < 8) {
@@ -57,28 +58,9 @@ export const createUserSchema = z.object({
     .default(UserRole.USER),
 });
 
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-const MAX_FILE_SIZE = 3 * 1024 * 1024;
-
 export const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
-  image: z
-    .instanceof(File)
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: `File must be one of the following types: ${ALLOWED_IMAGE_TYPES.join(
-        ", "
-      )}`,
-    })
-    .refine((file) => file.size <= MAX_FILE_SIZE, {
-      message: `File size must be less than 3MB.`,
-    })
-    .optional(),
+  image: imageSchema.optional(),
   role: z.enum([UserRole.USER, UserRole.PSYCHOLOGY, UserRole.ADMIN]).optional(),
   gender: z.enum([GenderUser.FEMALE, GenderUser.MALE]).optional(),
   description: z.string().max(500).optional(),

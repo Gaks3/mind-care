@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Menu, X, Brain, CalendarHeart, BrainCircuit, UserRoundSearch, Hospital, Newspaper } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { useRouter } from "next/navigation"
+import { authClient } from "@/lib/auth-client"
 
 export default function Navbar() {
-  const { push } = useRouter()
+  const { data: session } = authClient.useSession()
   const [isOpen, setIsOpen] = useState(false)
   const navRef = useRef<HTMLDivElement | null>(null)
 
@@ -54,10 +54,20 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <Button variant="outline" className="text-primary border-primary rounded-xl" onClick={() => push("/sign-in")}>
-              Sign In
-            </Button>
-            <Button className="bg-primary hover:bg-primary/90 rounded-xl" onClick={() => push("/booking")}>Booking <CalendarHeart className="ml-2 h-4 w-4" /></Button>
+            {session ? (
+              <Link href="/dashboard">
+                <Button variant="outline" className="w-full text-primary border-primary rounded-lg">Dashboard</Button>
+              </Link>
+            ) : (
+              <div>
+                <Link href="/sign-in">
+                  <Button variant="outline" className="w-full text-primary border-primary rounded-lg">Sign In</Button>
+                </Link>
+              </div>
+            )}
+            <Link href="/booking">
+              <Button className="bg-primary hover:bg-primary/90 rounded-xl">Booking <CalendarHeart className="ml-2 h-4 w-4" /></Button>
+            </Link>
           </div>
 
           <div className="lg:hidden">
@@ -78,17 +88,24 @@ export default function Navbar() {
               <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">List Psikolog</Link>
 
               <div className="pt-4 pb-3 border-t border-gray-200">
-                <Link href="/sign-in">
-                  <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg">Sign In</Button>
-                </Link>
+                {session ? (
+                  <Link href="/dashboard">
+                    <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg">Dashboard</Button>
+                  </Link>
+                ) : (
+                  <Link href="/sign-in">
+                    <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg">Sign In</Button>
+                  </Link>
+                )}
                 <Link href="/booking">
                   <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg">Booking</Button>
                 </Link>
               </div>
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+        )
+        }
+      </AnimatePresence >
+    </header >
   )
 }
