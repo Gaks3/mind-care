@@ -1,9 +1,10 @@
 import { Hono } from "hono";
+import { zValidator } from "@hono/zod-validator";
+import { HTTPException } from "hono/http-exception";
 import { authMiddleware } from "../middleware/auth";
 import db from "@/lib/db";
 import { UserRole } from "@/types";
 import type { Prisma } from "@prisma/client";
-import { zValidator } from "@hono/zod-validator";
 import { createArticleSchema, updateArticleSchema } from "./article.type";
 import { generateSlugArticle, hasRole, uploadFile } from "../../lib/utils";
 
@@ -29,6 +30,38 @@ const articles = new Hono()
       });
     },
   )
+  .get("/bookmark", authMiddleware(), async (c) => {
+    const user = c.get("user")!;
+
+    const bookmarks = await db.bookmarkArticle.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    return c.json({ data: bookmarks });
+  })
+  .get("/bookmark/:id", authMiddleware(), async (c) => {
+    const { id } = c.req.param();
+    const user = c.get("user")!;
+
+    if (isNaN(Number(id)))
+      throw new HTTPException(400, { message: "Param id must be a number" });
+
+    const bookmark = await db.bookmarkArticle.findUnique({
+      where: {
+        userId_articleId: {
+          articleId: Number(id),
+          userId: user.id,
+        },
+      },
+    });
+
+    if (!bookmark)
+      throw new HTTPException(404, { message: "Bookmark not found" });
+
+    return c.json({ data: bookmark });
+  })
   .get("/:id", async (c, next) => {
     const { id } = c.req.param();
     if (isNaN(Number(id))) return await next();
@@ -64,7 +97,7 @@ const articles = new Hono()
       },
     });
 
-    if (!data) return c.json({ message: "Article not found" }, 404);
+    if (!data) throw new HTTPException(404, { message: "Article not found" });
 
     return c.json({
       data,
@@ -94,6 +127,33 @@ const articles = new Hono()
       return c.json({ message: "Successfully to create article" });
     },
   )
+  .post("/:id/bookmark", authMiddleware(), async (c) => {
+    const { id } = c.req.param();
+    const user = c.get("user")!;
+    const articleId = Number(id);
+
+    if (isNaN(articleId))
+      throw new HTTPException(400, { message: "Param id must be a number" });
+
+    await db.bookmarkArticle.upsert({
+      where: {
+        userId_articleId: {
+          articleId,
+          userId: user.id,
+        },
+      },
+      update: {
+        articleId,
+        userId: user.id,
+      },
+      create: {
+        articleId,
+        userId: user.id,
+      },
+    });
+
+    return c.json({ message: "Successfully to bookmark article" });
+  })
   .patch(
     "/:id",
     authMiddleware([UserRole.PSYCHOLOGY, UserRole.ADMIN]),
@@ -106,10 +166,11 @@ const articles = new Hono()
       const article = await db.article.findUnique({
         where: { id: Number(id) },
       });
-      if (!article) return c.json({ message: "Article not found" }, 404);
+      if (!article)
+        throw new HTTPException(404, { message: "Article not found" });
 
       if (article.createdBy !== user.id && !hasRole(user, UserRole.ADMIN))
-        return c.json({ message: "Unauthorized" }, 401);
+        throw new HTTPException(401, { message: "Unauthorized" });
 
       const data: Prisma.ArticleUpdateInput = {
         title,
@@ -149,10 +210,11 @@ const articles = new Hono()
           id: Number(id),
         },
       });
-      if (!article) return c.json({ message: "Article not found" }, 404);
+      if (!article)
+        throw new HTTPException(404, { message: "Article not found" });
 
       if (article.createdBy === user.id && !hasRole(user, UserRole.ADMIN))
-        return c.json({ message: "Unauthorized" }, 401);
+        throw new HTTPException(401, { message: "Unauthorized" });
 
       await db.article.delete({
         where: {
@@ -164,6 +226,35 @@ const articles = new Hono()
         message: "Successfully to delete article",
       });
     },
-  );
+  )
+  .delete("/:id/bookmark", authMiddleware(), async (c) => {
+    const { id } = c.req.param();
+    const user = c.get("user")!;
+    const articleId = Number(id);
 
+    if (isNaN(articleId))
+      throw new HTTPException(400, { message: "Param id must be a number" });
+
+    const bookmark = await db.bookmarkArticle.findUnique({
+      where: {
+        userId_articleId: {
+          articleId,
+          userId: user.id,
+        },
+      },
+    });
+    if (!bookmark)
+      throw new HTTPException(404, { message: "Bookmark not found" });
+
+    await db.bookmarkArticle.delete({
+      where: {
+        userId_articleId: {
+          articleId,
+          userId: user.id,
+        },
+      },
+    });
+
+    return c.json({ message: "Successfully to delete bookmark article" });
+  });
 export default articles;
