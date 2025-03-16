@@ -5,6 +5,7 @@ import users from "./routes/user/user.router";
 import { logger } from "hono/logger";
 import { auth } from "@/lib/auth";
 import articles from "./routes/article/article.router";
+import { HTTPException } from "hono/http-exception";
 
 export const runtime = "nodejs";
 
@@ -39,6 +40,8 @@ export const app = new Hono()
 export type AppType = typeof app;
 
 app.onError((error, c) => {
+  if (error instanceof HTTPException) return error.getResponse();
+
   if (error instanceof ZodError) {
     const errors = error.errors.map((err) => {
       if (err?.["unionErrors"]) {
@@ -62,10 +65,7 @@ app.onError((error, c) => {
   }
 
   console.error(error);
-  return c.json(
-    { error, message: error.message || "Internal Server Error" },
-    500,
-  );
+  return c.json({ message: "Internal Server Error" }, 500);
 });
 
 app.notFound((c) => {
