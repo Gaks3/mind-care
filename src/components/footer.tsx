@@ -23,7 +23,7 @@ export default function Footer() {
           <Brain size={450} strokeWidth={1} />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 lg:px-48 relative z-10">
           <div className="hidden md:grid md:grid-cols-3 md:gap-9 md:mb-12">
             <div>
               <h3 className="text-xl font-semibold mb-4">Tes Psikologi</h3>
