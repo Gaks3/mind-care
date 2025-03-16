@@ -32,9 +32,9 @@ export const uploadFile = async (file: File) => {
   const buffer = Buffer.from(bytes);
 
   const randomString = crypto.randomUUID();
-  const fileName = `${randomString.slice(0, 10)}.${file.name.split('.')[1]}`;
+  const fileName = `${randomString.slice(0, 10)}.${file.name.split(".")[1]}`;
 
-  const path = join('./', 'public', fileName);
+  const path = join("./", "public", fileName);
 
   await writeFile(path, buffer);
 
