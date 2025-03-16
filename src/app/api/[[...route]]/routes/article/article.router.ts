@@ -38,6 +38,7 @@ const articles = new Hono()
         id: Number(id),
       },
     });
+
     if (!article) return c.json({ message: "Article not found" }, 404);
 
     return c.json({
