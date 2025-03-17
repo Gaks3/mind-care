@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { redirect } from "next/navigation"
 
-// Mock data for demonstration
 const upcomingBookings = [
   {
     id: 1,
@@ -43,34 +42,6 @@ const upcomingBookings = [
     psychologist: {
       name: "Dr. Anita Wijaya",
       specialty: "Psikolog Klinis",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
-  {
-    id: 2,
-    title: "Terapi Kognitif",
-    date: "2025-03-20",
-    time: "13:30 - 14:30",
-    status: "confirmed",
-    zoomLink: "https://zoom.us/j/987654321",
-    whatsappNumber: "+6281234567891",
-    psychologist: {
-      name: "Dr. Budi Santoso",
-      specialty: "Psikolog Anak",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
-  {
-    id: 3,
-    title: "Konsultasi Lanjutan",
-    date: "2025-03-25",
-    time: "11:00 - 12:00",
-    status: "pending",
-    zoomLink: "https://zoom.us/j/567891234",
-    whatsappNumber: "+6281234567892",
-    psychologist: {
-      name: "Dr. Citra Dewi",
-      specialty: "Psikolog Umum",
       avatar: "/placeholder.svg?height=40&width=40",
     },
   },
@@ -89,42 +60,6 @@ const sessionHistory = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
   },
-  {
-    id: 102,
-    title: "Terapi Fisik",
-    date: "2025-03-05",
-    time: "14:00 - 15:00",
-    notes: "Pasien menunjukkan kemajuan",
-    psychologist: {
-      name: "Dr. Budi Santoso",
-      specialty: "Psikolog Anak",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
-  {
-    id: 103,
-    title: "Evaluasi Bulanan",
-    date: "2025-02-28",
-    time: "09:30 - 10:30",
-    notes: "Perlu tindak lanjut",
-    psychologist: {
-      name: "Dr. Citra Dewi",
-      specialty: "Psikolog Umum",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
-  {
-    id: 104,
-    title: "Konsultasi Rutin",
-    date: "2025-02-15",
-    time: "13:00 - 14:00",
-    notes: "Kondisi stabil",
-    psychologist: {
-      name: "Dr. Anita Wijaya",
-      specialty: "Psikolog Klinis",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
 ]
 
 export default async function ResponsiveDashboard() {
@@ -137,7 +72,6 @@ export default async function ResponsiveDashboard() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Navbar */}
       <header className="border-b bg-background sticky top-0 z-10">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link href="/">
@@ -192,7 +126,6 @@ export default async function ResponsiveDashboard() {
         </div>
       </header>
 
-      {/* Hero Section */}
       <div className="bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -228,11 +161,8 @@ export default async function ResponsiveDashboard() {
         </div>
       </div>
 
-      {/* Dashboard Content */}
       <div className="flex-1 container mx-auto p-4 md:p-6">
-        {/* Desktop View */}
         <div className="hidden md:grid md:grid-cols-2 gap-6">
-          {/* Upcoming Bookings */}
           <Card className="h-full">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
@@ -304,7 +234,6 @@ export default async function ResponsiveDashboard() {
             </CardContent>
           </Card>
 
-          {/* Session History */}
           <Card className="h-full">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
@@ -359,7 +288,6 @@ export default async function ResponsiveDashboard() {
           </Card>
         </div>
 
-        {/* Mobile View */}
         <div className="md:hidden">
           <Tabs defaultValue="upcoming" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
