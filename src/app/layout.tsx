@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { GeistSans } from "geist/font/sans";
+import Provider from "@/lib/provider"
 
 const font = GeistSans;
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   title: 'MindCare | Kesehatan Mental Bersama AI',
   description: 'MindCare adalah platform inovatif yang menggabungkan teknologi kecerdasan buatan dengan prinsip-prinsip kesehatan mental, memberikan dukungan yang dipersonalisasi untuk setiap pengguna.',
 };
+
 
 export default function RootLayout({
   children,
@@ -22,8 +24,10 @@ export default function RootLayout({
       <body
         className={font.className}
       >
-        {children}
-        <Toaster richColors />
+        <Provider>
+          {children}
+          <Toaster richColors />
+        </Provider>
       </body>
     </html>
   );
