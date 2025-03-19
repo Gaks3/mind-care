@@ -26,6 +26,9 @@ const articles = new Hono()
     const articles = await db.article.findMany({
       where,
       orderBy: { createdAt: sort || "desc" },
+      include: {
+        user: true,
+      },
     });
 
     return c.json({
