@@ -1,11 +1,16 @@
 import { z } from "zod";
-import {
-  containsNumber,
-  containsSpecialChars,
-  containsUppercase,
-} from "../../lib/utils";
 import { GenderUser, StatusUser, UserRole } from "@/types";
 import { imageSchema } from "../type/image.type";
+
+export const containsUppercase = (str: string) => /[A-Z]/.test(str);
+
+export const containsNumber = (str: string) => /\d/.test(str);
+
+export const containsSpecialChars = (str: string) => {
+  const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+  return specialChars.test(str);
+};
 
 export const passwordSchema = z.string().superRefine((value, ctx) => {
   if (value.length < 8) {
