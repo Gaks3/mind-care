@@ -14,3 +14,9 @@ export const updateArticleSchema = z.object({
   image: createArticleSchema.shape.image.optional(),
   categories: createArticleSchema.shape.categories.optional(),
 });
+
+export const queryArticleSchema = z.object({
+  createdby: z.string().optional(),
+  search: z.string().optional(),
+  sort: z.enum(["asc", "desc"]).optional(),
+});
