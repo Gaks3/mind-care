@@ -7,17 +7,24 @@ export type Article = {
 };
 
 export enum UserRole {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-  PSYCHOLOGY = 'PSYCHOLOGY',
+  USER = "USER",
+  ADMIN = "ADMIN",
+  PSYCHOLOGY = "PSYCHOLOGY",
 }
 
 export enum GenderUser {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
+  MALE = "MALE",
+  FEMALE = "FEMALE",
 }
 
 export enum StatusUser {
-  WORKER = 'WORKER',
-  STUDENT = 'STUDENT',
+  WORKER = "WORKER",
+  STUDENT = "STUDENT",
+}
+
+export enum StatusBooking {
+  ACCEPTED = "ACCEPTED",
+  PENDING = "PENDING",
+  CANCELLED = "CANCELLED",
+  REJECTED = "REJECTED",
 }
