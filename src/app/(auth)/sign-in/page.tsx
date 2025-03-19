@@ -57,12 +57,12 @@ export default function SignInPage() {
         },
         onSuccess: () => {
           form.reset();
-          toast("Sign in success");
+          toast.success("Sign in success");
           router.push("/dashboard");
           router.refresh();
         },
         onError: () => {
-          toast("Invalid Email or Password");
+          toast.error("Invalid Email or Password");
           setIsSubmitting(false);
         },
       }
