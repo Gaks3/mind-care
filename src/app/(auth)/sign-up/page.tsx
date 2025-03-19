@@ -69,7 +69,7 @@ export default function SignUpPage() {
         },
         onSuccess: () => {
           form.reset();
-          toast("Sign up success");
+          toast.success("Sign up success");
           router.push("/sign-in");
         },
         onError: ({ error }) => {
@@ -83,7 +83,7 @@ export default function SignUpPage() {
               "Email ini sudah terdaftar. Silahkan gunakan email lain.";
           }
 
-          toast("Sign up failed", {
+          toast.error("Sign up failed", {
             description: errorMessage,
           });
 
