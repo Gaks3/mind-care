@@ -32,7 +32,7 @@ export default function AddUserPage() {
     },
   })
 
-  const deleteMutation = useMutation({
+  const addUserMutation = useMutation({
     mutationFn: async (data: FormValues) => {
       return client.api.users.$post({ json: data })
     },
@@ -59,7 +59,7 @@ export default function AddUserPage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit((data) => deleteMutation.mutate(data))} className="space-y-6">
+            <form onSubmit={form.handleSubmit((data) => addUserMutation.mutate(data))} className="space-y-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -127,9 +127,9 @@ export default function AddUserPage() {
                 )}
               />
 
-              <Button type="submit" className="w-full" disabled={deleteMutation.isPending}>
-                {deleteMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {deleteMutation.isPending ? "Creating User..." : "Create User"}
+              <Button type="submit" className="w-full" disabled={addUserMutation.isPending}>
+                {addUserMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {addUserMutation.isPending ? "Creating User..." : "Create User"}
               </Button>
             </form>
           </Form>
