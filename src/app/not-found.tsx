@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { FileQuestion, Home, ArrowLeft } from "lucide-react"
+import { FileQuestion, Home, } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function NotFound() {
@@ -39,13 +39,6 @@ export default function NotFound() {
           <Link href="/">
             <Home className="mr-2 h-4 w-4" />
             Kembali ke Beranda
-          </Link>
-        </Button>
-
-        <Button variant="outline" asChild className="border-primary text-primary hover:bg-blue-50">
-          <Link href="javascript:history.back()">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Kembali ke Halaman Sebelumnya
           </Link>
         </Button>
       </div>
