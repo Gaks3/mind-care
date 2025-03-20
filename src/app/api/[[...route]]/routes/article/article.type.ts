@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { imageSchema } from "../type/image.type";
+import { imageSchema } from "../../type/image.type";
 
 export const createArticleSchema = z.object({
   title: z.string().trim().min(1, { message: "Title required" }),
