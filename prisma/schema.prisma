@@ -209,3 +209,27 @@ model Education {
   year        Int
   degree      String
 }
+
+model ChatThread {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  chatMessage ChatMessage[]
+}
+
+model ChatMessage {
+  id         String          @id @default(cuid())
+  role       ChatMessageRole
+  content    String
+  threadId   String
+  chatThread ChatThread      @relation(fields: [threadId], references: [id])
+  createdAt  DateTime        @default(now())
+  thought    String
+}
+
+enum ChatMessageRole {
+  USER
+  ASSISTANT
+}
