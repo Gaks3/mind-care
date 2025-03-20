@@ -111,6 +111,11 @@ const users = new Hono()
         data: {
           ...data,
           image: fileName,
+          ...(data.educations ?? {
+            education: {
+              createMany: data.educations,
+            },
+          }),
         },
       });
 
