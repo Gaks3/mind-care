@@ -13,7 +13,6 @@ import {
   ChevronDown,
   BarChart3,
   Calendar,
-  Settings,
   Brain,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -24,8 +23,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { redirect } from "next/navigation"
@@ -95,17 +92,6 @@ export default async function ResponsiveDashboard() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profil</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Pengaturan</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive focus:text-destructive">
                   <LogOut className="mr-2 h-4 w-4" />
                   <form
