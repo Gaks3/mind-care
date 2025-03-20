@@ -42,8 +42,6 @@ export default function NotFound() {
           </Link>
         </Button>
       </div>
-
-
     </div>
   )
 }
