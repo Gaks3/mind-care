@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { GenderUser, StatusUser, UserRole } from "@/types";
-import { imageSchema } from "../type/image.type";
+import { imageSchema } from "../../type/image.type";
 
 export const containsUppercase = (str: string) => /[A-Z]/.test(str);
 
@@ -72,4 +72,13 @@ export const updateUserSchema = z.object({
   birthDate: z.date().optional(),
   phoneNumber: z.string().optional(),
   status: z.enum([StatusUser.STUDENT, StatusUser.WORKER]).optional(),
+  educations: z
+    .array(
+      z.object({
+        institution: z.string().trim().min(1),
+        degree: z.string().trim().min(1),
+        year: z.number().min(1900).max(new Date().getFullYear()),
+      }),
+    )
+    .optional(),
 });
