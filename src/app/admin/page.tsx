@@ -1,47 +1,39 @@
-"use client";
-
-import { authClient } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
+import { client } from "@/lib/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, LogOut, ChevronDown, Settings, Brain } from "lucide-react";
+import { User, LogOut, ChevronDown, Brain } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { client } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { headers } from "next/headers";
+import { UserRole } from "@/types";
 
-export default function AdminDashboard() {
-  const { data: sessionData, isPending, error } = authClient.useSession();
-  const user = sessionData?.user;
-  const role = sessionData?.user?.role;
+export default async function AdminDashboard() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  const user = session?.user;
+  const role = session?.user?.role;
 
-  const fetchAllUsers = async () => {
-    return await client.api.users.$get();
-  };
-
-  const {
-    data: users,
-    isPending: usersLoading,
-    error: usersError,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchAllUsers,
+  const users = await client.api.users.$get(undefined, {
+    init: {
+      headers: await headers(),
+    },
   });
 
-  if (isPending || usersLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error || usersError) {
-    return <div>Something went wrong</div>;
-  }
+  const { data: usersData } = await users.json();
 
   return (
     <div>
@@ -69,22 +61,14 @@ export default function AdminDashboard() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profil</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Pengaturan</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive focus:text-destructive">
                   <LogOut className="mr-2 h-4 w-4" />
                   <form
-                    action={() => {
-                      authClient.signOut();
+                    action={async () => {
+                      "use server"
+                      await auth.api.signOut({
+                        headers: await headers(),
+                      });
                       redirect("/");
                     }}
                   >
@@ -110,11 +94,49 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <Link href="/admin/add">
-        <Button size="lg">Add User</Button>
-      </Link>
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">User Management</h2>
+          <Link href="/admin/add">
+            <Button size="lg">Add User</Button>
+          </Link>
+        </div>
 
-      <pre>{JSON.stringify(users)}</pre>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {usersData && usersData.map((user, index) => (
+                <TableRow key={index}>
+                  <TableCell className="font-medium">{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${user.role === UserRole.ADMIN ? "bg-blue-100 text-blue-800" :
+                      user.role === UserRole.PSYCHOLOGY ? "bg-green-100 text-green-800" :
+                        "bg-gray-100 text-gray-800"
+                      }`}>
+                      {user.role}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button variant="outline" size="sm">Edit</Button>
+                      <Button variant="destructive" size="sm">Delete</Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 }
