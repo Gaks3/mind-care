@@ -36,6 +36,7 @@ model User {
   bookingSession     BookingSession[]
   reviewUserId       Review[]          @relation(name: "ReviewUserId")
   reviewPsychologyId Review[]          @relation(name: "ReviewPsychologyId")
+  psychologyTopic    PsychologyTopic[]
 
   @@map("user")
 }
@@ -142,6 +143,8 @@ model BookingSchedule {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   BookingSession BookingSession[]
+
+  @@map("booking_schedule")
 }
 
 model BookingSession {
@@ -153,6 +156,8 @@ model BookingSession {
   status          BookingStatus   @default(PENDING)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+
+  @@map("booking_session")
 }
 
 enum BookingStatus {
@@ -171,4 +176,25 @@ model Review {
   rate         Int
   reviewText   String
   createdAt    DateTime @default(now())
+
+  @@map("review")
+}
+
+model Topic {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  psychologyTopic PsychologyTopic[]
+
+  @@map("topic")
+}
+
+model PsychologyTopic {
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  topicId Int
+  topic   Topic  @relation(fields: [topicId], references: [id])
+
+  @@unique([userId, topicId])
+  @@map("psychology_topic")
 }
