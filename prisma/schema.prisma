@@ -28,12 +28,14 @@ model User {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  sessions        Session[]
-  accounts        Account[]
-  article         Article[]
-  bookmark        BookmarkArticle[]
-  bookingSchedule BookingSchedule[]
-  BookingSession  BookingSession[]
+  sessions           Session[]
+  accounts           Account[]
+  article            Article[]
+  bookmark           BookmarkArticle[]
+  bookingSchedule    BookingSchedule[]
+  bookingSession     BookingSession[]
+  reviewUserId       Review[]          @relation(name: "ReviewUserId")
+  reviewPsychologyId Review[]          @relation(name: "ReviewPsychologyId")
 
   @@map("user")
 }
@@ -107,7 +109,7 @@ model Article {
   slug       String   @unique
   content    String
   createdBy  String
-  user       User     @relation(fields: [createdBy], references: [id])
+  user       User     @relation(fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   thumbnail  String
   view       Int      @default(0)
   categories String
@@ -121,9 +123,9 @@ model Article {
 
 model BookmarkArticle {
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   articleId Int
-  article   Article @relation(fields: [articleId], references: [id])
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, articleId])
   @@map("bookmark_article")
@@ -132,7 +134,7 @@ model BookmarkArticle {
 model BookingSchedule {
   id             Int              @id @default(autoincrement())
   psychologistId String
-  psychologist   User             @relation(fields: [psychologistId], references: [id])
+  psychologist   User             @relation(fields: [psychologistId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   isBooked       Boolean          @default(false)
   date           DateTime         @db.Date
   time           DateTime         @db.Time()
@@ -145,9 +147,9 @@ model BookingSchedule {
 model BookingSession {
   id              Int             @id @default(autoincrement())
   userId          String
-  user            User            @relation(fields: [userId], references: [id])
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   bookingId       Int
-  bookingSchedule BookingSchedule @relation(fields: [bookingId], references: [id])
+  bookingSchedule BookingSchedule @relation(fields: [bookingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   status          BookingStatus   @default(PENDING)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -158,4 +160,15 @@ enum BookingStatus {
   PENDING
   CANCELLED
   REJECTED
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  user         User     @relation("ReviewUserId", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  psychologyId String
+  psychology   User     @relation("ReviewPsychologyId", fields: [psychologyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rate         Int
+  reviewText   String
+  createdAt    DateTime @default(now())
 }
