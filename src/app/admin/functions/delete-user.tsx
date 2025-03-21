@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { client } from "@/lib/api";
+import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -33,7 +34,7 @@ export function DeleteUserDialog({ id }) {
   return (
     <>
       <Button variant="destructive" size="sm" onClick={() => setOpen(true)}>
-        Delete
+        <Trash2 />
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
