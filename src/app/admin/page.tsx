@@ -1,33 +1,30 @@
-import { auth } from "@/lib/auth";
-import { client } from "@/lib/api";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, LogOut, ChevronDown, Brain } from "lucide-react";
 import Link from "next/link";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { headers } from "next/headers";
+
+import { auth } from "@/lib/auth";
+import { client } from "@/lib/api";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 import { UserRole } from "@/types";
-import { DeleteUserDialog } from "./functions/delete-user";
-import { EditUserDialog } from "./functions/edit-user";
+
 
 export default async function AdminDashboard() {
   const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user;
   const role = session?.user?.role;
+
+  if (!user || role !== UserRole.ADMIN) return notFound();
 
   const users = await client.api.users.$get(undefined, {
     init: {
@@ -53,7 +50,10 @@ export default async function AdminDashboard() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.image || "Image user"} alt={user?.name || "User"} />
+                    <AvatarImage
+                      src={user?.image || "Image user"}
+                      alt={user?.name || "User"}
+                    />
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       {user?.name?.charAt(0) || <User />}
                     </AvatarFallback>
@@ -67,7 +67,7 @@ export default async function AdminDashboard() {
                   <LogOut className="mr-2 h-4 w-4" />
                   <form
                     action={async () => {
-                      "use server"
+                      "use server";
                       await auth.api.signOut({
                         headers: await headers(),
                       });
@@ -89,7 +89,9 @@ export default async function AdminDashboard() {
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Selamat Datang, {role} 👋</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                Selamat Datang, {role} 👋
+              </h1>
               <p className="text-primary-foreground/80">Email: {user?.email}</p>
             </div>
           </div>
@@ -103,43 +105,7 @@ export default async function AdminDashboard() {
             <Button size="lg">Add User</Button>
           </Link>
         </div>
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {usersData && usersData.map((user, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${user.role === UserRole.ADMIN ? "bg-blue-100 text-blue-800" :
-                      user.role === UserRole.PSYCHOLOGY ? "bg-green-100 text-green-800" :
-                        "bg-gray-100 text-gray-800"
-                      }`}>
-                      {user.role}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <EditUserDialog id={user.id} currentRole={user.role} />
-                      <DeleteUserDialog
-                        id={user.id}
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <DataTable columns={columns} data={usersData} defaultFilter="name" />
       </div>
     </div>
   );
