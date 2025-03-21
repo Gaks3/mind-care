@@ -95,7 +95,7 @@ export default function AddUserPage() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="••••••••" type="password" {...field} />
+                      <Input type="password" {...field} />
                     </FormControl>
                     <FormDescription>Password must be at least 8 characters long.</FormDescription>
                     <FormMessage />
