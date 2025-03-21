@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { redirect } from "next/navigation"
+import { UserRole } from "@/types"
 
 const upcomingBookings = [
   {
@@ -65,6 +66,17 @@ export default async function ResponsiveDashboard() {
   })
 
   const user = session?.user
+  const role = session?.user?.role
+
+
+  if (role === UserRole.ADMIN) {
+    return redirect("/admin")
+  }
+
+  if (role === UserRole.PSYCHOLOGY) {
+    return redirect("/psychology")
+  }
+
   const totalSessions = upcomingBookings.length + sessionHistory.length
 
   return (
