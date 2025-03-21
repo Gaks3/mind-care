@@ -37,7 +37,7 @@ export const columns: ColumnDef<DataType[number]>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: ({ column }) => <SortColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <SortColumnHeader column={column} title="CreatedAt" />,
     cell: ({ row }) => format(row.original.updatedAt, "PPP"),
     enableColumnFilter: false,
   },
@@ -54,13 +54,12 @@ export const columns: ColumnDef<DataType[number]>[] = [
 
 export const RoleBadge = ({ role }: { role: string }) => (
   <span
-    className={`px-2 py-1 rounded-full text-xs font-medium ${
-      role === UserRole.ADMIN
+    className={`px-2 py-1 rounded-full text-xs font-medium ${role === UserRole.ADMIN
         ? "bg-blue-100 text-blue-800"
         : role === UserRole.PSYCHOLOGY
-        ? "bg-green-100 text-green-800"
-        : "bg-gray-100 text-gray-800"
-    }`}
+          ? "bg-green-100 text-green-800"
+          : "bg-gray-100 text-gray-800"
+      }`}
   >
     {role}
   </span>
