@@ -28,3 +28,8 @@ export enum StatusBooking {
   CANCELLED = "CANCELLED",
   REJECTED = "REJECTED",
 }
+
+export enum RoleChatMessage {
+  USER = "USER",
+  ASSISTANT = "ASSISTANT",
+}
