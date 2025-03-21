@@ -21,6 +21,8 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { headers } from "next/headers";
 import { UserRole } from "@/types";
+import { DeleteUserDialog } from "./functions/delete-user";
+import { EditUserDialog } from "./functions/edit-user";
 
 export default async function AdminDashboard() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -127,8 +129,10 @@ export default async function AdminDashboard() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button variant="outline" size="sm">Edit</Button>
-                      <Button variant="destructive" size="sm">Delete</Button>
+                      <EditUserDialog id={user.id} currentRole={user.role} />
+                      <DeleteUserDialog
+                        id={user.id}
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
