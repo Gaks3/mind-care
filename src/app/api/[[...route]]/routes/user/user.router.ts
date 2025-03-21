@@ -111,7 +111,7 @@ const users = new Hono()
         data: {
           ...data,
           image: fileName,
-          ...(data.educations ?? {
+          ...(data.educations && {
             education: {
               createMany: data.educations,
             },
@@ -124,6 +124,7 @@ const users = new Hono()
   )
   .delete("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
+    console.log(id);
     const session = c.get("user")!;
 
     const user = await db.user.findUnique({
@@ -133,7 +134,7 @@ const users = new Hono()
     });
     if (!user) return c.json({ message: "User not found" }, 404);
 
-    if (id !== session!.id && !hasRole(session!, UserRole.ADMIN))
+    if (id !== session!.id && !hasRole(session!, [UserRole.ADMIN]))
       return c.json({ error: "Unauthorized" }, 401);
 
     await db.user.delete({
