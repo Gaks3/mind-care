@@ -129,6 +129,7 @@ model BookmarkArticle {
   articleId Int
   article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
+  @@id([userId, articleId])
   @@unique([userId, articleId])
   @@map("bookmark_article")
 }
@@ -197,6 +198,7 @@ model PsychologyTopic {
   topicId Int
   topic   Topic  @relation(fields: [topicId], references: [id])
 
+  @@id([userId, topicId])
   @@unique([userId, topicId])
   @@map("psychology_topic")
 }
