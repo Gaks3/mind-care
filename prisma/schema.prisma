@@ -38,6 +38,7 @@ model User {
   reviewPsychologyId Review[]          @relation(name: "ReviewPsychologyId")
   psychologyTopic    PsychologyTopic[]
   education          Education[]
+  chatThread         ChatThread[]
 
   @@map("user")
 }
@@ -213,6 +214,8 @@ model Education {
 model ChatThread {
   id        String   @id @default(cuid())
   title     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -224,9 +227,9 @@ model ChatMessage {
   role       ChatMessageRole
   content    String
   threadId   String
-  chatThread ChatThread      @relation(fields: [threadId], references: [id])
+  chatThread ChatThread      @relation(fields: [threadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt  DateTime        @default(now())
-  thought    String
+  thought    String?
 }
 
 enum ChatMessageRole {
