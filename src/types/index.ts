@@ -1,3 +1,5 @@
+import type { ColumnDef } from "@tanstack/react-table";
+
 export type Article = {
   id: number;
   title: string;
@@ -27,4 +29,10 @@ export enum StatusBooking {
   PENDING = "PENDING",
   CANCELLED = "CANCELLED",
   REJECTED = "REJECTED",
+}
+
+export interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  defaultFilter: string;
 }
