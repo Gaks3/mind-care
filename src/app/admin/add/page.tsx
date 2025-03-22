@@ -15,6 +15,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { client } from "@/lib/api"
 import { UserRole } from "@/types"
 import { createUserSchema } from "@/app/api/[[...route]]/routes/user/user.type"
+import { useEffect } from "react"
+import { Textarea } from "@/components/ui/textarea"
 
 
 type FormValues = z.infer<typeof createUserSchema>
@@ -29,8 +31,17 @@ export default function AddUserPage() {
       email: "",
       password: "",
       role: UserRole.USER,
+      description: ""
     },
   })
+
+  const selectedRole = form.watch("role")
+
+  useEffect(() => {
+    if (selectedRole !== "PSYCHOLOGY") {
+      form.setValue("description", "")
+    }
+  }, [selectedRole, form])
 
   const addUserMutation = useMutation({
     mutationFn: async (data: FormValues) => {
@@ -126,6 +137,29 @@ export default function AddUserPage() {
                   </FormItem>
                 )}
               />
+
+              {selectedRole === "PSYCHOLOGY" && (
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Psychology Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Enter psychology professional description, qualifications, specialties, etc."
+                          className="min-h-32"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Provide details about this psychology professionals background and expertise.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <Button type="submit" className="w-full" disabled={addUserMutation.isPending}>
                 {addUserMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
