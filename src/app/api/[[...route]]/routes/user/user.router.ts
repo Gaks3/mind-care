@@ -31,7 +31,7 @@ const users = new Hono()
       data: psychologists,
     });
   })
-  .get("/psychology/:id", authMiddleware(), async (c) => {
+  .get("/psychologists/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
 
     const data = await db.user.findUnique({
@@ -57,7 +57,7 @@ const users = new Hono()
       },
     });
 
-    return c.json({ data: { ...data, rate } });
+    return c.json({ data: { ...data, rate: rate._avg.rate } });
   })
   .get("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
