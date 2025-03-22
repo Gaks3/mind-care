@@ -62,7 +62,7 @@ const users = new Hono()
       },
     });
 
-    return c.json({ data: { ...data, rate } });
+    return c.json({ data: { ...data, rate: rate._avg.rate } });
   })
   .get("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
