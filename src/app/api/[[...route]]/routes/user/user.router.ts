@@ -7,6 +7,7 @@ import { createUserSchema, updateUserSchema } from "./user.type";
 import { generateId } from "better-auth";
 import { hashPassword } from "better-auth/crypto";
 import { UserRole } from "@/types";
+import { HTTPException } from "hono/http-exception";
 
 const users = new Hono()
   .get("/", authMiddleware(UserRole.ADMIN), async (c) => {
@@ -34,6 +35,34 @@ const users = new Hono()
     return c.json({
       data: psychologists,
     });
+  })
+  .get("/psychology/:id", authMiddleware(), async (c) => {
+    const { id } = c.req.param();
+
+    const data = await db.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        bookingSchedule: true,
+        psychologyTopic: true,
+        education: true,
+        reviewPsychologyId: true,
+      },
+    });
+    if (!data)
+      throw new HTTPException(404, { message: "Psychology not found" });
+
+    const rate = await db.review.aggregate({
+      where: {
+        psychologyId: data?.id,
+      },
+      _avg: {
+        rate: true,
+      },
+    });
+
+    return c.json({ data: { ...data, rate } });
   })
   .get("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
@@ -132,7 +161,9 @@ const users = new Hono()
           image: fileName,
           ...(data.educations && {
             education: {
-              createMany: data.educations,
+              createMany: {
+                data: data.educations,
+              },
             },
           }),
         },
