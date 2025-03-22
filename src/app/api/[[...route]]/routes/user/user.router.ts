@@ -100,6 +100,13 @@ const users = new Hono()
           role: data.role,
           emailVerified: false,
           description: data.description,
+          ...(data.education && {
+            education: {
+              createMany: {
+                data: data.education,
+              },
+            },
+          }),
         },
       });
 

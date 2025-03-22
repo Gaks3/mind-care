@@ -61,9 +61,15 @@ export const createUserSchema = z.object({
   role: z
     .enum([UserRole.USER, UserRole.PSYCHOLOGY, UserRole.ADMIN])
     .default(UserRole.USER),
-  description: z
-    .string()
-    .max(500, "Description must be less than 500 characters")
+  description: z.string().optional(),
+  education: z
+    .array(
+      z.object({
+        institution: z.string().trim().min(1),
+        degree: z.string().trim().min(1),
+        year: z.string().trim().min(1),
+      }),
+    )
     .optional(),
 });
 
@@ -81,7 +87,7 @@ export const updateUserSchema = z.object({
       z.object({
         institution: z.string().trim().min(1),
         degree: z.string().trim().min(1),
-        year: z.number().min(1900).max(new Date().getFullYear()),
+        year: z.string().trim().min(1),
       }),
     )
     .optional(),

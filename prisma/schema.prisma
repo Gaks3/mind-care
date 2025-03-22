@@ -20,7 +20,7 @@ model User {
   emailVerified Boolean
   image         String?
   role          UserRole    @default(USER)
-  description   String?     @db.VarChar(500)
+  description   String?     
   birthDate     DateTime?   @db.Date
   gender        Gender?
   phoneNumber   String?
@@ -207,6 +207,6 @@ model Education {
   userId      String
   user        User   @relation(fields: [userId], references: [id])
   institution String
-  year        Int
+  year        String
   degree      String
 }

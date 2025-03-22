@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CalendarHeart } from "lucide-react"
+import Link from "next/link"
 
 function getInitials(name: string): string {
   return name
@@ -51,7 +52,7 @@ export default async function PsychologistsList() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">{psychologist.description
+              <p className="text-muted-foreground truncate">{psychologist.description
                 ? (psychologist.description.split(' ').length > 5
                   ? psychologist.description.split(' ').slice(0, 10).join(' ') + '...'
                   : psychologist.description)
@@ -59,7 +60,9 @@ export default async function PsychologistsList() {
             </CardContent>
 
             <CardFooter className="flex justify-between items-center">
-              <Button size="sm" variant="outline">Detail</Button>
+              <Link href={`/bookings/${psychologist.id}`}>
+                <Button size="sm" variant="outline">Detail</Button>
+              </Link>
               <Button size="sm">Booking <CalendarHeart className="ml-2 w-4 h-4" /></Button>
             </CardFooter>
           </Card>
