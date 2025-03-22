@@ -16,6 +16,25 @@ const users = new Hono()
       data: users,
     });
   })
+  .get("/psychologists", authMiddleware(), async (c) => {
+    const psychologists = await db.user.findMany({
+      where: {
+        role: "PSYCHOLOGY",
+      },
+    });
+
+    if (!psychologists)
+      return c.json(
+        {
+          message: "No psychologists found",
+        },
+        404,
+      );
+
+    return c.json({
+      data: psychologists,
+    });
+  })
   .get("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
     const session = c.get("user")!;
