@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import articles from "./routes/article/article.router";
 import { HTTPException } from "hono/http-exception";
 import bookings from "./routes/booking/booking.router";
+import reviews from "./routes/review/review.router";
 
 export const runtime = "nodejs";
 
@@ -37,7 +38,8 @@ export const app = new Hono()
   )
   .route("/users", users)
   .route("/articles", articles)
-  .route("/bookings", bookings);
+  .route("/bookings", bookings)
+  .route("/reviews", reviews);
 
 export type AppType = typeof app;
 

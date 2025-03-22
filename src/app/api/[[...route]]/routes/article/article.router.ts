@@ -5,31 +5,36 @@ import { authMiddleware } from "../middleware/auth";
 import db from "@/lib/db";
 import { UserRole } from "@/types";
 import type { Prisma } from "@prisma/client";
-import { createArticleSchema, updateArticleSchema } from "./article.type";
+import {
+  createArticleSchema,
+  queryArticleSchema,
+  updateArticleSchema,
+} from "./article.type";
 import { generateSlugArticle, hasRole, uploadFile } from "../../lib/utils";
 
 const articles = new Hono()
-  .get(
-    "/",
-    authMiddleware([UserRole.PSYCHOLOGY, UserRole.ADMIN]),
-    async (c) => {
-      const user = c.get("user")!;
+  .get("/", zValidator("query", queryArticleSchema), async (c) => {
+    const { createdby, search, sort } = c.req.valid("query");
 
-      const where: Prisma.ArticleWhereInput = {};
+    const where: Prisma.ArticleWhereInput = {
+      createdBy: createdby,
+      title: {
+        contains: search,
+      },
+    };
 
-      if (user.role === UserRole.PSYCHOLOGY) {
-        where.createdBy = user.id;
-      }
+    const articles = await db.article.findMany({
+      where,
+      orderBy: { createdAt: sort || "desc" },
+      include: {
+        user: true,
+      },
+    });
 
-      const articles = await db.article.findMany({
-        where,
-      });
-
-      return c.json({
-        data: articles,
-      });
-    },
-  )
+    return c.json({
+      data: articles,
+    });
+  })
   .get("/bookmark", authMiddleware(), async (c) => {
     const user = c.get("user")!;
 

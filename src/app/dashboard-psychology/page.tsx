@@ -73,9 +73,6 @@ export default async function ResponsiveDashboard() {
     return redirect("/admin")
   }
 
-  if (role === UserRole.PSYCHOLOGY) {
-    return redirect("/dashboard-psychology")
-  }
 
   const totalSessions = upcomingBookings.length + sessionHistory.length
 

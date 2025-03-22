@@ -7,6 +7,7 @@ import { createUserSchema, updateUserSchema } from "./user.type";
 import { generateId } from "better-auth";
 import { hashPassword } from "better-auth/crypto";
 import { UserRole } from "@/types";
+import { HTTPException } from "hono/http-exception";
 
 const users = new Hono()
   .get("/", authMiddleware(UserRole.ADMIN), async (c) => {
@@ -15,6 +16,48 @@ const users = new Hono()
     return c.json({
       data: users,
     });
+  })
+  .get("/psychologists", authMiddleware(), async (c) => {
+    const psychologists = await db.user.findMany({
+      where: {
+        role: "PSYCHOLOGY",
+      },
+    });
+
+    if (psychologists.length === 0)
+      return c.json({ message: "Psychologists not found" }, 404);
+
+    return c.json({
+      data: psychologists,
+    });
+  })
+  .get("/psychologists/:id", authMiddleware(), async (c) => {
+    const { id } = c.req.param();
+
+    const data = await db.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        bookingSchedule: true,
+        psychologyTopic: true,
+        education: true,
+        reviewPsychologyId: true,
+      },
+    });
+    if (!data)
+      throw new HTTPException(404, { message: "Psychology not found" });
+
+    const rate = await db.review.aggregate({
+      where: {
+        psychologyId: data?.id,
+      },
+      _avg: {
+        rate: true,
+      },
+    });
+
+    return c.json({ data: { ...data, rate: rate._avg.rate } });
   })
   .get("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
@@ -56,6 +99,7 @@ const users = new Hono()
           name: data.name,
           role: data.role,
           emailVerified: false,
+          description: data.description,
         },
       });
 
@@ -111,6 +155,13 @@ const users = new Hono()
         data: {
           ...data,
           image: fileName,
+          ...(data.educations && {
+            education: {
+              createMany: {
+                data: data.educations,
+              },
+            },
+          }),
         },
       });
 
@@ -119,6 +170,7 @@ const users = new Hono()
   )
   .delete("/:id", authMiddleware(), async (c) => {
     const { id } = c.req.param();
+    console.log(id);
     const session = c.get("user")!;
 
     const user = await db.user.findUnique({
@@ -128,7 +180,7 @@ const users = new Hono()
     });
     if (!user) return c.json({ message: "User not found" }, 404);
 
-    if (id !== session!.id && !hasRole(session!, UserRole.ADMIN))
+    if (id !== session!.id && !hasRole(session!, [UserRole.ADMIN]))
       return c.json({ error: "Unauthorized" }, 401);
 
     await db.user.delete({

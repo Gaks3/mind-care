@@ -28,12 +28,16 @@ model User {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  sessions        Session[]
-  accounts        Account[]
-  article         Article[]
-  bookmark        BookmarkArticle[]
-  bookingSchedule BookingSchedule[]
-  BookingSession  BookingSession[]
+  sessions           Session[]
+  accounts           Account[]
+  article            Article[]
+  bookmark           BookmarkArticle[]
+  bookingSchedule    BookingSchedule[]
+  bookingSession     BookingSession[]
+  reviewUserId       Review[]          @relation(name: "ReviewUserId")
+  reviewPsychologyId Review[]          @relation(name: "ReviewPsychologyId")
+  psychologyTopic    PsychologyTopic[]
+  education          Education[]
 
   @@map("user")
 }
@@ -107,7 +111,7 @@ model Article {
   slug       String   @unique
   content    String
   createdBy  String
-  user       User     @relation(fields: [createdBy], references: [id])
+  user       User     @relation(fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   thumbnail  String
   view       Int      @default(0)
   categories String
@@ -121,35 +125,41 @@ model Article {
 
 model BookmarkArticle {
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   articleId Int
-  article   Article @relation(fields: [articleId], references: [id])
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
+  @@id([userId, articleId])
   @@unique([userId, articleId])
   @@map("bookmark_article")
 }
 
 model BookingSchedule {
-  id             Int              @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   psychologistId String
-  psychologist   User             @relation(fields: [psychologistId], references: [id])
-  isBooked       Boolean          @default(false)
-  dateTime       DateTime         @db.Timestamp()
+  psychologist   User     @relation(fields: [psychologistId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  isBooked       Boolean  @default(false)
+  dateTime       DateTime @db.Timestamp()
   meetingLink    String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  BookingSession BookingSession[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  bookingSession BookingSession[]
+
+  @@map("booking_schedule")
 }
 
 model BookingSession {
   id              Int             @id @default(autoincrement())
   userId          String
-  user            User            @relation(fields: [userId], references: [id])
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   bookingId       Int
-  bookingSchedule BookingSchedule @relation(fields: [bookingId], references: [id])
+  bookingSchedule BookingSchedule @relation(fields: [bookingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   status          BookingStatus   @default(PENDING)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+
+  @@map("booking_session")
 }
 
 enum BookingStatus {
@@ -157,4 +167,46 @@ enum BookingStatus {
   PENDING
   CANCELLED
   REJECTED
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  user         User     @relation("ReviewUserId", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  psychologyId String
+  psychology   User     @relation("ReviewPsychologyId", fields: [psychologyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rate         Int
+  reviewText   String
+  createdAt    DateTime @default(now())
+
+  @@map("review")
+}
+
+model Topic {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  psychologyTopic PsychologyTopic[]
+
+  @@map("topic")
+}
+
+model PsychologyTopic {
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  topicId Int
+  topic   Topic  @relation(fields: [topicId], references: [id])
+
+  @@id([userId, topicId])
+  @@unique([userId, topicId])
+  @@map("psychology_topic")
+}
+
+model Education {
+  id          Int    @id @default(autoincrement())
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+  institution String
+  year        Int
+  degree      String
 }

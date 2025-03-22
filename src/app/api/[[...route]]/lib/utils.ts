@@ -17,15 +17,6 @@ export function hasRole(
   return user.role === role;
 }
 
-export const containsUppercase = (str: string) => /[A-Z]/.test(str);
-
-export const containsNumber = (str: string) => /\d/.test(str);
-
-export const containsSpecialChars = (str: string) => {
-  const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-
-  return specialChars.test(str);
-};
 
 export const uploadFile = async (file: File) => {
   const bytes = await file.arrayBuffer();

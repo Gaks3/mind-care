@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function About() {
   return (
-    <section id="tentang" className="px-6 md:px-12">
+    <section className="px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-40 items-center">
           <div className="relative">

@@ -196,7 +196,7 @@ export default function Footer() {
                 </p>
               </div>
               <Link
-                href="#"
+                href="/bookings"
                 className="bg-white text-blue-600 px-8 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors flex items-center gap-2"
               >
                 Booking <CalendarHeart className="w-4 h-4" />

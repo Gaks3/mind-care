@@ -57,12 +57,12 @@ export default function SignInPage() {
         },
         onSuccess: () => {
           form.reset();
-          toast("Sign in success");
+          toast.success("Sign in success");
           router.push("/dashboard");
           router.refresh();
         },
         onError: () => {
-          toast("Invalid Email or Password");
+          toast.error("Invalid Email or Password");
           setIsSubmitting(false);
         },
       }
@@ -128,12 +128,6 @@ export default function SignInPage() {
                       <FormLabel className="text-gray-700 font-medium">
                         Password
                       </FormLabel>
-                      <Link
-                        href="/forgot-password"
-                        className="text-sm text-primary hover:underline"
-                      >
-                        Lupa Kata Sandi?
-                      </Link>
                     </div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
