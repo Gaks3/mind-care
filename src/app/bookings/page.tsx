@@ -8,10 +8,12 @@ import { CalendarHeart } from "lucide-react"
 
 function getInitials(name: string): string {
   return name
-    .split(" ")
-    .map((part) => part.charAt(0))
+    .replace(/[^\w\s]/g, "")
+    .split(/\s+/)
+    .map((letter) => letter.charAt(0))
     .join("")
     .toUpperCase()
+    .slice(0, 3)
 }
 
 
@@ -28,9 +30,9 @@ export default async function PsychologistsList() {
     <div className="container mx-auto py-8 px-4 lg:px-24">
       <h1 className="text-3xl font-bold mb-8">Our Psychologists</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {psychologists.map((psychologist) => (
-          <Card key={psychologist.id} className="h-full hover:shadow-lg transition-shadow">
+          <Card key={psychologist.id} className="h-full">
             <CardHeader className="pb-2">
               <div className="flex items-center gap-4">
                 <Avatar className="h-12 w-12">
@@ -52,7 +54,8 @@ export default async function PsychologistsList() {
               <p className="text-muted-foreground">{psychologist.description}</p>
             </CardContent>
 
-            <CardFooter className="flex justify-end items-center">
+            <CardFooter className="flex justify-between items-center">
+              <Button size="sm" variant="outline">Detail</Button>
               <Button size="sm">Booking <CalendarHeart className="ml-2 w-4 h-4" /></Button>
             </CardFooter>
           </Card>
