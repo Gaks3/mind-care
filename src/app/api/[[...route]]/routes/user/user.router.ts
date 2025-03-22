@@ -70,6 +70,7 @@ const users = new Hono()
           name: data.name,
           role: data.role,
           emailVerified: false,
+          description: data.description,
         },
       });
 
