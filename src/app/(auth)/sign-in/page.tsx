@@ -128,12 +128,6 @@ export default function SignInPage() {
                       <FormLabel className="text-gray-700 font-medium">
                         Password
                       </FormLabel>
-                      <Link
-                        href="/forgot-password"
-                        className="text-sm text-primary hover:underline"
-                      >
-                        Lupa Kata Sandi?
-                      </Link>
                     </div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
