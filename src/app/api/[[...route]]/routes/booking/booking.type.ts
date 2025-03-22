@@ -2,8 +2,7 @@ import { StatusBooking } from "@/types";
 import { z } from "zod";
 
 export const createScheduleSchema = z.object({
-  date: z.coerce.date(),
-  time: z.coerce.string(),
+  dateTime: z.string().datetime(),
   meetingLink: z.string().optional(),
   isBooked: z.boolean().optional(),
 });
@@ -13,8 +12,7 @@ export const createSessionSchema = z.object({
 });
 
 export const updateScheduleSchema = z.object({
-  date: createScheduleSchema.shape.date.optional(),
-  time: createScheduleSchema.shape.time.optional(),
+  dateTime: createScheduleSchema.shape.dateTime.optional(),
   meetingLink: createScheduleSchema.shape.meetingLink.optional(),
   isBooked: createScheduleSchema.shape.isBooked.optional(),
 });
