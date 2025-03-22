@@ -1,7 +1,7 @@
 import { client } from "@/lib/api"
 import { headers } from "next/headers"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CalendarHeart } from "lucide-react"
@@ -51,7 +51,11 @@ export default async function PsychologistsList() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">{psychologist.description}</p>
+              <p className="text-muted-foreground">{psychologist.description
+                ? (psychologist.description.split(' ').length > 5
+                  ? psychologist.description.split(' ').slice(0, 10).join(' ') + '...'
+                  : psychologist.description)
+                : "Tidak ada deskripsi"}</p>
             </CardContent>
 
             <CardFooter className="flex justify-between items-center">
