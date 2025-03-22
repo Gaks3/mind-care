@@ -61,6 +61,10 @@ export const createUserSchema = z.object({
   role: z
     .enum([UserRole.USER, UserRole.PSYCHOLOGY, UserRole.ADMIN])
     .default(UserRole.USER),
+  description: z
+    .string()
+    .max(500, "Description must be less than 500 characters")
+    .optional(),
 });
 
 export const updateUserSchema = z.object({
