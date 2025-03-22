@@ -43,11 +43,11 @@ export default function Navbar() {
               <BrainCircuit className="ml-2 h-4 w-4" /><span className="ml-2">Tes Psikologi</span>
             </Link>
 
-            <Link href="#" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
+            <Link href="/about" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
               <Hospital className="ml-2 h-4 w-4" />
               Tentang Kami
             </Link>
-            <Link href="#" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
+            <Link href="/bookings" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
               <UserRoundSearch className="ml-2 h-4 w-4" />
               List Psikolog
             </Link>
@@ -65,7 +65,7 @@ export default function Navbar() {
                 </Link>
               </div>
             )}
-            <Link href="/booking">
+            <Link href="/bookings">
               <Button className="bg-primary hover:bg-primary/90 rounded-xl">Booking <CalendarHeart className="ml-2 h-4 w-4" /></Button>
             </Link>
           </div>
@@ -84,8 +84,8 @@ export default function Navbar() {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
               <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Artikel</Link>
               <Link href="/test-psychology" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Tes Psikologi</Link>
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Tentang Kami</Link>
-              <Link href="#" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">List Psikolog</Link>
+              <Link href="/about" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">Tentang Kami</Link>
+              <Link href="/bookings" className="block px-3 py-2 text-gray-600 hover:text-primary font-medium">List Psikolog</Link>
 
               <div className="pt-4 pb-3 border-t border-gray-200">
                 {session ? (
@@ -97,7 +97,7 @@ export default function Navbar() {
                     <Button variant="outline" className="w-full mb-2 text-primary border-primary rounded-lg">Sign In</Button>
                   </Link>
                 )}
-                <Link href="/booking">
+                <Link href="/bookings">
                   <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg">Booking</Button>
                 </Link>
               </div>
