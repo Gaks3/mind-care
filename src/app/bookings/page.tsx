@@ -1,8 +1,10 @@
 import { client } from "@/lib/api"
 import { headers } from "next/headers"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { CalendarHeart } from "lucide-react"
 
 function getInitials(name: string): string {
   return name
@@ -32,7 +34,6 @@ export default async function PsychologistsList() {
             <CardHeader className="pb-2">
               <div className="flex items-center gap-4">
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src={psychologist.image} alt={psychologist.name} />
                   <AvatarFallback className="bg-primary text-primary-foreground">
                     {getInitials(psychologist.name)}
                   </AvatarFallback>
@@ -47,7 +48,15 @@ export default async function PsychologistsList() {
                 </div>
               </div>
             </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">{psychologist.description}</p>
+            </CardContent>
+
+            <CardFooter className="flex justify-end items-center">
+              <Button size="sm">Booking <CalendarHeart className="ml-2 w-4 h-4" /></Button>
+            </CardFooter>
           </Card>
+
         ))}
       </div>
 
