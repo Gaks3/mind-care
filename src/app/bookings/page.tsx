@@ -1,0 +1,62 @@
+import { client } from "@/lib/api"
+import { headers } from "next/headers"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .map((part) => part.charAt(0))
+    .join("")
+    .toUpperCase()
+}
+
+
+export default async function PsychologistsList() {
+  const psychologistsList = await client.api.users.psychologists.$get(undefined, {
+    init: {
+      headers: await headers(),
+    },
+  })
+
+  const { data: psychologists } = await psychologistsList.json()
+
+  return (
+    <div className="container mx-auto py-8 px-4 lg:px-24">
+      <h1 className="text-3xl font-bold mb-8">Our Psychologists</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {psychologists.map((psychologist) => (
+          <Card key={psychologist.id} className="h-full hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src={psychologist.image} alt={psychologist.name} />
+                  <AvatarFallback className="bg-primary text-primary-foreground">
+                    {getInitials(psychologist.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <CardTitle className="text-lg">{psychologist.name}</CardTitle>
+                  <CardDescription>
+                    <Badge variant="outline" className="mt-1">
+                      {psychologist.role}
+                    </Badge>
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
+
+      {psychologists.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">No psychologists found</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
