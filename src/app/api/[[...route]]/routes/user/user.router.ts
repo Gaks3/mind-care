@@ -23,13 +23,8 @@ const users = new Hono()
       },
     });
 
-    if (!psychologists)
-      return c.json(
-        {
-          message: "No psychologists found",
-        },
-        404,
-      );
+    if (psychologists.length === 0)
+      return c.json({ message: "Psychologists not found" }, 404);
 
     return c.json({
       data: psychologists,
