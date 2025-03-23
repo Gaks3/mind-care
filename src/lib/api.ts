@@ -1,4 +1,4 @@
 import { hc } from "hono/client";
-import type { AppType } from "@/app/api/[[...route]]/route";
+import { AppType } from "@/app/api/[[...route]]/app";
 
 export const client = hc<AppType>("http://localhost:3000/");

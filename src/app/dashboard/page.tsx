@@ -27,23 +27,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { redirect } from "next/navigation"
 import { UserRole } from "@/types"
+import { client } from "@/lib/api"
 
-const upcomingBookings = [
-  {
-    id: 1,
-    title: "Konsultasi Kesehatan Mental",
-    date: "2025-03-18",
-    time: "09:00 - 10:00",
-    status: "confirmed",
-    zoomLink: "https://zoom.us/j/123456789",
-    whatsappNumber: "+6281234567890",
-    psychologist: {
-      name: "Dr. Anita Wijaya",
-      specialty: "Psikolog Klinis",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
-]
 
 const sessionHistory = [
   {
@@ -65,9 +50,16 @@ export default async function ResponsiveDashboard() {
     headers: await headers(),
   })
 
+  const upcomingBookings = await client.api.bookings.schedules.$get(undefined, {
+    init: {
+      headers: await headers(),
+    }
+  })
+
+  const { data: upcomingBookingsData } = await upcomingBookings.json()
+
   const user = session?.user
   const role = session?.user?.role
-
 
   if (role === UserRole.ADMIN) {
     return redirect("/admin")
@@ -77,7 +69,7 @@ export default async function ResponsiveDashboard() {
     return redirect("/dashboard-psychology")
   }
 
-  const totalSessions = upcomingBookings.length + sessionHistory.length
+  const totalSessions = upcomingBookingsData.length + sessionHistory.length
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -139,7 +131,7 @@ export default async function ResponsiveDashboard() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-primary-foreground/80">Sesi Mendatang</p>
-                    <p className="text-xl font-bold">{upcomingBookings.length}</p>
+                    <p className="text-xl font-bold">{upcomingBookingsData.length}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -170,61 +162,68 @@ export default async function ResponsiveDashboard() {
               <CardDescription>Sesi yang akan datang</CardDescription>
             </CardHeader>
             <CardContent>
-              {upcomingBookings.length > 0 ? (
+              {upcomingBookingsData.length > 0 ? (
                 <div className="space-y-4">
-                  {upcomingBookings.map((booking) => (
-                    <Card key={booking.id} className="overflow-hidden border">
-                      <CardContent className="p-0">
-                        <div className="flex items-start p-4 border-b">
-                          <Avatar className="h-10 w-10 mr-3">
-                            <AvatarImage src={booking.psychologist.avatar} alt={booking.psychologist.name} />
-                            <AvatarFallback>{booking.psychologist.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <h3 className="font-medium">{booking.title}</h3>
-                              <Badge
-                                variant={booking.status === "confirmed" ? "default" : "outline"}
-                                className={booking.status === "confirmed" ? "bg-primary" : ""}
-                              >
-                                {booking.status === "confirmed" ? "Terkonfirmasi" : "Menunggu"}
-                              </Badge>
+                  {upcomingBookingsData.map((booking) => {
+                    const dateObj = new Date(booking.dateTime);
+                    const date = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+                    const time = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+                    return (
+                      <Card key={booking.id} className="overflow-hidden border">
+                        <CardContent className="p-0">
+                          <div className="flex items-start p-4 border-b">
+                            <Avatar className="h-10 w-10 mr-3">
+                              <AvatarFallback>{booking.psychologistId.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <Badge
+                                  variant={booking.isBooked ? "default" : "outline"}
+                                  className={booking.isBooked ? "bg-primary" : ""}
+                                >
+                                  {booking.isBooked ? "Terkonfirmasi" : "Menunggu"}
+                                </Badge>
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                <p className="font-medium">Psikolog {booking.psychologistId}</p>
+                                <p>Psikolog Klinis</p>
+                              </div>
                             </div>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              <p className="font-medium">{booking.psychologist.name}</p>
-                              <p>{booking.psychologist.specialty}</p>
+                          </div>
+                          <div className="p-4 bg-muted/30">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
+                              <span className="flex items-center gap-1">
+                                <CalendarCheck className="h-4 w-4 text-primary" />
+                                {date}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-4 w-4 text-primary" />
+                                {time}
+                              </span>
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                              {booking.meetingLink && (
+                                <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
+                                  <Link href={booking.meetingLink} target="_blank">
+                                    <Video className="h-4 w-4 text-blue-600" />
+                                    <span>Join Zoom</span>
+                                  </Link>
+                                </Button>
+                              )}
+                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
+                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                  <Phone className="h-4 w-4 text-green-600" />
+                                  <span>WhatsApp</span>
+                                </Link>
+                              </Button>
                             </div>
                           </div>
-                        </div>
-                        <div className="p-4 bg-muted/30">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                            <span className="flex items-center gap-1">
-                              <CalendarCheck className="h-4 w-4 text-primary" />
-                              {booking.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-4 w-4 text-primary" />
-                              {booking.time}
-                            </span>
-                          </div>
-                          <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                            <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                              <Link href={booking.zoomLink} target="_blank">
-                                <Video className="h-4 w-4 text-blue-600" />
-                                <span>Join Zoom</span>
-                              </Link>
-                            </Button>
-                            <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                              <Link href={`https://wa.me/${booking.whatsappNumber.replace("+", "")}`} target="_blank">
-                                <Phone className="h-4 w-4 text-green-600" />
-                                <span>WhatsApp</span>
-                              </Link>
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               ) : (
                 <p className="text-center py-6 text-muted-foreground">Tidak ada jadwal booking yang akan datang</p>
@@ -294,61 +293,69 @@ export default async function ResponsiveDashboard() {
             </TabsList>
 
             <TabsContent value="upcoming" className="mt-4">
-              {upcomingBookings.length > 0 ? (
+              {upcomingBookingsData.length > 0 ? (
                 <div className="space-y-4">
-                  {upcomingBookings.map((booking) => (
-                    <Card key={booking.id} className="overflow-hidden border">
-                      <CardContent className="p-0">
-                        <div className="flex items-start p-4 border-b">
-                          <Avatar className="h-10 w-10 mr-3">
-                            <AvatarImage src={booking.psychologist.avatar} alt={booking.psychologist.name} />
-                            <AvatarFallback>{booking.psychologist.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <h3 className="font-medium">{booking.title}</h3>
-                              <Badge
-                                variant={booking.status === "confirmed" ? "default" : "outline"}
-                                className={booking.status === "confirmed" ? "bg-primary" : ""}
-                              >
-                                {booking.status === "confirmed" ? "Terkonfirmasi" : "Menunggu"}
-                              </Badge>
+                  {upcomingBookingsData.map((booking) => {
+                    // Parse dateTime to get date and time
+                    const dateObj = new Date(booking.dateTime);
+                    const date = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+                    const time = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+                    return (
+                      <Card key={booking.id} className="overflow-hidden border">
+                        <CardContent className="p-0">
+                          <div className="flex items-start p-4 border-b">
+                            <Avatar className="h-10 w-10 mr-3">
+                              <AvatarFallback>{booking.psychologistId.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <Badge
+                                  variant={booking.isBooked ? "default" : "outline"}
+                                  className={booking.isBooked ? "bg-primary" : ""}
+                                >
+                                  {booking.isBooked ? "Terkonfirmasi" : "Menunggu"}
+                                </Badge>
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                <p className="font-medium">Psikolog {booking.psychologistId}</p>
+                                <p>Psikolog Klinis</p>
+                              </div>
                             </div>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              <p className="font-medium">{booking.psychologist.name}</p>
-                              <p>{booking.psychologist.specialty}</p>
+                          </div>
+                          <div className="p-4 bg-muted/30">
+                            <div className="flex flex-col gap-2 text-sm">
+                              <span className="flex items-center gap-1">
+                                <CalendarCheck className="h-4 w-4 text-primary" />
+                                {date}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-4 w-4 text-primary" />
+                                {time}
+                              </span>
+                            </div>
+                            <div className="flex flex-col gap-2 mt-3">
+                              {booking.meetingLink && (
+                                <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
+                                  <Link href={booking.meetingLink} target="_blank">
+                                    <Video className="h-4 w-4 text-blue-600" />
+                                    <span>Join Zoom</span>
+                                  </Link>
+                                </Button>
+                              )}
+                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
+                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                  <Phone className="h-4 w-4 text-green-600" />
+                                  <span>WhatsApp</span>
+                                </Link>
+                              </Button>
                             </div>
                           </div>
-                        </div>
-                        <div className="p-4 bg-muted/30">
-                          <div className="flex flex-col gap-2 text-sm">
-                            <span className="flex items-center gap-1">
-                              <CalendarCheck className="h-4 w-4 text-primary" />
-                              {booking.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-4 w-4 text-primary" />
-                              {booking.time}
-                            </span>
-                          </div>
-                          <div className="flex flex-col gap-2 mt-3">
-                            <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                              <Link href={booking.zoomLink} target="_blank">
-                                <Video className="h-4 w-4 text-blue-600" />
-                                <span>Join Zoom</span>
-                              </Link>
-                            </Button>
-                            <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                              <Link href={`https://wa.me/${booking.whatsappNumber.replace("+", "")}`} target="_blank">
-                                <Phone className="h-4 w-4 text-green-600" />
-                                <span>WhatsApp</span>
-                              </Link>
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               ) : (
                 <p className="text-center py-6 text-muted-foreground">Tidak ada jadwal booking yang akan datang</p>
@@ -404,4 +411,3 @@ export default async function ResponsiveDashboard() {
     </div>
   )
 }
-
