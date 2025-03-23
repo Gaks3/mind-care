@@ -65,9 +65,9 @@ export const createUserSchema = z.object({
   education: z
     .array(
       z.object({
-        institution: z.string().trim().min(1),
-        degree: z.string().trim().min(1),
-        year: z.string().trim().min(1),
+        institution: z.string().trim(),
+        degree: z.string().trim(),
+        year: z.string().trim(),
       }),
     )
     .optional(),
