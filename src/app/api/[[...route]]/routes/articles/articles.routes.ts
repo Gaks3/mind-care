@@ -69,7 +69,7 @@ export const getOneById = createRoute({
 });
 
 export const getOneBySlug = createRoute({
-  path: "/articles/{slug}",
+  path: "/articles/{slug}/slug",
   method: "get",
   tags: articleTags,
   request: {
@@ -111,7 +111,7 @@ export const getOneBookmark = createRoute({
 
 export const create = createRoute({
   path: "/articles",
-  method: "get",
+  method: "post",
   tags: articleTags,
   request: {
     body: {
@@ -199,7 +199,7 @@ export const remove = createRoute({
 });
 
 export const removeBookmark = createRoute({
-  path: "/articles/{id}/bookmark",
+  path: "/articles/bookmarks/{id}",
   method: "delete",
   tags: bookmarkTags,
   request: {
