@@ -54,7 +54,7 @@ export const selectPsyhologySchema = selectUserSchema.and(
         id: z.number(),
         userId: z.string(),
         institution: z.string(),
-        year: z.number(),
+        year: z.string(),
         degree: z.string(),
       }),
     ),
@@ -134,9 +134,9 @@ export const insertUserSchema = z.object({
   educations: z
     .array(
       z.object({
-        institution: z.string().trim().min(1),
-        degree: z.string().trim().min(1),
-        year: z.number().min(1900).max(new Date().getFullYear()),
+        institution: z.string().trim(),
+        degree: z.string().trim(),
+        year: z.string().trim(),
       }),
     )
     .optional(),

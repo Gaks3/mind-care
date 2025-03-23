@@ -14,18 +14,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { client } from "@/lib/api"
 import { UserRole } from "@/types"
-import { createUserSchema } from "@/app/api/[[...route]]/routes/user/user.type"
+import { insertUserSchema } from "@/app/api/[[...route]]/routes/users/users.schemas"
 import { useEffect } from "react"
 import { Textarea } from "@/components/ui/textarea"
 
 
-type FormValues = z.infer<typeof createUserSchema>
+type FormValues = z.infer<typeof insertUserSchema>
 
 export default function AddUserPage() {
   const router = useRouter()
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(insertUserSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -40,7 +40,7 @@ export default function AddUserPage() {
   useEffect(() => {
     if (selectedRole !== "PSYCHOLOGY") {
       form.setValue("description", "")
-      form.setValue("education", [{
+      form.setValue("educations", [{
         institution: "",
         degree: "",
         year: "",
@@ -62,17 +62,17 @@ export default function AddUserPage() {
   })
 
   const addEducation = () => {
-    const currentEducations = form.getValues("education") || []
-    form.setValue("education", [
+    const currentEducations = form.getValues("educations") || []
+    form.setValue("educations", [
       ...currentEducations,
       { institution: "", degree: "", year: "" },
     ])
   }
 
   const removeEducation = (index: number) => {
-    const currentEducations = form.getValues("education") || []
+    const currentEducations = form.getValues("educations") || []
     if (currentEducations.length > 1) {
-      form.setValue("education", currentEducations.filter((_, i) => i !== index))
+      form.setValue("educations", currentEducations.filter((_, i) => i !== index))
     }
   }
 
@@ -198,7 +198,7 @@ export default function AddUserPage() {
                       </Button>
                     </div>
 
-                    {form.watch("education")?.map((_, index) => (
+                    {form.watch("educations")?.map((_, index) => (
                       <div key={index} className="p-4 border rounded-lg space-y-4">
                         <div className="flex justify-between items-center">
                           <h4 className="font-medium">Education #{index + 1}</h4>
@@ -217,7 +217,7 @@ export default function AddUserPage() {
 
                         <FormField
                           control={form.control}
-                          name={`education.${index}.institution`}
+                          name={`educations.${index}.institution`}
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Institution</FormLabel>
@@ -231,7 +231,7 @@ export default function AddUserPage() {
 
                         <FormField
                           control={form.control}
-                          name={`education.${index}.degree`}
+                          name={`educations.${index}.degree`}
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Degree</FormLabel>
@@ -245,7 +245,7 @@ export default function AddUserPage() {
 
                         <FormField
                           control={form.control}
-                          name={`education.${index}.year`}
+                          name={`educations.${index}.year`}
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Year</FormLabel>
