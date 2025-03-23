@@ -32,11 +32,6 @@ export default function AddUserPage() {
       password: "",
       role: UserRole.USER,
       description: "",
-      education: [{
-        institution: "",
-        degree: "",
-        year: "",
-      }],
     },
   })
 
@@ -95,7 +90,9 @@ export default function AddUserPage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit((data) => addUserMutation.mutate(data))} className="space-y-6">
+            <form onSubmit={form.handleSubmit((data) => {
+              addUserMutation.mutate(data)
+            })} className="space-y-6">
               <FormField
                 control={form.control}
                 name="name"

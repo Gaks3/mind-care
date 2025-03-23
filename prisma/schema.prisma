@@ -207,6 +207,6 @@ model Education {
   userId      String
   user        User   @relation(fields: [userId], references: [id])
   institution String
-  year        String
+  year        String 
   degree      String
 }
