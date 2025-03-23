@@ -1,7 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HTTPStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
-import { createErrorSchema, IdUUIDParamsSchema } from "stoker/openapi/schemas";
+import { createErrorSchema } from "stoker/openapi/schemas";
 
 import { UserRole } from "@/types";
 import { authMiddleware } from "../../middlewares/auth";
@@ -10,6 +10,7 @@ import {
   forbiddenSchema,
   notFoundSchema,
 } from "../../lib/constants";
+import StringIdParamsSchema from "../../lib/id-params-schema";
 import {
   insertUserSchema,
   selectPsyhologySchema,
@@ -50,7 +51,7 @@ export const getOne = createRoute({
   method: "get",
   tags,
   request: {
-    params: IdUUIDParamsSchema,
+    params: StringIdParamsSchema,
   },
   middleware: authMiddleware(),
   responses: {
@@ -61,7 +62,7 @@ export const getOne = createRoute({
     [HTTPStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, "User not found"),
     [HTTPStatusCodes.FORBIDDEN]: jsonContent(forbiddenSchema, "Forbidden"),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(StringIdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -72,7 +73,7 @@ export const getOnePsychologist = createRoute({
   method: "get",
   tags,
   request: {
-    params: IdUUIDParamsSchema,
+    params: StringIdParamsSchema,
   },
   middleware: authMiddleware(),
   responses: {
@@ -85,7 +86,7 @@ export const getOnePsychologist = createRoute({
       "Psychologist not found",
     ),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(StringIdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -116,7 +117,7 @@ export const patch = createRoute({
   method: "patch",
   tags,
   request: {
-    params: IdUUIDParamsSchema,
+    params: StringIdParamsSchema,
     body: {
       content: {
         "multipart/form-data": {
@@ -135,7 +136,7 @@ export const patch = createRoute({
     [HTTPStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, "User not found"),
     [HTTPStatusCodes.FORBIDDEN]: jsonContent(forbiddenSchema, "Forbidden"),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(StringIdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -146,7 +147,7 @@ export const remove = createRoute({
   method: "delete",
   tags,
   request: {
-    params: IdUUIDParamsSchema,
+    params: StringIdParamsSchema,
   },
   middleware: authMiddleware(),
   responses: {
@@ -156,7 +157,7 @@ export const remove = createRoute({
     [HTTPStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, "User not found"),
     [HTTPStatusCodes.FORBIDDEN]: jsonContent(forbiddenSchema, "Forbidden"),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(StringIdParamsSchema),
       "Invalid id error",
     ),
   },
