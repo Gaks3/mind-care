@@ -16,9 +16,9 @@ export const statusSchema = z.enum([
 ]);
 
 export const educationSchema = z.object({
-  institution: z.string().trim().min(1),
-  degree: z.string().trim().min(1),
-  year: z.string().min(1, "Year required"),
+  institution: z.string().trim(),
+  degree: z.string().trim(),
+  year: z.string(),
 });
 
 export const selectUserSchema = z.object({
@@ -130,6 +130,7 @@ export const insertUserSchema = z.object({
   role: roleSchema.default($Enums.UserRole.USER),
   description: z.string().optional(),
   educations: z.array(educationSchema).optional(),
+  phoneNumber: z.string().optional(),
 });
 
 export const updateUserSchema = z.object({

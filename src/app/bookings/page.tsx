@@ -47,7 +47,7 @@ export default async function PsychologistsList() {
                     <Badge variant="outline" className="mt-1 mb-3">
                       {psychologist.role}
                     </Badge>
-                    <PhoneCall className="w-4 h-4 mr-1 mb-[2px]" /><p className="text-muted-foreground">{psychologist.phoneNumber}</p>
+                    <PhoneCall className="w-4 h-4 mr-1 mb-[2px]" /><p className="text-black">{psychologist.phoneNumber}</p>
                   </CardDescription>
                 </div>
               </div>

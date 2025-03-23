@@ -32,7 +32,6 @@ export default function AddUserPage() {
       password: "",
       role: UserRole.USER,
       description: "",
-      phoneNumber: "",
     },
   })
 
@@ -41,12 +40,12 @@ export default function AddUserPage() {
   useEffect(() => {
     if (selectedRole !== "PSYCHOLOGY") {
       form.setValue("description", "")
+      form.setValue("phoneNumber", "")
       form.setValue("educations", [{
         institution: "",
         degree: "",
         year: "",
       }])
-      form.setValue("phoneNumber", "")
     }
   }, [selectedRole, form])
 
