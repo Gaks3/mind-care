@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { CalendarHeart } from "lucide-react"
+import { CalendarHeart, PhoneCall } from "lucide-react"
 import Link from "next/link"
 
 function getInitials(name: string): string {
@@ -44,15 +44,16 @@ export default async function PsychologistsList() {
                 <div>
                   <CardTitle className="text-lg">{psychologist.name}</CardTitle>
                   <CardDescription>
-                    <Badge variant="outline" className="mt-1">
+                    <Badge variant="outline" className="mt-1 mb-3">
                       {psychologist.role}
                     </Badge>
+                    <PhoneCall className="w-4 h-4 mr-1 mb-[2px]" /><p className="text-muted-foreground">{psychologist.phoneNumber}</p>
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground truncate">{psychologist.description
+              <p className="text-muted-foreground text-ellipsis">{psychologist.description
                 ? (psychologist.description.split(' ').length > 5
                   ? psychologist.description.split(' ').slice(0, 10).join(' ') + '...'
                   : psychologist.description)
