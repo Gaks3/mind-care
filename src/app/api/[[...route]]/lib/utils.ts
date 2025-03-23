@@ -17,7 +17,6 @@ export function hasRole(
   return user.role === role;
 }
 
-
 export const uploadFile = async (file: File) => {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
@@ -46,12 +45,12 @@ export async function generateSlugArticle(title: string) {
   const getArticleBySlug = async (slug: string) =>
     await db.article.findUnique({ where: { slug } });
 
-  let slugAlreadyExist = Boolean(getArticleBySlug(titleSlug));
+  let slugAlreadyExist = Boolean(await getArticleBySlug(titleSlug));
 
   while (slugAlreadyExist) {
     titleSlug = titleSlug.concat("-", generateRandomString(4, "a-z"));
 
-    slugAlreadyExist = Boolean(getArticleBySlug(titleSlug));
+    slugAlreadyExist = Boolean(await getArticleBySlug(titleSlug));
   }
 
   return titleSlug;
