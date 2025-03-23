@@ -130,7 +130,7 @@ export const createSchedule = createRoute({
 });
 
 export const createSession = createRoute({
-  path: "/sessoins",
+  path: "/sessions",
   method: "post",
   tags,
   request: {
