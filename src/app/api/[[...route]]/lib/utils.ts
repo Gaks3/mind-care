@@ -51,7 +51,6 @@ export async function generateSlugArticle(title: string) {
     titleSlug = titleSlug.concat("-", generateRandomString(4, "a-z"));
 
     slugAlreadyExist = Boolean(await getArticleBySlug(titleSlug));
-    console.log(slugAlreadyExist);
   }
 
   return titleSlug;
