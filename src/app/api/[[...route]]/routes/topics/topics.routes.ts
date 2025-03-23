@@ -1,11 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HTTPStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
-import {
-  createErrorSchema,
-  IdParamsSchema,
-  IdUUIDParamsSchema,
-} from "stoker/openapi/schemas";
+import { createErrorSchema, IdParamsSchema } from "stoker/openapi/schemas";
 
 import { UserRole } from "@/types";
 import { authMiddleware } from "../../middlewares/auth";
@@ -14,6 +10,7 @@ import {
   forbiddenSchema,
   notFoundSchema,
 } from "../../lib/constants";
+import StringIdParamsSchema from "../../lib/id-params-schema";
 import {
   insertPsychologistTopicSchema,
   insertTopicSchema,
@@ -42,7 +39,7 @@ export const listPsychologistTopics = createRoute({
   method: "get",
   tags,
   request: {
-    params: IdUUIDParamsSchema,
+    params: StringIdParamsSchema,
   },
   middleware: authMiddleware(),
   responses: {
@@ -51,7 +48,7 @@ export const listPsychologistTopics = createRoute({
       "The requested topic by psyhologist id",
     ),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(StringIdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -135,7 +132,7 @@ export const patch = createRoute({
     ),
     [HTTPStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, "Topic not found"),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(IdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -182,10 +179,6 @@ export const removePsychologistTopic = createRoute({
       "Psychology topic not found",
     ),
     [HTTPStatusCodes.FORBIDDEN]: jsonContent(forbiddenSchema, "Forbidden"),
-    [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
-      "Invalid id error",
-    ),
   },
 });
 

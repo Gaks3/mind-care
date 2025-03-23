@@ -1,14 +1,11 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HTTPStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
-import {
-  createErrorSchema,
-  IdParamsSchema,
-  IdUUIDParamsSchema,
-} from "stoker/openapi/schemas";
+import { createErrorSchema, IdParamsSchema } from "stoker/openapi/schemas";
 
 import { UserRole } from "@/types";
 import { authMiddleware } from "../../middlewares/auth";
+import StringIdParamsSchema from "../../lib/id-params-schema";
 import {
   insertScheduleSchema,
   insertSessionSchema,
@@ -52,7 +49,7 @@ export const listSchedulesByPsychologist = createRoute({
   method: "get",
   tags,
   request: {
-    params: IdUUIDParamsSchema,
+    params: StringIdParamsSchema,
   },
   middleware: authMiddleware(),
   responses: {
@@ -61,7 +58,7 @@ export const listSchedulesByPsychologist = createRoute({
       "The list of schedules by psychologist",
     ),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(StringIdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -84,7 +81,7 @@ export const getOneSchedule = createRoute({
       "Booking schedule not found",
     ),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(IdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -104,7 +101,7 @@ export const getOneSession = createRoute({
     ),
     [HTTPStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, "User not found"),
     [HTTPStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(IdUUIDParamsSchema),
+      createErrorSchema(IdParamsSchema),
       "Invalid id error",
     ),
   },
@@ -130,7 +127,7 @@ export const createSchedule = createRoute({
 });
 
 export const createSession = createRoute({
-  path: "/sessions",
+  path: "/sessoins",
   method: "post",
   tags,
   request: {
