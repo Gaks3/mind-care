@@ -56,12 +56,12 @@ export const selectPsyhologySchema = selectUserSchema.and(
       }),
     ),
     education: z.array(educationSchema),
-    reviewPsychologyId: z.array(
+    reviewPsychologistId: z.array(
       z.object({
         id: z.number(),
-        createdAt: z.string().date(),
+        createdAt: z.string().datetime(),
         userId: z.string(),
-        psychologyId: z.string(),
+        psychologistId: z.string(),
         rate: z.number(),
         reviewText: z.string(),
         user: selectUserSchema,
