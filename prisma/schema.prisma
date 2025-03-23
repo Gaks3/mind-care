@@ -20,7 +20,7 @@ model User {
   emailVerified Boolean
   image         String?
   role          UserRole    @default(USER)
-  description   String?     
+  description   String?
   birthDate     DateTime?   @db.Date
   gender        Gender?
   phoneNumber   String?
@@ -28,16 +28,16 @@ model User {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  sessions           Session[]
-  accounts           Account[]
-  article            Article[]
-  bookmark           BookmarkArticle[]
-  bookingSchedule    BookingSchedule[]
-  bookingSession     BookingSession[]
-  reviewUserId       Review[]          @relation(name: "ReviewUserId")
-  reviewPsychologyId Review[]          @relation(name: "ReviewPsychologyId")
-  psychologyTopic    PsychologyTopic[]
-  education          Education[]
+  sessions             Session[]
+  accounts             Account[]
+  article              Article[]
+  bookmark             BookmarkArticle[]
+  bookingSchedule      BookingSchedule[]
+  bookingSession       BookingSession[]
+  reviewUserId         Review[]          @relation(name: "ReviewUserId")
+  reviewPsychologistId Review[]          @relation(name: "ReviewPsychologistId")
+  psychologyTopic      PsychologyTopic[]
+  education            Education[]
 
   @@map("user")
 }
@@ -170,14 +170,14 @@ enum BookingStatus {
 }
 
 model Review {
-  id           Int      @id @default(autoincrement())
-  userId       String
-  user         User     @relation("ReviewUserId", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  psychologyId String
-  psychology   User     @relation("ReviewPsychologyId", fields: [psychologyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  rate         Int
-  reviewText   String
-  createdAt    DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  userId         String
+  user           User     @relation("ReviewUserId", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  psychologistId String
+  psychologist   User     @relation("ReviewPsychologistId", fields: [psychologistId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rate           Int
+  reviewText     String
+  createdAt      DateTime @default(now())
 
   @@map("review")
 }
@@ -207,6 +207,6 @@ model Education {
   userId      String
   user        User   @relation(fields: [userId], references: [id])
   institution String
-  year        String 
+  year        String
   degree      String
 }
