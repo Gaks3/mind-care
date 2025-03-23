@@ -15,6 +15,12 @@ export const statusSchema = z.enum([
   $Enums.StatusUser.WORKER,
 ]);
 
+export const educationSchema = z.object({
+  institution: z.string().trim().min(1),
+  degree: z.string().trim().min(1),
+  year: z.string().min(1, "Year required"),
+});
+
 export const selectUserSchema = z.object({
   id: z.string(),
   email: z.string(),
@@ -24,7 +30,7 @@ export const selectUserSchema = z.object({
   role: roleSchema,
   description: z.string().nullable(),
   birthDate: z.string().datetime().nullable(),
-  gender: z.enum(["MALE", "FEMALE"]).nullable(),
+  gender: z.enum([$Enums.Gender.FEMALE, $Enums.Gender.MALE]).nullable(),
   phoneNumber: z.string().nullable(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
@@ -49,15 +55,7 @@ export const selectPsyhologySchema = selectUserSchema.and(
         topicId: z.number(),
       }),
     ),
-    education: z.array(
-      z.object({
-        id: z.number(),
-        userId: z.string(),
-        institution: z.string(),
-        year: z.string(),
-        degree: z.string(),
-      }),
-    ),
+    education: z.array(educationSchema),
     reviewPsychologyId: z.array(
       z.object({
         id: z.number(),
@@ -131,15 +129,7 @@ export const insertUserSchema = z.object({
   password: passwordSchema,
   role: roleSchema.default($Enums.UserRole.USER),
   description: z.string().optional(),
-  educations: z
-    .array(
-      z.object({
-        institution: z.string().trim(),
-        degree: z.string().trim(),
-        year: z.string().trim(),
-      }),
-    )
-    .optional(),
+  educations: z.array(educationSchema).optional(),
 });
 
 export const updateUserSchema = z.object({
@@ -151,13 +141,5 @@ export const updateUserSchema = z.object({
   birthDate: z.date().optional(),
   phoneNumber: z.string().optional(),
   status: statusSchema.optional(),
-  educations: z
-    .array(
-      z.object({
-        institution: z.string().trim().min(1),
-        degree: z.string().trim().min(1),
-        year: z.number().min(1900).max(new Date().getFullYear()),
-      }),
-    )
-    .optional(),
+  educations: z.array(educationSchema).optional(),
 });
