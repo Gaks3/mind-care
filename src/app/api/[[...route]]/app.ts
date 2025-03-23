@@ -4,16 +4,14 @@ import users from "./routes/users/users.index";
 import topics from "./routes/topics/topics.index";
 import bookings from "./routes/bookings/bookings.index";
 
-const app = createApp().basePath("/api");
+const app = createApp()
+  .basePath("/api")
+  .route("/", users)
+  .route("/", topics)
+  .route("/", bookings);
 
 configureOpenAPI(app);
 
-const routes = [users, topics, bookings] as const;
-
-routes.forEach((route) => {
-  app.route("/", route);
-});
-
-export type AppType = (typeof routes)[number];
+export type AppType = typeof app;
 
 export default app;
