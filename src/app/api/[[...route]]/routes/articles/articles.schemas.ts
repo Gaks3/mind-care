@@ -9,7 +9,7 @@ export const ListParamsSchema = z.object({
     .openapi({
       param: {
         name: "createdBy",
-        in: "path",
+        in: "query",
       },
       example: "XlX76DY20DEvVqUg2BX6JK3o8UtwrcXm",
     }),
@@ -19,7 +19,7 @@ export const ListParamsSchema = z.object({
     .openapi({
       param: {
         name: "search",
-        in: "path",
+        in: "query",
       },
       example: "The title of article",
     }),
@@ -29,7 +29,7 @@ export const ListParamsSchema = z.object({
     .openapi({
       param: {
         name: "sort",
-        in: "path",
+        in: "query",
       },
       example: "desc",
     }),
