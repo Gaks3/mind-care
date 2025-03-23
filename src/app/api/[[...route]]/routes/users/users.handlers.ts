@@ -89,7 +89,7 @@ export const getOnePsychologist: AppRouteHandler<GetOnePsychologist> = async (
       bookingSchedule: true,
       psychologyTopic: true,
       education: true,
-      reviewPsychologyId: {
+      reviewPsychologistId: {
         include: {
           user: true,
         },
@@ -104,7 +104,7 @@ export const getOnePsychologist: AppRouteHandler<GetOnePsychologist> = async (
 
   const rate = await db.review.aggregate({
     where: {
-      psychologyId: data?.id,
+      psychologistId: data.id,
     },
     _avg: {
       rate: true,
