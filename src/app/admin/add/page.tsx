@@ -32,6 +32,7 @@ export default function AddUserPage() {
       password: "",
       role: UserRole.USER,
       description: "",
+      phoneNumber: "",
     },
   })
 
@@ -45,6 +46,7 @@ export default function AddUserPage() {
         degree: "",
         year: "",
       }])
+      form.setValue("phoneNumber", "")
     }
   }, [selectedRole, form])
 
@@ -178,6 +180,20 @@ export default function AddUserPage() {
                         <FormDescription>
                           Provide details about this psychology professionals background and expertise.
                         </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Your phone number" {...field} />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
