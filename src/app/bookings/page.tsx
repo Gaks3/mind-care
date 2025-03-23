@@ -29,7 +29,7 @@ export default async function PsychologistsList() {
 
   return (
     <div className="container mx-auto py-8 px-4 lg:px-24">
-      <h1 className="text-3xl font-bold mb-8">List Psikologi di MindCare</h1>
+      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-8">List Psikolog di MindCare</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {psychologists.map((psychologist) => (
@@ -63,7 +63,9 @@ export default async function PsychologistsList() {
               <Link href={`/bookings/${psychologist.id}`}>
                 <Button size="sm" variant="outline">Detail</Button>
               </Link>
-              <Button size="sm">Booking <CalendarHeart className="ml-2 w-4 h-4" /></Button>
+              <Link href={`/booking/psychologists/${psychologist.id}`}>
+                <Button size="sm">Booking <CalendarHeart className="ml-2 w-4 h-4" /></Button>
+              </Link>
             </CardFooter>
           </Card>
 
