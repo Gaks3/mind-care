@@ -35,7 +35,7 @@ export default async function PsychologistsList() {
         {psychologists.map((psychologist) => (
           <Card key={psychologist.id} className="h-full">
             <CardHeader className="pb-2">
-              <div className="flex items-center gap-4">
+              <div className="flex mb-2 gap-4">
                 <Avatar className="h-12 w-12">
                   <AvatarFallback className="bg-primary text-primary-foreground">
                     {getInitials(psychologist.name)}
@@ -47,7 +47,9 @@ export default async function PsychologistsList() {
                     <Badge variant="outline" className="mt-1 mb-3">
                       {psychologist.role}
                     </Badge>
-                    <PhoneCall className="w-4 h-4 mr-1 mb-[2px]" /><p className="text-black">{psychologist.phoneNumber}</p>
+                    <div className="flex items-center gap-2 mb-5">
+                      <PhoneCall className="w-4 h-4 mb-[2px]" /><p className="text-muted-foreground">{psychologist.phoneNumber}</p>
+                    </div>
                   </CardDescription>
                 </div>
               </div>

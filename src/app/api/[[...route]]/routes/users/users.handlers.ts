@@ -149,6 +149,7 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
           },
         },
       }),
+      phoneNumber: data.phoneNumber,
     },
   });
 
