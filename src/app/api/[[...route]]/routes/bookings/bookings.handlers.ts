@@ -32,6 +32,9 @@ export const listSessions: AppRouteHandler<ListSessionsRoute> = async (c) => {
     where: {
       userId: user.id,
     },
+    include: {
+      bookingSchedule: true,
+    },
   });
 
   return c.json({ data }, HTTPStatusCodes.OK);
@@ -124,6 +127,22 @@ export const createSchedule: AppRouteHandler<CreateScheduleRoute> = async (
 export const createSession: AppRouteHandler<CreateSessionRoute> = async (c) => {
   const data = c.req.valid("json");
   const user = c.get("user")!;
+
+  const schedule = await db.bookingSchedule.findUnique({
+    where: {
+      id: data.bookingId,
+    },
+  });
+  if (!schedule)
+    return c.json(
+      { message: "Booking schedule not found" },
+      HTTPStatusCodes.NOT_FOUND,
+    );
+  if (!schedule.isBooked)
+    return c.json(
+      { message: "Booking schedule already booked" },
+      HTTPStatusCodes.BAD_REQUEST,
+    );
 
   const session = await db.bookingSession.create({
     data: {

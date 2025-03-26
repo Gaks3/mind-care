@@ -14,7 +14,11 @@ import {
   updateScheduleSchema,
   updateSessionSchema,
 } from "./bookings.schemas";
-import { forbiddenSchema, notFoundSchema } from "../../lib/constants";
+import {
+  badRequestSchema,
+  forbiddenSchema,
+  notFoundSchema,
+} from "../../lib/constants";
 
 const tags = ["Bookings"];
 
@@ -38,7 +42,14 @@ export const listSessions = createRoute({
   middleware: authMiddleware(),
   responses: {
     [HTTPStatusCodes.OK]: jsonContent(
-      z.object({ data: z.array(selectSessionSchema) }),
+      z.object({
+        data: z.array(
+          z.object({
+            ...selectSessionSchema.shape,
+            bookingSchedule: selectScheduleSchema,
+          }),
+        ),
+      }),
       "The list of booking sessions",
     ),
   },
@@ -158,6 +169,14 @@ export const createSession = createRoute({
     [HTTPStatusCodes.CREATED]: jsonContent(
       z.object({ data: selectSessionSchema }),
       "The created booking session",
+    ),
+    [HTTPStatusCodes.NOT_FOUND]: jsonContent(
+      notFoundSchema,
+      "Booking schedule not found",
+    ),
+    [HTTPStatusCodes.BAD_REQUEST]: jsonContent(
+      badRequestSchema,
+      "The request is bad",
     ),
   },
 });
