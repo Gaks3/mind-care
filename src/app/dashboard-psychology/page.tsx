@@ -18,7 +18,7 @@ export default async function ResponsiveDashboard() {
     headers: await headers(),
   })
 
-  const getBookingSession = await client.api.bookings.sessions.$get(undefined, {
+  const getBookingSession = await client.api.bookings.sessions.psychologist.$get(undefined, {
     init: {
       headers: await headers(),
     },
