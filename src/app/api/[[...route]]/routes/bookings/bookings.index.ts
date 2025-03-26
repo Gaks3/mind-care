@@ -10,6 +10,10 @@ const router = createRouter()
     routes.listSchedulesByPsychologist,
     handlers.listSchedulesByPsychologist,
   )
+  .openapi(
+    routes.listSessionsByPsychologist,
+    handlers.listSessionsByPsychologist,
+  )
   .openapi(routes.getOneSchedule, handlers.getOneSchedule)
   .openapi(routes.getOneSession, handlers.getOneSession)
   .openapi(routes.createSchedule, handlers.createSchedule)
