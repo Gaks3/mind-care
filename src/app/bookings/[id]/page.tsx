@@ -1,9 +1,8 @@
 import { client } from "@/lib/api";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CalendarHeart, School } from "lucide-react";
+import { CalendarHeart, School, PhoneCall } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -51,17 +50,17 @@ export default async function PsychologistDetail({ params }) {
                     {getInitials(psychologist.name)}
                   </AvatarFallback>
                 </Avatar>
-                <CardTitle className="text-xl font-bold">{psychologist.name}</CardTitle>
-                <CardDescription className="mt-1">
-                  <Badge variant="secondary" className="font-medium">
-                    Psikolog Umum
-                  </Badge>
-                </CardDescription>
+                <CardTitle className="text-xl font-bold">
+                  <h1>{psychologist.name}</h1>
+                  <div className="flex items-center">
+                    <PhoneCall className="w-4 h-4 mr-2" /><p className="text-base text-muted-foreground">{psychologist.phoneNumber}</p>
+                  </div>
+                </CardTitle>
               </div>
             </CardHeader>
             <CardContent className="flex-grow">
-              <Link href="#">
-                <Button className="w-full mt-6" size="lg">
+              <Link href={`/bookings/psychologist/${psychologist.id}`}>
+                <Button className="w-full mt-3" size="sm">
                   <CalendarHeart className="mr-2 w-5 h-5" /> Booking Psikolog
                 </Button>
               </Link>
