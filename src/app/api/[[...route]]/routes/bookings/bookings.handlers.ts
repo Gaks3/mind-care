@@ -10,6 +10,7 @@ import {
   GetOneSessionRoute,
   ListSchedulesByPsychologistRoute,
   ListSchedulesRoute,
+  ListSessionsByPsychologistRoute,
   ListSessionsRoute,
   PatchScheduleRoute,
   PatchSessionRoute,
@@ -43,6 +44,22 @@ export const listSchedulesByPsychologist: AppRouteHandler<
   const data = await db.bookingSchedule.findMany({
     where: {
       psychologistId: id,
+    },
+  });
+
+  return c.json({ data }, HTTPStatusCodes.OK);
+};
+
+export const listSessionsByPsychologist: AppRouteHandler<
+  ListSessionsByPsychologistRoute
+> = async (c) => {
+  const user = c.get("user")!;
+
+  const data = await db.bookingSession.findMany({
+    where: {
+      bookingSchedule: {
+        psychologistId: user.id,
+      },
     },
   });
 
