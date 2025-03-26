@@ -66,7 +66,7 @@ export default async function PsychologistsList() {
               <Link href={`/bookings/${psychologist.id}`}>
                 <Button size="sm" variant="outline">Detail</Button>
               </Link>
-              <Link href={`/booking/psychologists/${psychologist.id}`}>
+              <Link href={`/bookings/psychologist/${psychologist.id}`}>
                 <Button size="sm">Booking <CalendarHeart className="ml-2 w-4 h-4" /></Button>
               </Link>
             </CardFooter>
