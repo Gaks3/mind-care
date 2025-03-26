@@ -131,7 +131,6 @@ export const createSession = createRoute({
   method: "post",
   tags,
   request: {
-    params: IdParamsSchema,
     body: jsonContentRequired(
       insertSessionSchema,
       "The booking session to create",
