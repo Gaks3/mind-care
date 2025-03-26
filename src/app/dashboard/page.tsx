@@ -8,7 +8,6 @@ import {
   History,
   User,
   LogOut,
-  Video,
   Phone,
   ChevronDown,
   BarChart3,
@@ -19,44 +18,23 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { redirect } from "next/navigation"
 import { UserRole } from "@/types"
 import { client } from "@/lib/api"
-
-
-const sessionHistory = [
-  {
-    id: 101,
-    title: "Konsultasi Awal",
-    date: "2025-03-10",
-    time: "10:00 - 11:00",
-    notes: "Sesi pertama berjalan lancar",
-    psychologist: {
-      name: "Dr. Anita Wijaya",
-      specialty: "Psikolog Klinis",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  },
-]
 
 export default async function ResponsiveDashboard() {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
 
-  const upcomingBookings = await client.api.bookings.schedules.$get(undefined, {
+  const sessionsResponse = await client.api.bookings.sessions.$get(undefined, {
     init: {
       headers: await headers(),
-    }
+    },
   })
 
-  const { data: upcomingBookingsData } = await upcomingBookings.json()
+  const { data: sessionsData } = await sessionsResponse.json()
 
   const user = session?.user
   const role = session?.user?.role
@@ -69,7 +47,7 @@ export default async function ResponsiveDashboard() {
     return redirect("/dashboard-psychology")
   }
 
-  const totalSessions = upcomingBookingsData.length + sessionHistory.length
+  const totalSessions = sessionsData.length
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -77,7 +55,8 @@ export default async function ResponsiveDashboard() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link href="/">
             <div className="flex items-center gap-2">
-              <Brain className="h-6 w-6 text-primary" /><span className="font-bold text-xl text-gray-900">MindCare</span>
+              <Brain className="h-6 w-6 text-primary" />
+              <span className="font-bold text-xl text-gray-900">MindCare</span>
             </div>
           </Link>
 
@@ -100,14 +79,16 @@ export default async function ResponsiveDashboard() {
                   <LogOut className="mr-2 h-4 w-4" />
                   <form
                     action={async () => {
-                      "use server";
+                      "use server"
                       await auth.api.signOut({
                         headers: await headers(),
-                      });
-                      redirect("/");
+                      })
+                      redirect("/")
                     }}
                   >
-                    <Button type="submit" size="xs" variant="ghost">Sign Out</Button>
+                    <Button type="submit" size="xs" variant="ghost">
+                      Sign Out
+                    </Button>
                   </form>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -131,7 +112,9 @@ export default async function ResponsiveDashboard() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-primary-foreground/80">Sesi Mendatang</p>
-                    <p className="text-xl font-bold">{upcomingBookingsData.length}</p>
+                    <p className="text-xl font-bold">
+                      {sessionsData.filter((session) => session.status !== "ACCEPTED").length}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -157,61 +140,51 @@ export default async function ResponsiveDashboard() {
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
                 <CalendarCheck className="h-5 w-5 text-primary" />
-                Jadwal Booking
+                Booking Pending
               </CardTitle>
-              <CardDescription>Sesi yang akan datang</CardDescription>
+              <CardDescription>Sesi yang menunggu konfirmasi</CardDescription>
             </CardHeader>
             <CardContent>
-              {upcomingBookingsData.length > 0 ? (
+              {sessionsData.filter((session) => session.status !== "ACCEPTED").length > 0 ? (
                 <div className="space-y-4">
-                  {upcomingBookingsData.map((booking) => {
-                    const dateObj = new Date(booking.dateTime);
-                    const date = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-                    const time = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
-                    return (
-                      <Card key={booking.id} className="overflow-hidden border">
+                  {sessionsData
+                    .filter((session) => session.status !== "ACCEPTED")
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((session) => (
+                      <Card key={session.id} className="overflow-hidden border">
                         <CardContent className="p-0">
                           <div className="flex items-start p-4 border-b">
                             <Avatar className="h-10 w-10 mr-3">
-                              <AvatarFallback>{booking.psychologistId.charAt(0)}</AvatarFallback>
+                              <AvatarFallback>P</AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Konsultasi Online</h3>
-                                <Badge
-                                  variant={booking.isBooked ? "default" : "outline"}
-                                  className={booking.isBooked ? "bg-primary" : ""}
-                                >
-                                  {booking.isBooked ? "Terkonfirmasi" : "Menunggu"}
-                                </Badge>
+                                <Badge variant="outline">Menunggu</Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
-                                <p className="font-medium">Psikolog {booking.psychologistId}</p>
-                                <p>Psikolog Klinis</p>
+                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p>Status: {session.status}</p>
                               </div>
                             </div>
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
+                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
-                                {date}
+                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-4 w-4 text-primary" />
-                                {time}
+                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                })}
                               </span>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                              {booking.meetingLink && (
-                                <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                  <Link href={booking.meetingLink} target="_blank">
-                                    <Video className="h-4 w-4 text-blue-600" />
-                                    <span>Join Zoom</span>
-                                  </Link>
-                                </Button>
-                              )}
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
                                 <Link href={`https://wa.me/628123456789`} target="_blank">
                                   <Phone className="h-4 w-4 text-green-600" />
@@ -222,11 +195,10 @@ export default async function ResponsiveDashboard() {
                           </div>
                         </CardContent>
                       </Card>
-                    );
-                  })}
+                    ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada jadwal booking yang akan datang</p>
+                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang menunggu konfirmasi</p>
               )}
             </CardContent>
           </Card>
@@ -235,115 +207,53 @@ export default async function ResponsiveDashboard() {
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
                 <History className="h-5 w-5 text-primary" />
-                Riwayat Sesi
+                Booking Accepted
               </CardTitle>
-              <CardDescription>Sesi yang telah selesai</CardDescription>
+              <CardDescription>Sesi yang telah dikonfirmasi</CardDescription>
             </CardHeader>
             <CardContent>
-              {sessionHistory.length > 0 ? (
+              {sessionsData.filter((session) => session.status === "ACCEPTED").length > 0 ? (
                 <div className="space-y-4">
-                  {sessionHistory.map((session) => (
-                    <Card key={session.id} className="overflow-hidden border">
-                      <CardContent className="p-0">
-                        <div className="flex items-start p-4 border-b">
-                          <Avatar className="h-10 w-10 mr-3">
-                            <AvatarImage src={session.psychologist.avatar} alt={session.psychologist.name} />
-                            <AvatarFallback>{session.psychologist.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <h3 className="font-medium">{session.title}</h3>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              <p className="font-medium">{session.psychologist.name}</p>
-                              <p>{session.psychologist.specialty}</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="p-4 bg-muted/30">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                            <span className="flex items-center gap-1">
-                              <CalendarCheck className="h-4 w-4 text-primary" />
-                              {session.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-4 w-4 text-primary" />
-                              {session.time}
-                            </span>
-                          </div>
-                          <div className="mt-3 p-3 bg-background rounded-md border text-sm">
-                            <p className="font-medium mb-1">Catatan:</p>
-                            <p className="text-muted-foreground">{session.notes}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center py-6 text-muted-foreground">Belum ada riwayat sesi</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="md:hidden">
-          <Tabs defaultValue="upcoming" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="upcoming">Jadwal Booking</TabsTrigger>
-              <TabsTrigger value="history">Riwayat Sesi</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="upcoming" className="mt-4">
-              {upcomingBookingsData.length > 0 ? (
-                <div className="space-y-4">
-                  {upcomingBookingsData.map((booking) => {
-                    // Parse dateTime to get date and time
-                    const dateObj = new Date(booking.dateTime);
-                    const date = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-                    const time = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
-                    return (
-                      <Card key={booking.id} className="overflow-hidden border">
+                  {sessionsData
+                    .filter((session) => session.status === "ACCEPTED")
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((session) => (
+                      <Card key={session.id} className="overflow-hidden border">
                         <CardContent className="p-0">
                           <div className="flex items-start p-4 border-b">
                             <Avatar className="h-10 w-10 mr-3">
-                              <AvatarFallback>{booking.psychologistId.charAt(0)}</AvatarFallback>
+                              <AvatarFallback>P</AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Konsultasi Online</h3>
-                                <Badge
-                                  variant={booking.isBooked ? "default" : "outline"}
-                                  className={booking.isBooked ? "bg-primary" : ""}
-                                >
-                                  {booking.isBooked ? "Terkonfirmasi" : "Menunggu"}
+                                <Badge variant="default" className="bg-primary">
+                                  Terkonfirmasi
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
-                                <p className="font-medium">Psikolog {booking.psychologistId}</p>
-                                <p>Psikolog Klinis</p>
+                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p>Status: {session.status}</p>
                               </div>
                             </div>
                           </div>
                           <div className="p-4 bg-muted/30">
-                            <div className="flex flex-col gap-2 text-sm">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
+                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
-                                {date}
+                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-4 w-4 text-primary" />
-                                {time}
+                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                })}
                               </span>
                             </div>
-                            <div className="flex flex-col gap-2 mt-3">
-                              {booking.meetingLink && (
-                                <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                  <Link href={booking.meetingLink} target="_blank">
-                                    <Video className="h-4 w-4 text-blue-600" />
-                                    <span>Join Zoom</span>
-                                  </Link>
-                                </Button>
-                              )}
+                            <div className="flex flex-col sm:flex-row gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
                                 <Link href={`https://wa.me/628123456789`} target="_blank">
                                   <Phone className="h-4 w-4 text-green-600" />
@@ -354,55 +264,137 @@ export default async function ResponsiveDashboard() {
                           </div>
                         </CardContent>
                       </Card>
-                    );
-                  })}
+                    ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada jadwal booking yang akan datang</p>
+                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang telah dikonfirmasi</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="md:hidden">
+          <Tabs defaultValue="pending" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="pending">Booking Pending</TabsTrigger>
+              <TabsTrigger value="accepted">Booking Accepted</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="pending" className="mt-4">
+              {sessionsData.filter((session) => session.status !== "ACCEPTED").length > 0 ? (
+                <div className="space-y-4">
+                  {sessionsData
+                    .filter((session) => session.status !== "ACCEPTED")
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((session) => (
+                      <Card key={session.id} className="overflow-hidden border">
+                        <CardContent className="p-0">
+                          <div className="flex items-start p-4 border-b">
+                            <Avatar className="h-10 w-10 mr-3">
+                              <AvatarFallback>P</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <Badge variant="outline">Menunggu</Badge>
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p>Status: {session.status}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="p-4 bg-muted/30">
+                            <div className="flex flex-col gap-2 text-sm">
+                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                              <span className="flex items-center gap-1">
+                                <CalendarCheck className="h-4 w-4 text-primary" />
+                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-4 w-4 text-primary" />
+                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                })}
+                              </span>
+                            </div>
+                            <div className="flex flex-col gap-2 mt-3">
+                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
+                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                  <Phone className="h-4 w-4 text-green-600" />
+                                  <span>WhatsApp</span>
+                                </Link>
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              ) : (
+                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang menunggu konfirmasi</p>
               )}
             </TabsContent>
 
-            <TabsContent value="history" className="mt-4">
-              {sessionHistory.length > 0 ? (
+            <TabsContent value="accepted" className="mt-4">
+              {sessionsData.filter((session) => session.status === "ACCEPTED").length > 0 ? (
                 <div className="space-y-4">
-                  {sessionHistory.map((session) => (
-                    <Card key={session.id} className="overflow-hidden border">
-                      <CardContent className="p-0">
-                        <div className="flex items-start p-4 border-b">
-                          <Avatar className="h-10 w-10 mr-3">
-                            <AvatarImage src={session.psychologist.avatar} alt={session.psychologist.name} />
-                            <AvatarFallback>{session.psychologist.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <h3 className="font-medium">{session.title}</h3>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              <p className="font-medium">{session.psychologist.name}</p>
-                              <p>{session.psychologist.specialty}</p>
+                  {sessionsData
+                    .filter((session) => session.status === "ACCEPTED")
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((session) => (
+                      <Card key={session.id} className="overflow-hidden border">
+                        <CardContent className="p-0">
+                          <div className="flex items-start p-4 border-b">
+                            <Avatar className="h-10 w-10 mr-3">
+                              <AvatarFallback>P</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <Badge variant="default" className="bg-primary">
+                                  Terkonfirmasi
+                                </Badge>
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p>Status: {session.status}</p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="p-4 bg-muted/30">
-                          <div className="flex flex-col gap-2 text-sm">
-                            <span className="flex items-center gap-1">
-                              <CalendarCheck className="h-4 w-4 text-primary" />
-                              {session.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-4 w-4 text-primary" />
-                              {session.time}
-                            </span>
+                          <div className="p-4 bg-muted/30">
+                            <div className="flex flex-col gap-2 text-sm">
+                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                              <span className="flex items-center gap-1">
+                                <CalendarCheck className="h-4 w-4 text-primary" />
+                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-4 w-4 text-primary" />
+                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                })}
+                              </span>
+                            </div>
+                            <div className="flex flex-col gap-2 mt-3">
+                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
+                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                  <Phone className="h-4 w-4 text-green-600" />
+                                  <span>WhatsApp</span>
+                                </Link>
+                              </Button>
+                            </div>
                           </div>
-                          <div className="mt-3 p-3 bg-background rounded-md border text-sm">
-                            <p className="font-medium mb-1">Catatan:</p>
-                            <p className="text-muted-foreground">{session.notes}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Belum ada riwayat sesi</p>
+                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang telah dikonfirmasi</p>
               )}
             </TabsContent>
           </Tabs>
@@ -411,3 +403,4 @@ export default async function ResponsiveDashboard() {
     </div>
   )
 }
+
