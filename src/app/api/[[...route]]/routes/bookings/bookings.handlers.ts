@@ -193,6 +193,15 @@ export const patchSession: AppRouteHandler<PatchSessionRoute> = async (c) => {
     data,
   });
 
+  await db.bookingSchedule.update({
+    where: {
+      id: session.bookingId,
+    },
+    data: {
+      isBooked: data.status === "ACCEPTED" ? true : false,
+    },
+  });
+
   return c.json({ data: updatedSession }, HTTPStatusCodes.OK);
 };
 
