@@ -160,7 +160,7 @@ export default async function ResponsiveDashboard() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Konsultasi Online</h3>
-                                <Badge variant="outline">Menunggu</Badge>
+                                <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>{session.status === "REJECTED" ? "Ditolak" : "Menunggu"}</Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
                                 <p className="font-medium">Booking ID: {session.bookingId}</p>
