@@ -64,6 +64,23 @@ export const listSchedulesByPsychologist = createRoute({
   },
 });
 
+export const listSessionsByPsychologist = createRoute({
+  path: "/sessions/psychologist",
+  method: "get",
+  tags,
+  middleware: authMiddleware(UserRole.PSYCHOLOGY),
+  responses: {
+    [HTTPStatusCodes.OK]: jsonContent(
+      z.object({ data: z.array(selectSessionSchema) }),
+      "The list of session by psychologist",
+    ),
+    [HTTPStatusCodes.NOT_FOUND]: jsonContent(
+      notFoundSchema,
+      "Session by pschologist not found",
+    ),
+  },
+});
+
 export const getOneSchedule = createRoute({
   path: "/schedules/{id}",
   method: "get",
@@ -131,6 +148,7 @@ export const createSession = createRoute({
   method: "post",
   tags,
   request: {
+    params: IdParamsSchema,
     body: jsonContentRequired(
       insertSessionSchema,
       "The booking session to create",
@@ -257,6 +275,7 @@ export type ListSchedulesRoute = typeof listSchedules;
 export type ListSessionsRoute = typeof listSessions;
 export type ListSchedulesByPsychologistRoute =
   typeof listSchedulesByPsychologist;
+export type ListSessionsByPsychologistRoute = typeof listSessionsByPsychologist;
 export type GetOneScheduleRoute = typeof getOneSchedule;
 export type GetOneSessionRoute = typeof getOneSession;
 export type CreateScheduleRoute = typeof createSchedule;
