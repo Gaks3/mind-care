@@ -17,7 +17,6 @@ import {
   RemoveScheduleRoute,
   RemoveSessionRoute,
 } from "./bookings.routes";
-import { UserRole } from "@/types";
 
 export const listSchedules: AppRouteHandler<ListSchedulesRoute> = async (c) => {
   const data = await db.bookingSchedule.findMany();
@@ -33,7 +32,19 @@ export const listSessions: AppRouteHandler<ListSessionsRoute> = async (c) => {
       userId: user.id,
     },
     include: {
-      bookingSchedule: true,
+      bookingSchedule: {
+        include: {
+          psychologist: {
+            omit: {
+              id: true,
+              birthDate: true,
+              createdAt: true,
+              updatedAt: true,
+              role: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -63,6 +74,17 @@ export const listSessionsByPsychologist: AppRouteHandler<
     where: {
       bookingSchedule: {
         psychologistId: user.id,
+      },
+    },
+    include: {
+      user: {
+        omit: {
+          id: true,
+          birthDate: true,
+          createdAt: true,
+          updatedAt: true,
+          role: true,
+        },
       },
     },
   });
@@ -138,7 +160,7 @@ export const createSession: AppRouteHandler<CreateSessionRoute> = async (c) => {
       { message: "Booking schedule not found" },
       HTTPStatusCodes.NOT_FOUND,
     );
-  if (!schedule.isBooked)
+  if (schedule.isBooked)
     return c.json(
       { message: "Booking schedule already booked" },
       HTTPStatusCodes.BAD_REQUEST,
@@ -203,11 +225,7 @@ export const patchSession: AppRouteHandler<PatchSessionRoute> = async (c) => {
       HTTPStatusCodes.NOT_FOUND,
     );
 
-  if (
-    session.userId !== user.id &&
-    user.role !== UserRole.PSYCHOLOGY &&
-    session.bookingSchedule.psychologistId !== user.id
-  )
+  if (session.bookingSchedule.psychologistId !== user.id)
     return c.json(
       { message: HTTPStatusPhrases.FORBIDDEN },
       HTTPStatusCodes.FORBIDDEN,
@@ -217,7 +235,10 @@ export const patchSession: AppRouteHandler<PatchSessionRoute> = async (c) => {
     where: {
       id,
     },
-    data,
+    data: {
+      status: data.status,
+      reason: data.reason,
+    },
   });
 
   await db.bookingSchedule.update({
@@ -226,6 +247,7 @@ export const patchSession: AppRouteHandler<PatchSessionRoute> = async (c) => {
     },
     data: {
       isBooked: data.status === "ACCEPTED" ? true : false,
+      meetingLink: data.meetingLink,
     },
   });
 

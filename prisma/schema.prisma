@@ -156,6 +156,7 @@ model BookingSession {
   bookingId       Int
   bookingSchedule BookingSchedule @relation(fields: [bookingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   status          BookingStatus   @default(PENDING)
+  reason          String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 

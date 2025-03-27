@@ -19,6 +19,7 @@ import {
   forbiddenSchema,
   notFoundSchema,
 } from "../../lib/constants";
+import { selectUserSchema } from "../users/users.schemas";
 
 const tags = ["Bookings"];
 
@@ -46,7 +47,15 @@ export const listSessions = createRoute({
         data: z.array(
           z.object({
             ...selectSessionSchema.shape,
-            bookingSchedule: selectScheduleSchema,
+            bookingSchedule: selectScheduleSchema.extend({
+              psychologist: selectUserSchema.omit({
+                id: true,
+                birthDate: true,
+                createdAt: true,
+                updatedAt: true,
+                role: true,
+              }),
+            }),
           }),
         ),
       }),
@@ -82,7 +91,20 @@ export const listSessionsByPsychologist = createRoute({
   middleware: authMiddleware(UserRole.PSYCHOLOGY),
   responses: {
     [HTTPStatusCodes.OK]: jsonContent(
-      z.object({ data: z.array(selectSessionSchema) }),
+      z.object({
+        data: z.array(
+          z.object({
+            ...selectSessionSchema.shape,
+            user: selectUserSchema.omit({
+              id: true,
+              birthDate: true,
+              createdAt: true,
+              updatedAt: true,
+              role: true,
+            }),
+          }),
+        ),
+      }),
       "The list of session by psychologist",
     ),
     [HTTPStatusCodes.NOT_FOUND]: jsonContent(
@@ -223,7 +245,7 @@ export const patchSession = createRoute({
       "The booking session to update",
     ),
   },
-  middleware: authMiddleware(),
+  middleware: authMiddleware(UserRole.PSYCHOLOGY),
   responses: {
     [HTTPStatusCodes.OK]: jsonContent(
       z.object({ data: selectSessionSchema }),
