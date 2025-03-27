@@ -132,7 +132,7 @@ export default async function ResponsiveDashboard() {
 
       <div className="flex-1 container mx-auto p-4 md:p-6">
         <div className="hidden md:grid md:grid-cols-2 gap-6">
-          <Card className="h-full">
+          <Card className="h-fit">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
                 <CalendarCheck className="h-5 w-5 text-primary" />
@@ -188,7 +188,7 @@ export default async function ResponsiveDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="h-full">
+          <Card className="h-fit">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-primary" />

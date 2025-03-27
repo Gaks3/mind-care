@@ -136,7 +136,7 @@ export default async function ResponsiveDashboard() {
 
       <div className="flex-1 container mx-auto p-4 md:p-6">
         <div className="hidden md:grid md:grid-cols-2 gap-6">
-          <Card className="h-full">
+          <Card className="h-fit">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
                 <CalendarCheck className="h-5 w-5 text-primary" />
@@ -160,11 +160,37 @@ export default async function ResponsiveDashboard() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Konsultasi Online</h3>
-                                <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>{session.status === "REJECTED" ? "Ditolak" : "Menunggu"}</Badge>
+                                <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>
+                                  {session.status === "REJECTED" ? "Ditolak" : "Menunggu"}
+                                </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
                                 <p className="font-medium">Booking ID: {session.bookingId}</p>
                                 <p>Status: {session.status}</p>
+                                {session.bookingSchedule && (
+                                  <div className="mt-2 space-y-1 border-t pt-2">
+                                    <p className="font-medium">Jadwal Konsultasi:</p>
+                                    <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                    <p>
+                                      Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                    </p>
+                                    <p>
+                                      Waktu:{" "}
+                                      {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: false,
+                                      })}
+                                    </p>
+                                    {session.bookingSchedule.meetingLink && (
+                                      <Button asChild variant="default" size="sm" className="mt-1">
+                                        <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                          Join Meeting
+                                        </Link>
+                                      </Button>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -203,7 +229,7 @@ export default async function ResponsiveDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="h-full">
+          <Card className="h-fit">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl flex items-center gap-2">
                 <History className="h-5 w-5 text-primary" />
@@ -234,6 +260,30 @@ export default async function ResponsiveDashboard() {
                               <div className="text-sm text-muted-foreground mt-1">
                                 <p className="font-medium">Booking ID: {session.bookingId}</p>
                                 <p>Status: {session.status}</p>
+                                {session.bookingSchedule && (
+                                  <div className="mt-2 space-y-1 border-t pt-2">
+                                    <p className="font-medium">Jadwal Konsultasi:</p>
+                                    <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                    <p>
+                                      Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                    </p>
+                                    <p>
+                                      Waktu:{" "}
+                                      {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: false,
+                                      })}
+                                    </p>
+                                    {session.bookingSchedule.meetingLink && (
+                                      <Button asChild variant="default" size="sm" className="mt-1">
+                                        <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                          Join Meeting
+                                        </Link>
+                                      </Button>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -319,6 +369,30 @@ export default async function ResponsiveDashboard() {
                                   hour12: false,
                                 })}
                               </span>
+                              {session.bookingSchedule && (
+                                <div className="mt-2 space-y-1 border-t pt-2">
+                                  <p className="font-medium">Jadwal Konsultasi:</p>
+                                  <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                  <p>
+                                    Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                  </p>
+                                  <p>
+                                    Waktu:{" "}
+                                    {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: false,
+                                    })}
+                                  </p>
+                                  {session.bookingSchedule.meetingLink && (
+                                    <Button asChild variant="default" size="sm" className="mt-1">
+                                      <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                        Join Meeting
+                                      </Link>
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
@@ -379,6 +453,30 @@ export default async function ResponsiveDashboard() {
                                   hour12: false,
                                 })}
                               </span>
+                              {session.bookingSchedule && (
+                                <div className="mt-2 space-y-1 border-t pt-2">
+                                  <p className="font-medium">Jadwal Konsultasi:</p>
+                                  <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                  <p>
+                                    Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                  </p>
+                                  <p>
+                                    Waktu:{" "}
+                                    {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: false,
+                                    })}
+                                  </p>
+                                  {session.bookingSchedule.meetingLink && (
+                                    <Button asChild variant="default" size="sm" className="mt-1">
+                                      <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                        Join Meeting
+                                      </Link>
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
