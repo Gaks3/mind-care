@@ -41,7 +41,7 @@ export default async function BookingPsikolog({ params }) {
 
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 lg:px-24">
       <h1 className="text-xl lg:text-3xl font-bold mb-6 flex items-center">
         Booking Psikolog
         <Link href={`/bookings/${psychologist.id}`}>

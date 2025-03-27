@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowLeft, Loader2, Plus, Trash2 } from "lucide-react"
+import { ArrowLeft, Loader2, Plus, Trash2, Eye, EyeOff } from "lucide-react"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -15,13 +15,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { client } from "@/lib/api"
 import { UserRole } from "@/types"
 import { insertUserSchema } from "@/app/api/[[...route]]/routes/users/users.schemas"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Textarea } from "@/components/ui/textarea"
 
 
 type FormValues = z.infer<typeof insertUserSchema>
 
 export default function AddUserPage() {
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
   const form = useForm<FormValues>({
@@ -77,6 +78,10 @@ export default function AddUserPage() {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container mx-auto py-6 max-w-2xl" >
       <Button variant="ghost" className="mb-6 flex items-center gap-2" onClick={() => router.push("/admin")}>
@@ -129,7 +134,28 @@ export default function AddUserPage() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <div className="relative">
+                        <Input
+                          placeholder="Enter password"
+                          type={showPassword ? "text" : "password"}
+                          className="pr-10"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none"
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
+                        >
+                          {!showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormDescription>Password must be at least 8 characters long.</FormDescription>
                     <FormMessage />
@@ -193,6 +219,9 @@ export default function AddUserPage() {
                         <FormControl>
                           <Input placeholder="Your phone number" {...field} />
                         </FormControl>
+                        <FormDescription>
+                          Please provide a number phone start with 62
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}

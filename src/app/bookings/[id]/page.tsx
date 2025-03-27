@@ -42,7 +42,7 @@ export default async function PsychologistDetail({ params }) {
     <div className="container mx-auto py-8 px-4 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
-          <Card className="h-full flex flex-col">
+          <Card className="h-fit flex flex-col">
             <CardHeader className="text-center pb-2">
               <div className="flex flex-col items-center">
                 <Avatar className="h-24 w-24 mb-4">
