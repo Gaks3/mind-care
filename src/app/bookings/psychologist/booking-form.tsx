@@ -116,7 +116,7 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
         setSelectedDate(null)
         setSelectedSlot(null)
       } else {
-        toast.error("Terjadi kesalahan saat booking")
+        toast.error("Jadwal ini sudah di booking oleh pengguna lain")
       }
     } catch (error) {
       console.error("Error submitting form:", error)
