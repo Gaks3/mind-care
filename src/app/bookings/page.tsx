@@ -33,7 +33,7 @@ export default async function PsychologistsList() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {psychologists.map((psychologist) => (
-          <Card key={psychologist.id} className="h-full">
+          <Card key={psychologist.id} className="h-fit">
             <CardHeader className="pb-2">
               <div className="flex mb-2 gap-4">
                 <Avatar className="h-12 w-12">
