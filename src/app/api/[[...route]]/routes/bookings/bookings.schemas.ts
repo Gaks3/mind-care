@@ -43,6 +43,20 @@ export const updateScheduleSchema = z.object({
   isBooked: insertScheduleSchema.shape.isBooked.optional(),
 });
 
-export const updateSessionSchema = z.object({
-  status: bookingStatusSchema,
-});
+export const updateSessionSchema = z
+  .object({
+    status: bookingStatusSchema,
+    reason: z.string().optional(),
+    meetingLink: z.string().url().optional(),
+  })
+  .superRefine((input, ctx) => {
+    if (input.status === "ACCEPTED" && !input.meetingLink) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Meeting link required",
+        fatal: true,
+      });
+
+      return z.NEVER;
+    }
+  });
