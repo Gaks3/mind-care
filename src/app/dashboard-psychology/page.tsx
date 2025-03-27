@@ -12,8 +12,9 @@ import { redirect } from "next/navigation"
 import { UserRole } from "@/types"
 import { client } from "@/lib/api"
 import { BookingActions } from "./functions/accept-reject-button"
+import { AddScheduleButton } from "./functions/add-schedule"
 
-export default async function ResponsiveDashboard() {
+export default async function DashboardPsychologist() {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -131,6 +132,9 @@ export default async function ResponsiveDashboard() {
       </div>
 
       <div className="flex-1 container mx-auto p-4 md:p-6">
+        <div className="mt-7 mb-10">
+          <AddScheduleButton />
+        </div>
         <div className="hidden md:grid md:grid-cols-2 gap-6">
           <Card className="h-fit">
             <CardHeader className="pb-2">
@@ -174,6 +178,7 @@ export default async function ResponsiveDashboard() {
                               })}
                             </span>
                           </div>
+                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -232,6 +237,7 @@ export default async function ResponsiveDashboard() {
                               })}
                             </span>
                           </div>
+                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
                               Diperbarui pada: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
@@ -295,6 +301,7 @@ export default async function ResponsiveDashboard() {
                               })}
                             </span>
                           </div>
+                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -344,6 +351,7 @@ export default async function ResponsiveDashboard() {
                               })}
                             </span>
                           </div>
+                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
                           <div className="flex flex-col gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
                               Diperbarui pada: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}

@@ -23,7 +23,7 @@ import { redirect } from "next/navigation"
 import { UserRole } from "@/types"
 import { client } from "@/lib/api"
 
-export default async function ResponsiveDashboard() {
+export default async function DashboardUser() {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -346,7 +346,9 @@ export default async function ResponsiveDashboard() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Konsultasi Online</h3>
-                                <Badge variant="outline">Menunggu</Badge>
+                                <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>
+                                  {session.status === "REJECTED" ? "Ditolak" : "Menunggu"}
+                                </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
                                 <p className="font-medium">Booking ID: {session.bookingId}</p>
