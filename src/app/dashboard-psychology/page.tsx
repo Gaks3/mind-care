@@ -33,6 +33,10 @@ export default async function DashboardPsychologist() {
     return redirect("/admin")
   }
 
+  if (role === UserRole.USER) {
+    return redirect("/dashboard")
+  }
+
   const pendingSessions = allSessions.filter(
     (session) => session.status !== "ACCEPTED" && session.status !== "REJECTED",
   )
@@ -158,7 +162,6 @@ export default async function DashboardPsychologist() {
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
                               <p>Booking ID: {session.bookingId}</p>
-                              <p>User ID: {session.userId}</p>
                             </div>
                           </div>
                         </div>
@@ -217,7 +220,6 @@ export default async function DashboardPsychologist() {
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
                               <p>Booking ID: {session.bookingId}</p>
-                              <p>User ID: {session.userId}</p>
                             </div>
                           </div>
                         </div>
@@ -281,7 +283,6 @@ export default async function DashboardPsychologist() {
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
                               <p>Booking ID: {session.bookingId}</p>
-                              <p>User ID: {session.userId}</p>
                             </div>
                           </div>
                         </div>
@@ -331,7 +332,6 @@ export default async function DashboardPsychologist() {
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
                               <p>Booking ID: {session.bookingId}</p>
-                              <p>User ID: {session.userId}</p>
                             </div>
                           </div>
                         </div>

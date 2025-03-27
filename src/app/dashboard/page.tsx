@@ -170,7 +170,7 @@ export default async function DashboardUser() {
                                 {session.bookingSchedule && (
                                   <div className="mt-2 space-y-1 border-t pt-2">
                                     <p className="font-medium">Jadwal Konsultasi:</p>
-                                    <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                    <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
                                     <p>
                                       Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                     </p>
@@ -212,7 +212,7 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
@@ -263,7 +263,7 @@ export default async function DashboardUser() {
                                 {session.bookingSchedule && (
                                   <div className="mt-2 space-y-1 border-t pt-2">
                                     <p className="font-medium">Jadwal Konsultasi:</p>
-                                    <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                    <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
                                     <p>
                                       Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                     </p>
@@ -305,7 +305,7 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
@@ -374,7 +374,7 @@ export default async function DashboardUser() {
                               {session.bookingSchedule && (
                                 <div className="mt-2 space-y-1 border-t pt-2">
                                   <p className="font-medium">Jadwal Konsultasi:</p>
-                                  <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                  <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
                                   <p>
                                     Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                   </p>
@@ -398,7 +398,7 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
@@ -458,7 +458,7 @@ export default async function DashboardUser() {
                               {session.bookingSchedule && (
                                 <div className="mt-2 space-y-1 border-t pt-2">
                                   <p className="font-medium">Jadwal Konsultasi:</p>
-                                  <p>Psikolog ID: {session.bookingSchedule.psychologistId}</p>
+                                  <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
                                   <p>
                                     Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                   </p>
@@ -482,7 +482,7 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/628123456789`} target="_blank">
+                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
