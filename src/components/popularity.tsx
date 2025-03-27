@@ -3,17 +3,17 @@ import { cn } from "@/lib/utils";
 
 const stats = [
   {
-    data: "30.899.123+ Pengguna",
+    data: "108.500+ Pengguna",
     proof: "Chat, pesan, sesi audio, dan video.",
     icon: <Users className="h-8 w-8" />,
   },
   {
-    data: "20.438+",
+    data: "325+",
     proof: "Terapis profesional siap mendukung Anda.",
     icon: <MessageSquare className="h-8 w-8" />,
   },
   {
-    data: "1.446.331+",
+    data: "106.800+",
     proof: "Orang berhasil dibantu",
     icon: <Award className="h-8 w-8" />,
   },
@@ -26,7 +26,8 @@ const Popularity = () => {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
           <div className="lg:w-[45%]">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-primary">
-              Layanan kesehatan mental terbesar di dunia. 100% online.
+              Salah satu layanan konseling online terbaik di Indonesia. 100%
+              online.
             </h2>
           </div>
 
@@ -36,7 +37,7 @@ const Popularity = () => {
                 key={i}
                 className={cn(
                   "flex items-start gap-6 p-6 mb-6 rounded-lg transition-all",
-                  "hover:bg-primary/10 group border-b-[3px] border-primary"
+                  "hover:bg-primary/10 group border-b-[3px] border-primary",
                 )}
               >
                 <div className="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
