@@ -29,7 +29,7 @@ export default async function PsychologistsList() {
 
   return (
     <div className="container mx-auto py-8 px-4 lg:px-24">
-      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-8">List Psikolog di MindCare</h1>
+      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-8">Psyhologist Lists</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {psychologists.map((psychologist) => (
@@ -59,7 +59,7 @@ export default async function PsychologistsList() {
                 ? (psychologist.description.split(' ').length > 5
                   ? psychologist.description.split(' ').slice(0, 10).join(' ') + '...'
                   : psychologist.description)
-                : "Tidak ada deskripsi"}</p>
+                : "No description found"}</p>
             </CardContent>
 
             <CardFooter className="flex justify-between items-center">

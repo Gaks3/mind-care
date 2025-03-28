@@ -101,7 +101,7 @@ export default async function DashboardUser() {
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Selamat Datang, {user?.name} 👋</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {user?.name} 👋</h1>
               <p className="text-primary-foreground/80">email: {user?.email}</p>
             </div>
             <div className="flex gap-4">
@@ -111,7 +111,7 @@ export default async function DashboardUser() {
                     <Calendar className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Sesi Mendatang</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">Upcoming Session</p>
                     <p className="text-xl font-bold">
                       {sessionsData.filter((session) => session.status !== "ACCEPTED").length}
                     </p>
@@ -124,7 +124,7 @@ export default async function DashboardUser() {
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Total Sesi</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">All Sessions</p>
                     <p className="text-xl font-bold">{totalSessions}</p>
                   </div>
                 </CardContent>
@@ -135,6 +135,13 @@ export default async function DashboardUser() {
       </div>
 
       <div className="flex-1 container mx-auto p-4 md:p-6">
+        <div className="mb-6 mt-3">
+          <Link href="/bookings">
+            <Button>
+              Booking Now
+            </Button>
+          </Link>
+        </div>
         <div className="hidden md:grid md:grid-cols-2 gap-6">
           <Card className="h-fit">
             <CardHeader className="pb-2">
@@ -142,7 +149,7 @@ export default async function DashboardUser() {
                 <CalendarCheck className="h-5 w-5 text-primary" />
                 Booking Pending
               </CardTitle>
-              <CardDescription>Sesi yang menunggu konfirmasi</CardDescription>
+              <CardDescription>Session waiting for confirmation</CardDescription>
             </CardHeader>
             <CardContent>
               {sessionsData.filter((session) => session.status !== "ACCEPTED").length > 0 ? (
@@ -155,13 +162,15 @@ export default async function DashboardUser() {
                         <CardContent className="p-0">
                           <div className="flex items-start p-4 border-b">
                             <Avatar className="h-10 w-10 mr-3">
-                              <AvatarFallback>P</AvatarFallback>
+                              <AvatarFallback>
+                                <Brain className="w-5 h-5" />
+                              </AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
-                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <h3 className="font-medium">Online Consult</h3>
                                 <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>
-                                  {session.status === "REJECTED" ? "Ditolak" : "Menunggu"}
+                                  {session.status === "REJECTED" ? "Rejected" : "Waiting"}
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -169,13 +178,13 @@ export default async function DashboardUser() {
                                 <p>Status: {session.status}</p>
                                 {session.bookingSchedule && (
                                   <div className="mt-2 space-y-1 border-t pt-2">
-                                    <p className="font-medium">Jadwal Konsultasi:</p>
-                                    <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
+                                    <p className="font-medium">Session Schedule:</p>
+                                    <p>Name: {session.bookingSchedule.psychologist.name}</p>
                                     <p>
-                                      Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                      Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                     </p>
                                     <p>
-                                      Waktu:{" "}
+                                      Time:{" "}
                                       {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
                                         hour: "2-digit",
                                         minute: "2-digit",
@@ -196,7 +205,7 @@ export default async function DashboardUser() {
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                              <p className="text-muted-foreground text-base">Booking was created on :</p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
                                 {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -224,7 +233,7 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang menunggu konfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">There are no bookings waiting for confirmation.</p>
               )}
             </CardContent>
           </Card>
@@ -235,7 +244,7 @@ export default async function DashboardUser() {
                 <History className="h-5 w-5 text-primary" />
                 Booking Accepted
               </CardTitle>
-              <CardDescription>Sesi yang telah dikonfirmasi</CardDescription>
+              <CardDescription>Confirmed session</CardDescription>
             </CardHeader>
             <CardContent>
               {sessionsData.filter((session) => session.status === "ACCEPTED").length > 0 ? (
@@ -248,13 +257,15 @@ export default async function DashboardUser() {
                         <CardContent className="p-0">
                           <div className="flex items-start p-4 border-b">
                             <Avatar className="h-10 w-10 mr-3">
-                              <AvatarFallback>P</AvatarFallback>
+                              <AvatarFallback>
+                                <Brain className="w-5 h-5" />
+                              </AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
-                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <h3 className="font-medium">Online Consult</h3>
                                 <Badge variant="default" className="bg-primary">
-                                  Terkonfirmasi
+                                  Confirmed
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -262,13 +273,13 @@ export default async function DashboardUser() {
                                 <p>Status: {session.status}</p>
                                 {session.bookingSchedule && (
                                   <div className="mt-2 space-y-1 border-t pt-2">
-                                    <p className="font-medium">Jadwal Konsultasi:</p>
-                                    <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
+                                    <p className="font-medium">Session Schedule:</p>
+                                    <p>Name: {session.bookingSchedule.psychologist.name}</p>
                                     <p>
-                                      Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                      Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                     </p>
                                     <p>
-                                      Waktu:{" "}
+                                      Time:{" "}
                                       {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
                                         hour: "2-digit",
                                         minute: "2-digit",
@@ -289,7 +300,7 @@ export default async function DashboardUser() {
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                              <p className="text-muted-foreground text-base">Booking was created on :</p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
                                 {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -317,7 +328,7 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang telah dikonfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">There are no confirmed bookings</p>
               )}
             </CardContent>
           </Card>
@@ -341,13 +352,15 @@ export default async function DashboardUser() {
                         <CardContent className="p-0">
                           <div className="flex items-start p-4 border-b">
                             <Avatar className="h-10 w-10 mr-3">
-                              <AvatarFallback>P</AvatarFallback>
+                              <AvatarFallback>
+                                <Brain className="w-5 h-5" />
+                              </AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
-                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <h3 className="font-medium">Online Consult</h3>
                                 <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>
-                                  {session.status === "REJECTED" ? "Ditolak" : "Menunggu"}
+                                  {session.status === "REJECTED" ? "Rejected" : "Waiting"}
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -358,7 +371,7 @@ export default async function DashboardUser() {
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col gap-2 text-sm">
-                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                              <p className="text-muted-foreground text-base">Booking was created on :</p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
                                 {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -373,13 +386,13 @@ export default async function DashboardUser() {
                               </span>
                               {session.bookingSchedule && (
                                 <div className="mt-2 space-y-1 border-t pt-2">
-                                  <p className="font-medium">Jadwal Konsultasi:</p>
-                                  <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
+                                  <p className="font-medium">Session Schedule:</p>
+                                  <p>Name: {session.bookingSchedule.psychologist.name}</p>
                                   <p>
-                                    Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                    Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                   </p>
                                   <p>
-                                    Waktu:{" "}
+                                    Time:{" "}
                                     {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
                                       hour: "2-digit",
                                       minute: "2-digit",
@@ -410,7 +423,7 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang menunggu konfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">There are no bookings waiting for confirmation.</p>
               )}
             </TabsContent>
 
@@ -425,13 +438,15 @@ export default async function DashboardUser() {
                         <CardContent className="p-0">
                           <div className="flex items-start p-4 border-b">
                             <Avatar className="h-10 w-10 mr-3">
-                              <AvatarFallback>P</AvatarFallback>
+                              <AvatarFallback>
+                                <Brain className="w-5 h-5" />
+                              </AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
-                                <h3 className="font-medium">Konsultasi Online</h3>
+                                <h3 className="font-medium">Online Consult</h3>
                                 <Badge variant="default" className="bg-primary">
-                                  Terkonfirmasi
+                                  Confirmed
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -442,7 +457,7 @@ export default async function DashboardUser() {
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col gap-2 text-sm">
-                              <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                              <p className="text-muted-foreground text-base">Booking was created on :</p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
                                 {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -457,13 +472,13 @@ export default async function DashboardUser() {
                               </span>
                               {session.bookingSchedule && (
                                 <div className="mt-2 space-y-1 border-t pt-2">
-                                  <p className="font-medium">Jadwal Konsultasi:</p>
-                                  <p>Nama Psikolog: {session.bookingSchedule.psychologist.name}</p>
+                                  <p className="font-medium">Session Schedule:</p>
+                                  <p>Name: {session.bookingSchedule.psychologist.name}</p>
                                   <p>
-                                    Tanggal: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                    Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
                                   </p>
                                   <p>
-                                    Waktu:{" "}
+                                    Time:{" "}
                                     {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
                                       hour: "2-digit",
                                       minute: "2-digit",
@@ -494,7 +509,7 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang telah dikonfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">There are no confirmed bookings</p>
               )}
             </TabsContent>
           </Tabs>

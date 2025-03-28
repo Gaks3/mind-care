@@ -43,7 +43,7 @@ export default async function BookingPsikolog({ params }) {
   return (
     <div className="container mx-auto py-8 px-4 lg:px-24">
       <h1 className="text-xl lg:text-3xl font-bold mb-6 flex items-center">
-        Booking Psikolog
+        Booking Psychologist
         <Link href={`/bookings/${psychologist.id}`}>
           <span className="text-primary underline ml-2">{psychologist.name}</span>
         </Link>
@@ -53,7 +53,7 @@ export default async function BookingPsikolog({ params }) {
         <div>
           <Card className="h-full">
             <CardHeader>
-              <CardTitle>Detail Psikolog</CardTitle>
+              <CardTitle>Details</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-6">
@@ -62,7 +62,7 @@ export default async function BookingPsikolog({ params }) {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-3">Pendidikan</h3>
+                <h3 className="text-lg font-semibold mb-3">Education</h3>
                 <div className="space-y-3">
                   {psychologist.education && psychologist.education.length > 0 ? (
                     psychologist.education.map((edu, index) => (

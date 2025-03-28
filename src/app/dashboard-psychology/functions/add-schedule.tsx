@@ -74,19 +74,19 @@ export function AddScheduleButton() {
     <>
       <Button onClick={() => setIsOpen(true)} className="bg-primary hover:bg-primary/90">
         <CalendarPlus className="h-4 w-4 mr-2" />
-        Tambah Jadwal
+        Add Schedule
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[425px] mx-auto">
           <DialogHeader>
-            <DialogTitle>Tambah Jadwal Baru</DialogTitle>
-            <DialogDescription>Pilih tanggal dan waktu untuk jadwal konsultasi baru.</DialogDescription>
+            <DialogTitle>Add New Schedule</DialogTitle>
+            <DialogDescription>Select a date and time for the new consultation schedule.</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-6 py-4">
             <div className="grid gap-2">
-              <Label>Tanggal</Label>
+              <Label>Date</Label>
               <Calendar
                 mode="single"
                 selected={date}
@@ -98,10 +98,10 @@ export function AddScheduleButton() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="time">Waktu</Label>
+              <Label htmlFor="time">Time</Label>
               <Select value={time} onValueChange={setTime}>
                 <SelectTrigger id="time">
-                  <SelectValue placeholder="Pilih waktu" />
+                  <SelectValue placeholder="Select time" />
                 </SelectTrigger>
                 <SelectContent>
                   {timeOptions.map((timeOption) => (
@@ -115,7 +115,7 @@ export function AddScheduleButton() {
 
             {date && time && (
               <div className="text-sm text-muted-foreground">
-                Jadwal yang akan ditambahkan:{" "}
+                Scheduled for:{" "}
                 <span className="font-medium text-foreground">
                   {format(
                     set(date, {
@@ -135,10 +135,10 @@ export function AddScheduleButton() {
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  <span>Menyimpan...</span>
+                  <span>Saving...</span>
                 </>
               ) : (
-                "Simpan Jadwal"
+                "Save Schedule"
               )}
             </Button>
           </DialogFooter>
@@ -147,4 +147,3 @@ export function AddScheduleButton() {
     </>
   )
 }
-

@@ -105,7 +105,7 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
         ) : (
           <>
             <CheckCircle className="h-4 w-4 mr-2" />
-            <span>Terima</span>
+            <span>Accept</span>
           </>
         )}
       </Button>
@@ -119,7 +119,7 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
         ) : (
           <>
             <XCircle className="h-4 w-4 mr-2" />
-            <span>Tolak</span>
+            <span>Reject</span>
           </>
         )}
       </Button>
@@ -127,8 +127,8 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
       <Dialog open={acceptOpen} onOpenChange={setAcceptOpen}>
         <DialogContent className="sm:max-w-[425px] mx-auto">
           <DialogHeader>
-            <DialogTitle>Terima Booking</DialogTitle>
-            <DialogDescription>Masukkan link meeting untuk sesi konsultasi</DialogDescription>
+            <DialogTitle>Accept Booking</DialogTitle>
+            <DialogDescription>Please insert meeting link</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
@@ -153,7 +153,7 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
                   <span>Processing...</span>
                 </>
               ) : (
-                "Konfirmasi"
+                "Accept"
               )}
             </Button>
           </DialogFooter>
@@ -163,15 +163,15 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
       <Dialog open={rejectOpen} onOpenChange={setRejectOpen}>
         <DialogContent className="sm:max-w-[425px] mx-auto">
           <DialogHeader>
-            <DialogTitle>Tolak Booking</DialogTitle>
-            <DialogDescription>Berikan alasan penolakan booking</DialogDescription>
+            <DialogTitle>Reject Booking</DialogTitle>
+            <DialogDescription>Give a reason</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="rejectReason">Alasan</Label>
+              <Label htmlFor="rejectReason">Reason</Label>
               <Textarea
                 id="rejectReason"
-                placeholder="Berikan alasan penolakan..."
+                placeholder="Please give a reason..."
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
                 rows={3}
@@ -191,7 +191,7 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
                   <span>Processing...</span>
                 </>
               ) : (
-                "Konfirmasi"
+                "Reject"
               )}
             </Button>
           </DialogFooter>

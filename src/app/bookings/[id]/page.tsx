@@ -33,7 +33,7 @@ export default async function PsychologistDetail({ params }) {
   if (!psychologist) {
     return (
       <div className="container mx-auto py-12 text-center">
-        <p className="text-muted-foreground">Psikolog tidak ditemukan</p>
+        <p className="text-muted-foreground">Psikolog not found</p>
       </div>
     );
   }
@@ -61,7 +61,7 @@ export default async function PsychologistDetail({ params }) {
             <CardContent className="flex-grow">
               <Link href={`/bookings/psychologist/${psychologist.id}`}>
                 <Button className="w-full mt-3" size="sm">
-                  <CalendarHeart className="mr-2 w-5 h-5" /> Booking Psikolog
+                  <CalendarHeart className="mr-2 w-5 h-5" /> Booking
                 </Button>
               </Link>
             </CardContent>
@@ -71,7 +71,7 @@ export default async function PsychologistDetail({ params }) {
         <div className="md:col-span-2">
           <Card className="h-full">
             <CardHeader>
-              <CardTitle>Detail Psikolog</CardTitle>
+              <CardTitle>Details</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-6">
@@ -82,7 +82,7 @@ export default async function PsychologistDetail({ params }) {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-3">Pendidikan</h3>
+                <h3 className="text-lg font-semibold mb-3">Education</h3>
                 <div className="space-y-3">
                   {psychologist.education && psychologist.education.length > 0 ? (
                     psychologist.education.map((edu, index) => (
