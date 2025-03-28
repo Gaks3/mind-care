@@ -43,7 +43,7 @@ const ArticleCard: React.FC<Article> = ({ title, createdBy, thumbnail, createdAt
           href="#"
           className="text-blue-600 text-sm font-semibold flex items-center group hover:text-blue-800 transition-colors"
         >
-          Baca Selengkapnya
+          Read More
           <ArrowRight
             size={16}
             className="ml-2 group-hover:translate-x-1 transition-transform"

@@ -3,18 +3,18 @@ import { cn } from "@/lib/utils";
 
 const stats = [
   {
-    data: "108.500+ Pengguna",
-    proof: "Chat, pesan, sesi audio, dan video.",
+    data: "108.500+ Users",
+    proof: "Chat, messages, audio sessions, and video.",
     icon: <Users className="h-8 w-8" />,
   },
   {
     data: "325+",
-    proof: "Terapis profesional siap mendukung Anda.",
+    proof: "Profesional therapists ready to support you.",
     icon: <MessageSquare className="h-8 w-8" />,
   },
   {
     data: "106.800+",
-    proof: "Orang berhasil dibantu",
+    proof: "Clients helped",
     icon: <Award className="h-8 w-8" />,
   },
 ];
@@ -26,7 +26,7 @@ const Popularity = () => {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
           <div className="lg:w-[45%]">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-primary">
-              Salah satu layanan konseling online terbaik di Indonesia. 100%
+              One of the best online counseling services in Indonesia. 100%
               online.
             </h2>
           </div>

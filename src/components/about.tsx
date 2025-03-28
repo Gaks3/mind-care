@@ -20,21 +20,21 @@ export default function About() {
             <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-gradient-to-br from-primary to-blue-400 rounded-2xl -z-10"></div>
           </div>
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary">Tentang MindCare</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary">About MindCare</h2>
             <p className="text-lg text-foreground/70 mb-6">
-              MindCare adalah platform inovatif yang menggabungkan teknologi kecerdasan buatan dengan prinsip-prinsip kesehatan mental, memberikan dukungan yang dipersonalisasi untuk setiap pengguna.
+            MindCare is an innovative platform that combines artificial intelligence with mental health principles, delivering personalized support for every user.
             </p>
             <p className="text-lg text-foreground/70 mb-6">
-              Kami percaya bahwa setiap orang berhak mendapatkan akses ke sumber daya kesehatan mental yang berkualitas, kapan pun dan di mana pun mereka membutuhkannya.
+            We believe everyone deserves access to quality mental health resources—whenever and wherever they need them.
             </p>
             <div className="grid grid-cols-2 gap-6">
               <div className="bg-primary p-4 rounded-lg">
                 <h4 className="font-semibold text-2xl text-blue-50 mb-2">24/7</h4>
-                <p className="text-white">Dukungan tersedia kapan saja Anda membutuhkannya</p>
+                <p className="text-white">Help is here for you—anytime you need it.</p>
               </div>
               <div className="bg-primary p-4 rounded-lg">
                 <h4 className="font-semibold text-2xl text-blue-50 mb-2">100%</h4>
-                <p className="text-white">Privasi dan keamanan data terjamin</p>
+                <p className="text-white">Your information stays private and secure - we guarantee it</p>
               </div>
             </div>
           </div>

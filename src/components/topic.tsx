@@ -1,16 +1,15 @@
 import Image from "next/image";
 
 const topikTypes = [
-  "Depresi",
+  "Depression",
   "Anxiety",
   "Disorder",
   "Toxic",
   "Relationship",
-  "Burn Out",
+  "Burnout",
   "Trauma",
-  "Masalah",
-  "Keluarga",
-  "Trust Issue",
+  "Family Issues",
+  "Trust Issues",
   "Insomnia",
 ];
 
@@ -27,12 +26,12 @@ export default function Topic() {
       <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row gap-16">
         <div className="flex flex-col gap-4 justify-center lg:w-[62.5%]">
           <h1 className="text-3xl md:text-4xl leading-tight font-bold text-primary">
-            Tak perlu ragu bercerita, <br className="hidden sm:inline" />
-            Psikolog MindCare siap mendengarkanmu!
+            Don&apos;t hesitate to open up - <br className="hidden sm:inline" />
+            Our MindCare psychologists are here to hear you out!
           </h1>
           <p className="text-base lg:w-[80%] mb-3 text-gray-700">
-            Kamu bisa bebas memilih psikolog berlisensi sesuai preferensi,
-            pengalaman, serta topik keahlian yang sesuai dengan kebutuhamu.
+            You&apos;re free to choose a licensed psychologist who matches your
+            preferences, experience, and expertise—tailored to your needs.
           </p>
           <div className="flex gap-2 sm:gap-3.5 flex-wrap lg:w-[80%]">
             {topikTypes.map((topik, i) => (
@@ -63,5 +62,4 @@ export default function Topic() {
       </div>
     </section>
   );
-};
-
+}

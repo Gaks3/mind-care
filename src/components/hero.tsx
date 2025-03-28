@@ -18,28 +18,26 @@ export default function Hero() {
         <div className="order-2 md:order-1 z-10">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">
-              Kesehatan Mental
+              Mental Health
             </span>
             <br className="hidden sm:block" />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">
               {" "}
-              Bersama AI
+              With AI
             </span>
           </h1>
           <p className="text-base sm:text-lg text-foreground/70 mb-8 leading-relaxed max-w-xl">
-            Temukan ketenangan dan dukungan melalui asisten AI kami yang
-            dirancang untuk membantu Anda menjaga kesehatan mental dan menemukan
-            keseimbangan dalam hidup.
+          Find peace and support with our AI assistant, designed to help you maintain mental well-being and discover balance in life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base group">
-              Mulai Sekarang <ArrowRight className="ml-2 group-hover:ml-3" />
+              Get Started <ArrowRight className="ml-2 group-hover:ml-3" />
             </Button>
             <Button
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 rounded-xl text-base"
             >
-              Pelajari Lebih Lanjut
+              Learn More
             </Button>
           </div>
         </div>
@@ -53,15 +51,14 @@ export default function Hero() {
                 <h3 className="font-semibold text-base sm:text-lg">MindCare</h3>
               </div>
               <p className="text-sm sm:text-base text-foreground/70 mb-4 sm:mb-6">
-                Bagaimana perasaan Anda hari ini? Saya di sini untuk
-                mendengarkan.
+                How is ur feelings today? I am here to listen
               </p>
               <div className="flex justify-end">
                 <Button
                   size="sm"
                   className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  <MessageCircle className="h-4 w-4 mr-2" /> Chat Sekarang
+                  <MessageCircle className="h-4 w-4 mr-2" /> Chat Now
                 </Button>
               </div>
             </div>

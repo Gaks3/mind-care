@@ -5,32 +5,32 @@ import ArticleCard from "./ui/article-card";
 const articles: Article[] = [
   {
     id: 1,
-    title: "Pentingnya Kesehatan Mental: Mengapa Kita Harus Peduli?",
+    title: "The Importance of Mental Health: Why We Should Care?",
     createdBy: "Bidan Ning Tyas",
     thumbnail: "/about-picture.webp",
-    createdAt: "11 Maret 2025",
-  },
-  {
+    createdAt: "11th March 2025",
+},
+{
     id: 2,
-    title: "Gangguan Kecemasan: Gejala, Penyebab & Cara Mengatasinya",
+    title: "Anxiety Disorder : Symptoms, Causes & How to Overcome It",
     createdBy: "Dokter Ayu Purniah",
     thumbnail: "/about-picture.webp",
-    createdAt: "11 Maret 2025",
-  },
-  {
+    createdAt: "11th March 2025",
+},
+{
     id: 3,
-    title: "Cara Mengatasi Stres di Tengah Kesibukan Sehari-hari",
+    title: "How to Deal with Stress in the Midst of Everyday Busyness",
     createdBy: "Dr. Hartati",
     thumbnail: "/about-picture.webp",
-    createdAt: "11 Maret 2025",
-  },
-  {
+    createdAt: "11th March 2025",
+},
+{
     id: 4,
-    title: "Pentingnya Dukungan Sosial dalam Menjaga Kesehatan Mental",
+    title: "The Importance of Social Supports for Mental Health",
     createdBy: "Psikolog Lestari",
     thumbnail: "/about-picture.webp",
-    createdAt: "11 Maret 2025",
-  },
+    createdAt: "11th March 2025",
+}
 ];
 
 const ArticleSection = () => {
@@ -38,11 +38,10 @@ const ArticleSection = () => {
     <section className="container mx-auto py-16 px-6 lg:px-28">
       <div className="mb-12 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-primary mb-3">
-          Artikel Menarik
+          Interesting Articles
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Temukan informasi bermanfaat mengenai kesehatan mental dan tips untuk
-          menjalani kehidupan yang lebih sehat.
+        Discover valuable mental health information and tips for living a healthier life.
         </p>
       </div>
 
