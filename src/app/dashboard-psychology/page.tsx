@@ -104,7 +104,7 @@ export default async function DashboardPsychologist() {
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Selamat Datang, {user?.name} 👋</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {user?.name} 👋</h1>
               <p className="text-primary-foreground/80">email: {user?.email}</p>
             </div>
             <div className="flex gap-4">
@@ -114,7 +114,7 @@ export default async function DashboardPsychologist() {
                     <Calendar className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Sesi Mendatang</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">Upcoming session</p>
                     <p className="text-xl font-bold">{pendingSessions.length}</p>
                   </div>
                 </CardContent>
@@ -125,7 +125,7 @@ export default async function DashboardPsychologist() {
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Total Sesi</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">All sessions</p>
                     <p className="text-xl font-bold">{totalSessions}</p>
                   </div>
                 </CardContent>
@@ -146,7 +146,7 @@ export default async function DashboardPsychologist() {
                 <CalendarCheck className="h-5 w-5 text-primary" />
                 Booking Pending
               </CardTitle>
-              <CardDescription>Sesi yang menunggu konfirmasi</CardDescription>
+              <CardDescription>Waiting for your confirmation</CardDescription>
             </CardHeader>
             <CardContent>
               {sortedPendingSessions.length > 0 ? (
@@ -157,8 +157,8 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Sesi #{session.id}</h3>
-                              <Badge variant="outline">Menunggu</Badge>
+                              <h3 className="font-medium">Session #{session.id}</h3>
+                              <Badge variant="outline">Waiting</Badge>
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
                               <p>Booking ID: {session.bookingId}</p>
@@ -167,7 +167,7 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm mb-3">
-                            <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                            <p className="text-muted-foreground text-base">Booking was created on :</p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
                               {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -181,7 +181,7 @@ export default async function DashboardPsychologist() {
                               })}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -191,7 +191,7 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang menunggu konfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">No pending sessions</p>
               )}
             </CardContent>
           </Card>
@@ -202,7 +202,7 @@ export default async function DashboardPsychologist() {
                 <CheckCircle className="h-5 w-5 text-primary" />
                 Booking Accepted
               </CardTitle>
-              <CardDescription>Sesi yang telah dikonfirmasi</CardDescription>
+              <CardDescription>Confirmed session</CardDescription>
             </CardHeader>
             <CardContent>
               {sortedAcceptedSessions.length > 0 ? (
@@ -215,7 +215,7 @@ export default async function DashboardPsychologist() {
                             <div className="flex items-center justify-between">
                               <h3 className="font-medium">Sesi #{session.id}</h3>
                               <Badge variant="default" className="bg-primary">
-                                Terkonfirmasi
+                                Confirmed
                               </Badge>
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
@@ -225,7 +225,7 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                            <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                            <p className="text-muted-foreground text-base">Booking was created on :</p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
                               {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -239,10 +239,10 @@ export default async function DashboardPsychologist() {
                               })}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
-                              Diperbarui pada: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
+                              Updated at: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
                               {new Date(session.updatedAt).toLocaleTimeString("id-ID", {
                                 hour: "2-digit",
                                 minute: "2-digit",
@@ -256,7 +256,7 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang telah dikonfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">No confirmed booking</p>
               )}
             </CardContent>
           </Card>
@@ -278,8 +278,8 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Sesi #{session.id}</h3>
-                              <Badge variant="outline">Menunggu</Badge>
+                              <h3 className="font-medium">Session #{session.id}</h3>
+                              <Badge variant="outline">Waiting</Badge>
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
                               <p>Booking ID: {session.bookingId}</p>
@@ -288,7 +288,7 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col gap-2 text-sm mb-3">
-                            <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                            <p className="text-muted-foreground text-base">Booking was created on :</p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
                               {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -302,7 +302,7 @@ export default async function DashboardPsychologist() {
                               })}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -312,7 +312,7 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang menunggu konfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">No pending sessions</p>
               )}
             </TabsContent>
 
@@ -325,9 +325,9 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Sesi #{session.id}</h3>
+                              <h3 className="font-medium">Session #{session.id}</h3>
                               <Badge variant="default" className="bg-primary">
-                                Terkonfirmasi
+                                Confirmed
                               </Badge>
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
@@ -337,7 +337,7 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col gap-2 text-sm">
-                            <p className="text-muted-foreground text-base">Booking ini dibuat pada :</p>
+                            <p className="text-muted-foreground text-base">Booking was created on :</p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
                               {new Date(session.createdAt).toLocaleDateString("id-ID")}
@@ -351,10 +351,10 @@ export default async function DashboardPsychologist() {
                               })}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">Oleh : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
                           <div className="flex flex-col gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
-                              Diperbarui pada: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
+                              Updated at: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
                               {new Date(session.updatedAt).toLocaleTimeString("id-ID", {
                                 hour: "2-digit",
                                 minute: "2-digit",
@@ -368,7 +368,7 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">Tidak ada booking yang telah dikonfirmasi</p>
+                <p className="text-center py-6 text-muted-foreground">No confirmed booking</p>
               )}
             </TabsContent>
           </Tabs>

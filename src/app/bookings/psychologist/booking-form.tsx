@@ -37,7 +37,7 @@ interface BookingFormProps {
 
 const formSchema = z.object({
   bookingId: z.number({
-    required_error: "Silakan pilih jadwal konsultasi",
+    required_error: "Please select a date",
   }),
 })
 
@@ -109,18 +109,18 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
 
       if (response.ok) {
         await response.json()
-        toast.success(`Booking dengan ${psychologistName} berhasil ditambahkan`)
+        toast.success(`Booking with ${psychologistName} successfully created`)
         form.reset({
           bookingId: 0,
         })
         setSelectedDate(null)
         setSelectedSlot(null)
       } else {
-        toast.error("Jadwal ini sudah di booking oleh pengguna lain")
+        toast.error("This schedule is already booked")
       }
     } catch (error) {
       console.error("Error submitting form:", error)
-      toast.error("Terjadi kesalahan saat booking")
+      toast.error("Failed to booking")
     } finally {
       setIsSubmitting(false)
     }
@@ -131,12 +131,12 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Pilih Jadwal Konsultasi dengan {psychologistName}</CardTitle>
+            <CardTitle>Select a schedule with {psychologistName}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Date Selection */}
             <div className="space-y-2">
-              <Label>Tanggal Konsultasi</Label>
+              <Label>Date</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -154,7 +154,7 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                     type="button"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {selectedDate ? format(selectedDate, "dd MMMM yyyy") : "Pilih tanggal"}
+                    {selectedDate ? format(selectedDate, "dd MMMM yyyy") : "Select date"}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -195,7 +195,7 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                     <div className="space-y-2">
                       {selectedDate && (
                         <>
-                          <Label>Waktu Konsultasi</Label>
+                          <Label>Time</Label>
                           {filteredTimeSlots.length > 0 ? (
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
                               {filteredTimeSlots.map((slot) => (
@@ -217,7 +217,7 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                               ))}
                             </div>
                           ) : (
-                            <p className="text-center text-muted-foreground py-4">Tidak ada jadwal tersedia untuk tanggal ini</p>
+                            <p className="text-center text-muted-foreground py-4">No available time slots</p>
                           )}
                           {form.formState.errors.bookingId && (
                             <p className="text-sm font-medium text-destructive">{form.formState.errors.bookingId.message}</p>
@@ -232,7 +232,7 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
           </CardContent>
           <CardFooter>
             <Button type="submit" className="w-full" disabled={!selectedSlot || isSubmitting}>
-              {isSubmitting ? "Memproses..." : "Booking Sekarang"}
+              {isSubmitting ? "Processing..." : "Booking now"}
             </Button>
           </CardFooter>
         </Card>
