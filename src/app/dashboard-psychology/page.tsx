@@ -166,7 +166,7 @@ export default async function DashboardPsychologist() {
                           </div>
                         </div>
                         <div className="p-4 bg-muted/30">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm mb-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
                             <p className="text-muted-foreground text-base">Booking was created on :</p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
@@ -182,6 +182,11 @@ export default async function DashboardPsychologist() {
                             </span>
                           </div>
                           <p className="text-muted-foreground text-base">By : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -240,6 +245,18 @@ export default async function DashboardPsychologist() {
                             </span>
                           </div>
                           <p className="text-muted-foreground text-base">By : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}</p>
+                          {session.bookingSchedule.meetingLink && (
+                            <Button asChild variant="default" size="sm" className="mt-1">
+                              <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                Join Meeting
+                              </Link>
+                            </Button>
+                          )}
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
                               Updated at: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
@@ -303,6 +320,11 @@ export default async function DashboardPsychologist() {
                             </span>
                           </div>
                           <p className="text-muted-foreground text-base">By : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}</p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -352,6 +374,18 @@ export default async function DashboardPsychologist() {
                             </span>
                           </div>
                           <p className="text-muted-foreground text-base">By : {session.user.name}</p>
+                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}</p>
+                          {session.bookingSchedule.meetingLink && (
+                            <Button asChild variant="default" size="sm" className="mt-1">
+                              <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                Join Meeting
+                              </Link>
+                            </Button>
+                          )}
                           <div className="flex flex-col gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
                               Updated at: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}

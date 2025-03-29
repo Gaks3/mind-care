@@ -208,11 +208,6 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                                   onClick={() => handleSelectTimeSlot(slot)}
                                 >
                                   {formatTimeSlot(slot.dateTime)}
-                                  {slot.isBooked && (
-                                    <Badge variant="outline" className="ml-2 text-xs">
-                                      Booked
-                                    </Badge>
-                                  )}
                                 </Button>
                               ))}
                             </div>
