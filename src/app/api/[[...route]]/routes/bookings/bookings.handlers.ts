@@ -86,6 +86,7 @@ export const listSessionsByPsychologist: AppRouteHandler<
           role: true,
         },
       },
+      bookingSchedule: true,
     },
   });
 

@@ -102,6 +102,7 @@ export const listSessionsByPsychologist = createRoute({
               updatedAt: true,
               role: true,
             }),
+            bookingSchedule: selectScheduleSchema,
           }),
         ),
       }),
