@@ -15,6 +15,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
 
 export function BookingActions({ sessionId }: { sessionId: number }) {
   const router = useRouter()
@@ -50,8 +51,9 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
       router.refresh()
       setAcceptOpen(false)
     } catch (error) {
-      console.error("Error accepting booking:", error)
+      console.error(error)
     } finally {
+      toast.error("Please input a valid URL")
       setIsLoading(false)
       setActionType(null)
     }
@@ -175,6 +177,7 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
                 rows={3}
+                className="resize-none"
               />
             </div>
           </div>
