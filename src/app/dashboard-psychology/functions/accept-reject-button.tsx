@@ -52,8 +52,8 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
       setAcceptOpen(false)
     } catch (error) {
       console.error(error)
-    } finally {
       toast.error("Please input a valid URL")
+    } finally {
       setIsLoading(false)
       setActionType(null)
     }
@@ -85,6 +85,7 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
       setRejectOpen(false)
     } catch (error) {
       console.error("Error rejecting booking:", error)
+      toast.error("Something went wrong")
     } finally {
       setIsLoading(false)
       setActionType(null)
