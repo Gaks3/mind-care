@@ -18,7 +18,6 @@ import { insertUserSchema } from "@/app/api/[[...route]]/routes/users/users.sche
 import { useEffect, useState } from "react"
 import { Textarea } from "@/components/ui/textarea"
 
-
 type FormValues = z.infer<typeof insertUserSchema>
 
 export default function AddUserPage() {
