@@ -10,31 +10,31 @@ export function TestSelection() {
     {
       id: "mental-health",
       title: "Mental Health Test",
-      description: "Nilailah kesejahteraan mental kamu saat ini dan identifikasi yang perlu diperbaiki.",
+      description: "Assess your current mental wellbeing and identify areas for improvement.",
       icon: <Brain className="h-6 w-6" />,
       href: "/test-psychology/mental-health",
     },
     {
       id: "love-language",
       title: "Love Language Test",
-      description: "Temukan bagaimana kamu lebih suka memberi dan menerima cinta dalam hubungan.",
+      description: "Discover how you prefer to give and receive love in relationships.",
       icon: <Heart className="h-6 w-6" />,
       href: "/test-psychology/love-language",
     },
     {
       id: "happiness",
       title: "Happiness Test",
-      description: "Evaluasi tingkat kebahagiaan kamu saat ini dan temukan cara untuk meningkatkan kegembiraan.",
+      description: "Evaluate your current happiness level and explore ways to cultivate more joy.",
       icon: <Smile className="h-6 w-6" />,
       href: "/test-psychology/happiness",
     },
     {
       id: "loneliness",
       title: "Loneliness Test",
-      description: "Pahami perasaan kesepian kamu dan temukan cara untuk tidak kesepian.",
+      description: "Understand your feelings of loneliness and find strategies to feel more connected.",
       icon: <UserRound className="h-6 w-6" />,
       href: "/test-psychology/loneliness",
-    },
+    }
   ]
 
   return (
@@ -48,7 +48,7 @@ export function TestSelection() {
           </CardHeader>
           <CardFooter className="mt-auto pt-2">
             <Button asChild className="w-full">
-              <Link href={test.href}>Mulai Tes</Link>
+              <Link href={test.href}>Start Test</Link>
             </Button>
           </CardFooter>
         </Card>

@@ -67,7 +67,7 @@ export function TestTemplate({ title, description, questions, getResults }: Test
   return (
     <div className="container max-w-2xl mx-auto py-10 px-4">
       <Button variant="outline" onClick={handleBack} className="mb-6">
-        <ArrowLeft className="mr-2 h-4 w-4" /> Kembali ke tes
+        <ArrowLeft className="mr-2 h-4 w-4" /> Return to Tests
       </Button>
 
       <Card className="w-full">
@@ -82,14 +82,14 @@ export function TestTemplate({ title, description, questions, getResults }: Test
               <Progress value={progress} className="mb-6" />
               <div className="mb-8">
                 <h3 className="text-lg font-medium mb-2">
-                  Pertanyaan {currentQuestion + 1} dari {questions.length}
+                  Question {currentQuestion + 1} of {questions.length}
                 </h3>
                 <p className="text-xl">{questions[currentQuestion].text}</p>
               </div>
             </>
           ) : (
             <div className="py-6">
-              <h3 className="text-xl font-bold mb-4">Hasil kamu:</h3>
+              <h3 className="text-xl font-bold mb-4">Your Result:</h3>
               <div className="bg-primary/10 p-6 rounded-lg mb-4">
                 <h4 className="text-lg font-semibold mb-2">{result?.title}</h4>
                 <p>{result?.description}</p>
@@ -102,24 +102,24 @@ export function TestTemplate({ title, description, questions, getResults }: Test
           {!showResults ? (
             <>
               <Button onClick={() => handleAnswer(true)} className="flex-1 bg-green-600 hover:bg-green-700">
-                <Check className="mr-2 h-4 w-4" /> Ya
+                <Check className="mr-2 h-4 w-4" /> Yes
               </Button>
               <Button onClick={() => handleAnswer(false)} className="flex-1 bg-red-600 hover:bg-red-700">
-                <X className="mr-2 h-4 w-4" /> Tidak
+                <X className="mr-2 h-4 w-4" /> No
               </Button>
               {currentQuestion > 0 && (
                 <Button variant="outline" onClick={handlePrevious} className="flex-1">
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Kembali
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
               )}
             </>
           ) : (
             <>
               <Button onClick={handleRestart} className="flex-1">
-                Ambil Tes lagi
+              Retake the Test
               </Button>
               <Button onClick={handleBack} variant="outline" className="flex-1">
-                Coba Tes lain
+              Try Another Test
               </Button>
             </>
           )}

@@ -1,51 +1,87 @@
-"use client"
+"use client";
 
-import { TestTemplate, type Question, type TestResult } from "@/components/test-template"
+import {
+  TestTemplate,
+  type Question,
+  type TestResult,
+} from "@/components/test-template";
 
 export default function MentalHealthTest() {
   const questions: Question[] = [
-    { id: 1, text: "Apakah kamu sering merasa kewalahan dengan tanggung jawab sehari-hari?" },
-    { id: 2, text: "Apakah kamu mengalami kesulitan tidur atau perubahan pola tidur?" },
-    { id: 3, text: "Apakah kamu merasa sulit untuk berkonsentrasi pada tugas?" },
-    { id: 4, text: "Apakah kamu sering merasa cemas tanpa alasan yang jelas?" },
-    { id: 5, text: "Apakah kamu kehilangan minat pada aktivitas yang dulu kamu nikmati?" },
-    { id: 6, text: "Apakah kamu sering merasa lelah atau tidak memiliki energi?" },
-    { id: 7, text: "Apakah kamu memiliki pikiran negatif tentang diri sendiri atau masa depan kamu?" },
-    { id: 8, text: "Apakah kamu merasa sulit untuk bersantai meskipun memiliki waktu luang?" },
-    { id: 9, text: "Apakah kamu mengalami perubahan nafsu makan atau berat badan baru-baru ini?" },
-    { id: 10, text: "Apakah kamu merasa memiliki seseorang untuk diajak bicara saat sedang kesulitan?" },
-  ]
+    {
+      id: 1,
+      text: "Do you often feel overwhelmed by daily responsibilities?",
+    },
+    {
+      id: 2,
+      text: "Are you experiencing difficulty sleeping or changes in sleep patterns?",
+    },
+    {
+      id: 3,
+      text: "Do you find it hard to concentrate on tasks?",
+    },
+    {
+      id: 4,
+      text: "Do you frequently feel anxious without a clear reason?",
+    },
+    {
+      id: 5,
+      text: "Have you lost interest in activities you once enjoyed?",
+    },
+    {
+      id: 6,
+      text: "Do you often feel tired or lack energy?",
+    },
+    {
+      id: 7,
+      text: "Do you have negative thoughts about yourself or your future?",
+    },
+    {
+      id: 8,
+      text: "Do you struggle to relax even when you have free time?",
+    },
+    {
+      id: 9,
+      text: "Have you experienced recent changes in appetite or weight?",
+    },
+    {
+      id: 10,
+      text: "Do you feel you have someone to talk to when facing difficulties?",
+    },
+  ];
 
   const getResults = (answers: boolean[]): TestResult => {
-    const concernScore = answers.slice(0, 9).filter((answer) => answer).length + (answers[9] ? 0 : 1)
+    const concernScore =
+      answers.slice(0, 9).filter((answer) => answer).length +
+      (answers[9] ? 0 : 1);
 
     if (concernScore <= 3) {
       return {
-        title: "Kesehatan Mental Baik",
+        title: "Healthy Mental State",
         description:
-          "Jawaban kamu menunjukkan bahwa kamu saat ini memiliki kesehatan mental yang baik. Teruskan kebiasaan positif dan rutinitas perawatan diri kamu. Ingatlah bahwa kesehatan mental dapat berubah seiring waktu, jadi tetap perhatikan kebutuhan kamu.",
-      }
+          "Great news! Your results show strong mental wellbeing. Continue practicing self-care and those healthy habits. Since mental health can change, we encourage you to check in with yourself regularly.",
+      };
     } else if (concernScore <= 6) {
       return {
-        title: "Kekhawatiran Kesehatan Mental Ringan",
+        title: "Minor Mental Health Worries",
         description:
-          "Jawaban kamu menunjukkan adanya beberapa kekhawatiran ringan terkait kesehatan mental. Cobalah untuk lebih banyak melakukan perawatan diri, berbicara dengan teman atau keluarga tentang perasaan kamu, dan terus memantau kesehatan mental kamu. Jika gejala berlanjut, pertimbangkan untuk berkonsultasi dengan profesional kesehatan mental.",
-      }
+          "Your results show you’re experiencing mild mental health challenges. Small steps matter—practice self-care, reach out to loved ones, and check in with yourself regularly. Professional support is available if needed.",
+      };
     } else {
       return {
-        title: "Kekhawatiran Kesehatan Mental Signifikan",
+        title: "Significant Mental Health Concerns",
         description:
-          "Jawaban kamu menunjukkan bahwa kamu mungkin mengalami tantangan kesehatan mental yang signifikan. Disarankan untuk berbicara dengan profesional kesehatan mental yang dapat memberikan penilaian dan dukungan yang tepat. Ingatlah bahwa mencari bantuan adalah tanda kekuatan, bukan kelemahan.",
-      }
+          "Your results indicate you're dealing with important mental health concerns. Connecting with a psychologist or therapist could help you navigate this. Reaching out takes courage—you're already taking the first step by noticing these signs.",
+      };
     }
-  }
+  };
 
   return (
     <TestTemplate
-      title="Analisis Kesehatan Mental"
-      description="Jawab pertanyaan berikut dengan jujur untuk menilai kesejahteraan mental kamu saat ini."
+      title="Mental Health Analysis"
+      description="Answer the following questions honestly to assess your current mental wellbeing."
       questions={questions}
       getResults={getResults}
     />
-  )
+  );
 }

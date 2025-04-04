@@ -4,16 +4,46 @@ import { TestTemplate, type Question, type TestResult } from "@/components/test-
 
 export default function LonelinessTest() {
   const questions: Question[] = [
-    { id: 1, text: "Apakah kamu sering merasa terisolasi dari orang lain?" },
-    { id: 2, text: "Apakah kamu merasa sulit untuk terhubung dengan orang lain secara mendalam?" },
-    { id: 3, text: "Apakah kamu sering merasa ditinggalkan dari aktivitas sosial?" },
-    { id: 4, text: "Apakah kamu berharap memiliki lebih banyak hubungan yang bermakna dalam hidupmu?" },
-    { id: 5, text: "Apakah kamu sering merasa bahwa tidak ada yang benar-benar memahami dirimu?" },
-    { id: 6, text: "Apakah kamu sering merasa sendirian bahkan saat berada di antara orang lain?" },
-    { id: 7, text: "Apakah kamu merasa sulit untuk menghubungi orang lain saat sedang merasa sedih?" },
-    { id: 8, text: "Apakah kamu sering merasa bahwa hubunganmu tidak sepuas yang kamu harapkan?" },
-    { id: 9, text: "Apakah kamu menghabiskan lebih banyak waktu sendirian daripada yang kamu inginkan?" },
-    { id: 10, text: "Apakah kamu memiliki orang yang bisa kamu andalkan saat membutuhkan dukungan?" },
+    {
+      id: 1,
+      text: "Do you often feel isolated from others?"
+    },
+    {
+      id: 2,
+      text: "Do you find it difficult to form deep connections with people?"
+    },
+    {
+      id: 3,
+      text: "Do you frequently feel left out of social activities?"
+    },
+    {
+      id: 4,
+      text: "Do you wish you had more meaningful relationships in your life?"
+    },
+    {
+      id: 5,
+      text: "Do you often feel like nobody truly understands you?"
+    },
+    {
+      id: 6,
+      text: "Do you frequently feel alone even when surrounded by people?"
+    },
+    {
+      id: 7,
+      text: "Do you struggle to reach out to others when you're feeling down?"
+    },
+    {
+      id: 8,
+      text: "Do your relationships often feel less satisfying than you'd like?"
+    },
+    {
+      id: 9,
+      text: "Do you spend more time alone than you would prefer?"
+    },
+    {
+      id: 10,
+      text: "Do you have people you can reliably turn to for support?"
+    }
   ]
 
   const getResults = (answers: boolean[]): TestResult => {
@@ -21,29 +51,29 @@ export default function LonelinessTest() {
 
     if (lonelinessScore <= 3) {
       return {
-        title: "Tingkat Kesepian Rendah",
+        title: "Low Loneliness Level",
         description:
-          "Jawaban kamu menunjukkan bahwa kamu umumnya merasa terhubung dengan orang lain dan memiliki hubungan yang memuaskan. Kamu mungkin memiliki jaringan dukungan yang baik dan merasa dipahami oleh orang-orang di sekitarmu. Terus jaga hubungan ini dan jangan ragu untuk menjangkau orang lain saat dibutuhkan.",
+          "Your responses indicate you generally feel connected to others and have satisfying relationships. You likely maintain a strong support network and feel understood by those around you. Keep nurturing these bonds, and remember it's okay to reach out when you need extra support.",
       }
     } else if (lonelinessScore <= 6) {
       return {
-        title: "Tingkat Kesepian Sedang",
+        title: "Moderate Loneliness Level",
         description:
-          "Jawaban kamu menunjukkan bahwa kamu mungkin mengalami perasaan kesepian dalam beberapa situasi. Coba lakukan langkah kecil untuk memperdalam hubungan yang sudah ada dan membangun koneksi baru. Ini bisa termasuk bergabung dengan komunitas berdasarkan minat, menjadi sukarelawan, atau lebih terbuka kepada teman-teman terdekat. Ingat, banyak orang juga mengalami kesepian, dan tidak ada salahnya mencari koneksi baru.",
+          "Your responses indicate you may experience loneliness in certain situations. Try taking small steps to deepen existing relationships and build new connections—like joining interest-based communities, volunteering, or opening up to close friends. Remember, many people experience loneliness, and there's no shame in seeking new meaningful connections.",
       }
     } else {
       return {
-        title: "Tingkat Kesepian Tinggi",
+        title: "High Loneliness Level",
         description:
-          "Jawaban kamu menunjukkan bahwa kamu mungkin mengalami perasaan kesepian yang cukup signifikan. Ini adalah pengalaman yang umum, tetapi bisa terasa menyakitkan. Pertimbangkan untuk berbicara dengan profesional kesehatan mental yang dapat memberikan dukungan dan strategi. Langkah kecil seperti bergabung dengan kelompok komunitas, menjadi sukarelawan, atau menghubungi teman lama juga bisa membantu. Ingat, kesepian bukan berarti ada yang salah denganmu—ini hanya tanda bahwa kebutuhan sosialmu belum sepenuhnya terpenuhi.",
+          "Your responses indicate you may be experiencing significant loneliness. While this is a common experience, it can feel painful. Consider speaking with a mental health professional who can offer support and coping strategies. Small steps—like joining community groups, volunteering, or reaching out to old friends—can also help. Remember, loneliness doesn't mean there's something wrong with you; it simply signals unmet social needs.",
       }
     }
   }
 
   return (
     <TestTemplate
-      title="Analisis Kesepian"
-      description="Pahami perasaan kesepianmu dan temukan cara untuk membangun koneksi yang lebih bermakna."
+      title="Loneliness Analysis"
+      description="Understand your feelings of loneliness and discover ways to build more meaningful connections."
       questions={questions}
       getResults={getResults}
     />
