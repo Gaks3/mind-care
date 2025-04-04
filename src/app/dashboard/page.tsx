@@ -47,6 +47,7 @@ export default async function DashboardUser() {
     return redirect("/dashboard-psychology")
   }
 
+
   const totalSessions = sessionsData.length
 
   return (
@@ -191,6 +192,7 @@ export default async function DashboardUser() {
                                         hour12: false,
                                       })}
                                     </p>
+                                    <p>Reject Reason: {session.reason}</p>
                                     {session.bookingSchedule.meetingLink && (
                                       <Button asChild variant="default" size="sm" className="mt-1">
                                         <Link href={session.bookingSchedule.meetingLink} target="_blank">
@@ -399,6 +401,7 @@ export default async function DashboardUser() {
                                       hour12: false,
                                     })}
                                   </p>
+                                  <p>Reject Reason: {session.reason}</p>
                                   {session.bookingSchedule.meetingLink && (
                                     <Button asChild variant="default" size="sm" className="mt-1">
                                       <Link href={session.bookingSchedule.meetingLink} target="_blank">
