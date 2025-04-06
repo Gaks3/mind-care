@@ -1,8 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Check, X } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -24,12 +31,21 @@ interface TestTemplateProps {
   getResults: (answers: boolean[]) => TestResult
 }
 
-export function TestTemplate({ title, description, questions, getResults }: TestTemplateProps) {
+export function TestTemplate({
+  title,
+  description,
+  questions,
+  getResults,
+}: TestTemplateProps) {
   const router = useRouter()
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState<boolean[]>([])
+  const [answers, setAnswers] = useState<(boolean | null)[]>([])
   const [showResults, setShowResults] = useState(false)
   const [result, setResult] = useState<TestResult | null>(null)
+
+  useEffect(() => {
+    setAnswers(new Array(questions.length).fill(null))
+  }, [questions.length])
 
   const progress = (currentQuestion / questions.length) * 100
 
@@ -41,7 +57,13 @@ export function TestTemplate({ title, description, questions, getResults }: Test
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
-      const testResult = getResults(newAnswers)
+      const isComplete = newAnswers.every((ans) => ans !== null)
+      if (!isComplete) {
+        alert("Please answer all questions before submitting.")
+        return
+      }
+
+      const testResult = getResults(newAnswers as boolean[])
       setResult(testResult)
       setShowResults(true)
     }
@@ -55,7 +77,7 @@ export function TestTemplate({ title, description, questions, getResults }: Test
 
   const handleRestart = () => {
     setCurrentQuestion(0)
-    setAnswers([])
+    setAnswers(new Array(questions.length).fill(null))
     setShowResults(false)
     setResult(null)
   }
@@ -101,10 +123,16 @@ export function TestTemplate({ title, description, questions, getResults }: Test
         <CardFooter className="flex flex-col sm:flex-row gap-4">
           {!showResults ? (
             <>
-              <Button onClick={() => handleAnswer(true)} className="flex-1 bg-green-600 hover:bg-green-700">
+              <Button
+                onClick={() => handleAnswer(true)}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+              >
                 <Check className="mr-2 h-4 w-4" /> Yes
               </Button>
-              <Button onClick={() => handleAnswer(false)} className="flex-1 bg-red-600 hover:bg-red-700">
+              <Button
+                onClick={() => handleAnswer(false)}
+                className="flex-1 bg-red-600 hover:bg-red-700"
+              >
                 <X className="mr-2 h-4 w-4" /> No
               </Button>
               {currentQuestion > 0 && (
@@ -116,10 +144,10 @@ export function TestTemplate({ title, description, questions, getResults }: Test
           ) : (
             <>
               <Button onClick={handleRestart} className="flex-1">
-              Retake the Test
+                Retake the Test
               </Button>
               <Button onClick={handleBack} variant="outline" className="flex-1">
-              Try Another Test
+                Try Another Test
               </Button>
             </>
           )}
@@ -128,4 +156,3 @@ export function TestTemplate({ title, description, questions, getResults }: Test
     </div>
   )
 }
-
