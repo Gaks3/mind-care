@@ -2,28 +2,28 @@ import React from "react";
 
 const records = [
   {
-    data: "700.000 +",
-    desc: "Cerita telah disampaikan kepada MindCare sejak 2021",
+    data: "700,000+",
+    desc: "Stories shared with MindCare since 2021"
   },
   {
-    data: "108.500 +",
-    desc: "Pengguna aktif mengakses layanan",
+    data: "108,500+", 
+    desc: "Active users accessing services"
   },
   {
-    data: "325 +",
-    desc: "Terapis tersedia untuk konsultasi",
+    data: "325+",
+    desc: "Qualified therapists available for consultation"
   },
   {
-    data: "86.800 +",
-    desc: "Klien melaporkan kemajuan positif (80% pengguna)",
-  },
+    data: "86,800+",
+    desc: "Clients reporting positive progress (80% success rate)"
+  }
 ];
 
 const RecordAbout = () => {
   return (
     <div className="flex flex-col items-center lg:h-screen pt-16 md:pt-0 px-4 sm:px-6 md:px-8 lg:px-12 mb-4 lg:mb-0 gap-10">
       <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400 text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-2 max-w-4xl text-center">
-        Terima kasih sudah mempercayai kami sampai saat ini
+      Thank you for placing your trust in us all this time.
       </h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {records.map(({ data, desc }, i) => (
