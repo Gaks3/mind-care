@@ -8,7 +8,7 @@ const Tiptap = () => {
     extensions: [StarterKit],
     editorProps: {
       attributes: {
-        class: "text-xl [&_ul]:list-disc [&_ol]:list-decimal [&_ul>li]:ml-10 [&_ol>li]:ml-6",
+        class: "text-base text-justify [&_ul]:list-disc [&_ol]:list-decimal [&_ul>li]:ml-10 [&_ol>li]:ml-6 md:text-lg xl:text-xl",
       },
     },
     content: `<article>

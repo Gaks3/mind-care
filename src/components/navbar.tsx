@@ -36,7 +36,7 @@ export default function Navbar() {
           </div>
 
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link href="#" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
+            <Link href="/articles" className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium flex items-center gap-2">
               <Newspaper className="ml-2 h-4 w-4" />Articles
             </Link>
 
