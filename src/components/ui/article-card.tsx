@@ -26,7 +26,7 @@ const ArticleCard: React.FC<Article> = ({ title, createdBy, thumbnail, createdAt
           {title}
         </h3>
       </CardHeader>
-      <CardContent className="py-2">
+      <CardContent className="pt-2 pb-3">
         <div className="flex items-center text-gray-500 text-sm">
           <Image
             src="/dokter1.webp"
@@ -38,7 +38,7 @@ const ArticleCard: React.FC<Article> = ({ title, createdBy, thumbnail, createdAt
           <span className="font-medium">{createdBy}</span>
         </div>
       </CardContent>
-      <CardFooter className="mt-auto pt-2">
+      {/* <CardFooter className="mt-auto pt-2">
         <a
           href="#"
           className="text-blue-600 text-sm font-semibold flex items-center group hover:text-blue-800 transition-colors"
@@ -49,7 +49,7 @@ const ArticleCard: React.FC<Article> = ({ title, createdBy, thumbnail, createdAt
             className="ml-2 group-hover:translate-x-1 transition-transform"
           />
         </a>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };
