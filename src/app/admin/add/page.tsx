@@ -1,28 +1,48 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowLeft, Loader2, Plus, Trash2, Eye, EyeOff } from "lucide-react"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { client } from "@/lib/api"
-import { UserRole } from "@/types"
-import { insertUserSchema } from "@/app/api/[[...route]]/routes/users/users.schemas"
-import { useEffect, useState } from "react"
-import { Textarea } from "@/components/ui/textarea"
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Loader2, Plus, Trash2, Eye, EyeOff } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { client } from "@/lib/api";
+import { UserRole } from "@/types";
+import { insertUserSchema } from "@/app/api/[[...route]]/routes/users/users.schemas";
+import { useEffect, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
-type FormValues = z.infer<typeof insertUserSchema>
+type FormValues = z.infer<typeof insertUserSchema>;
 
 export default function AddUserPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(insertUserSchema),
@@ -33,57 +53,66 @@ export default function AddUserPage() {
       role: UserRole.USER,
       description: "",
     },
-  })
+  });
 
-  const selectedRole = form.watch("role")
+  const selectedRole = form.watch("role");
 
   useEffect(() => {
     if (selectedRole !== "PSYCHOLOGY") {
-      form.setValue("description", "")
-      form.setValue("phoneNumber", "")
-      form.setValue("educations", [{
-        institution: "",
-        degree: "",
-        year: "",
-      }])
+      form.setValue("description", "");
+      form.setValue("phoneNumber", "");
+      form.setValue("educations", [
+        {
+          institution: "",
+          degree: "",
+          year: "",
+        },
+      ]);
     }
-  }, [selectedRole, form])
+  }, [selectedRole, form]);
 
   const addUserMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      return client.api.users.$post({ json: data })
+      return client.api.users.$post({ json: data });
     },
     onSuccess: () => {
-      toast.success("User created successfully")
-      form.reset()
+      toast.success("User created successfully");
+      form.reset();
     },
     onError: (error) => {
-      toast.error(error.message || "An error occurred")
+      toast.error(error.message || "An error occurred");
     },
-  })
+  });
 
   const addEducation = () => {
-    const currentEducations = form.getValues("educations") || []
+    const currentEducations = form.getValues("educations") || [];
     form.setValue("educations", [
       ...currentEducations,
       { institution: "", degree: "", year: "" },
-    ])
-  }
+    ]);
+  };
 
   const removeEducation = (index: number) => {
-    const currentEducations = form.getValues("educations") || []
+    const currentEducations = form.getValues("educations") || [];
     if (currentEducations.length > 1) {
-      form.setValue("educations", currentEducations.filter((_, i) => i !== index))
+      form.setValue(
+        "educations",
+        currentEducations.filter((_, i) => i !== index),
+      );
     }
-  }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   return (
-    <div className="container mx-auto py-6 max-w-2xl" >
-      <Button variant="ghost" className="mb-6 flex items-center gap-2" onClick={() => router.push("/admin")}>
+    <div className="container mx-auto py-6 max-w-2xl">
+      <Button
+        variant="ghost"
+        className="mb-6 flex items-center gap-2"
+        onClick={() => router.push("/admin")}
+      >
         <ArrowLeft className="h-4 w-4" />
         Back to Dashboard
       </Button>
@@ -91,13 +120,18 @@ export default function AddUserPage() {
       <Card>
         <CardHeader>
           <CardTitle>Add New User</CardTitle>
-          <CardDescription>Create a new user account in the system.</CardDescription>
+          <CardDescription>
+            Create a new user account in the system.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit((data) => {
-              addUserMutation.mutate(data)
-            })} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit((data) => {
+                addUserMutation.mutate(data);
+              })}
+              className="space-y-6"
+            >
               <FormField
                 control={form.control}
                 name="name"
@@ -119,7 +153,11 @@ export default function AddUserPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="john.doe@example.com" type="email" {...field} />
+                      <Input
+                        placeholder="john.doe@example.com"
+                        type="email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -156,7 +194,9 @@ export default function AddUserPage() {
                         </button>
                       </div>
                     </FormControl>
-                    <FormDescription>Password must be at least 8 characters long.</FormDescription>
+                    <FormDescription>
+                      Password must be at least 8 characters long.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -168,7 +208,10 @@ export default function AddUserPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Role</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a role" />
@@ -180,7 +223,9 @@ export default function AddUserPage() {
                         <SelectItem value="ADMIN">ADMIN</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormDescription>This determines what permissions the user will have.</FormDescription>
+                    <FormDescription>
+                      This determines what permissions the user will have.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -202,7 +247,8 @@ export default function AddUserPage() {
                           />
                         </FormControl>
                         <FormDescription>
-                          Provide details about this psychology professionals background and expertise.
+                          Provide details about this psychology professionals
+                          background and expertise.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -242,9 +288,14 @@ export default function AddUserPage() {
                     </div>
 
                     {form.watch("educations")?.map((_, index) => (
-                      <div key={index} className="p-4 border rounded-lg space-y-4">
+                      <div
+                        key={index}
+                        className="p-4 border rounded-lg space-y-4"
+                      >
                         <div className="flex justify-between items-center">
-                          <h4 className="font-medium">Education #{index + 1}</h4>
+                          <h4 className="font-medium">
+                            Education #{index + 1}
+                          </h4>
                           {index > 0 && (
                             <Button
                               type="button"
@@ -265,7 +316,10 @@ export default function AddUserPage() {
                             <FormItem>
                               <FormLabel>Institution</FormLabel>
                               <FormControl>
-                                <Input placeholder="Harvard University" {...field} />
+                                <Input
+                                  placeholder="Harvard University"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -279,7 +333,10 @@ export default function AddUserPage() {
                             <FormItem>
                               <FormLabel>Degree</FormLabel>
                               <FormControl>
-                                <Input placeholder="Ph.D. in Psychology" {...field} />
+                                <Input
+                                  placeholder="Ph.D. in Psychology"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -305,14 +362,20 @@ export default function AddUserPage() {
                 </>
               )}
 
-              <Button type="submit" className="w-full" disabled={addUserMutation.isPending}>
-                {addUserMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={addUserMutation.isPending}
+              >
+                {addUserMutation.isPending && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 {addUserMutation.isPending ? "Creating User..." : "Create User"}
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
-    </div >
-  )
+    </div>
+  );
 }

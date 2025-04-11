@@ -18,7 +18,6 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { UserRole } from "@/types";
 
-
 export default async function AdminDashboard() {
   const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user;
@@ -90,7 +89,7 @@ export default async function AdminDashboard() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold mb-2">
-                Selamat Datang, {role} 👋
+                Welcome, {role} 👋
               </h1>
               <p className="text-primary-foreground/80">Email: {user?.email}</p>
             </div>

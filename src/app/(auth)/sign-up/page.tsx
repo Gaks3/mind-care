@@ -80,7 +80,7 @@ export default function SignUpPage() {
             errorMessage.includes("duplicate")
           ) {
             errorMessage =
-              "Email ini sudah terdaftar. Silahkan gunakan email lain.";
+              "This email already used, please enter another email.";
           }
 
           toast.error("Sign up failed", {
@@ -93,7 +93,7 @@ export default function SignUpPage() {
           });
           setIsSubmitting(false);
         },
-      }
+      },
     );
   }
 
@@ -115,7 +115,7 @@ export default function SignUpPage() {
             Sign Up
           </CardTitle>
           <CardDescription className="text-center text-gray-500">
-            Daftar Akun di MindCare, Yuk!
+            Register an account to MindCare!
           </CardDescription>
         </CardHeader>
 
@@ -128,7 +128,7 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 font-medium">
-                      Nama
+                      Name
                     </FormLabel>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -136,7 +136,7 @@ export default function SignUpPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="Masukkan Nama"
+                          placeholder="Enter your name"
                           className="pl-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
                         />
@@ -161,7 +161,7 @@ export default function SignUpPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="Masukkan Email"
+                          placeholder="Enter your email"
                           className="pl-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
                         />
@@ -186,7 +186,7 @@ export default function SignUpPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="Masukkan Kata Sandi"
+                          placeholder="Enter your password"
                           type={showPassword ? "text" : "password"}
                           className="pl-10 pr-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
@@ -231,7 +231,7 @@ export default function SignUpPage() {
 
         <CardFooter className="flex justify-center px-8 py-6">
           <p className="text-sm text-gray-600">
-            Sudah punya akun?{" "}
+            Already have an account?{" "}
             <Link
               href="/sign-in"
               className="text-primary font-medium hover:underline"
