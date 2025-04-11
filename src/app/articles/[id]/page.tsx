@@ -1,4 +1,5 @@
-import Tiptap from "@/components/tiptap";
+import TiptapText from "@/components/tiptap-text";
+import TiptapTitle from "@/components/tiptap-title";
 import Image from "next/image";
 import { Calendar, Eye } from "lucide-react";
 import { Article } from "@/types";
@@ -39,14 +40,13 @@ export default function Article() {
   return (
     <section className="container mx-auto">
       <article className="py-8 px-4 lg:px-24 xl:px-60">
-        <h1 className="text-3xl md:text-4xl font-semibold mb-6">
-          Pentingnya Kesehatan Mental: Mengapa Kita Harus Peduli?
-        </h1>
-
+        
+        <TiptapTitle/>
+        
         <div className="flex items-center justify-between sm:justify-normal sm:gap-10 md:gap-20 mb-6">
           <div className="flex items-center">
             <Image
-              src="/profile.webp"
+              src="/profile.jpg"
               width={1000}
               height={1000}
               alt="profile"
@@ -56,7 +56,9 @@ export default function Article() {
           </div>
           <div className="flex items-center">
             <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-            <p className="sm:text-lg md:text-xl font-semibold">12th March 2025</p>
+            <p className="sm:text-lg md:text-xl font-semibold">
+              12th March 2025
+            </p>
           </div>
           <div className="flex items-center">
             <Eye className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
@@ -72,7 +74,7 @@ export default function Article() {
           className="rounded-xl mx-auto mb-6"
         />
 
-        <Tiptap />
+        <TiptapText/>
       </article>
 
       <div className="w-full">
