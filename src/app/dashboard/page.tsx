@@ -112,7 +112,7 @@ export default async function DashboardUser() {
                     <Calendar className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Upcoming Session</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">Upcoming Sessions</p>
                     <p className="text-xl font-bold">
                       {sessionsData.filter((session) => session.status !== "ACCEPTED").length}
                     </p>
