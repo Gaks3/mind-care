@@ -7,6 +7,7 @@ import {
   MessageCircle,
   MessageCircleHeart,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -27,17 +28,20 @@ export default function Hero() {
             </span>
           </h1>
           <p className="text-base sm:text-lg text-foreground/70 mb-8 leading-relaxed max-w-xl">
-          Find peace and support with our AI assistant, designed to help you maintain mental well-being and discover balance in life.
+            Find peace and support with our AI assistant, designed to help you
+            maintain mental well-being and discover balance in life.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base group">
-              Get Started <ArrowRight className="ml-2 group-hover:ml-3" />
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link href="/check">
+              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl text-base group w-full">
+                Get Started <ArrowRight className="ml-2 group-hover:ml-3" />
+              </Button>
+            </Link>
             <Button
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 rounded-xl text-base"
             >
-              Learn More
+              <Link href="/about">Learn More</Link>
             </Button>
           </div>
         </div>
@@ -51,14 +55,14 @@ export default function Hero() {
                 <h3 className="font-semibold text-base sm:text-lg">MindCare</h3>
               </div>
               <p className="text-sm sm:text-base text-foreground/70 mb-4 sm:mb-6">
-                How is ur feelings today? I am here to listen
+                Answer some questions to predict your mental health with AI
               </p>
               <div className="flex justify-end">
                 <Button
                   size="sm"
                   className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  <MessageCircle className="h-4 w-4 mr-2" /> Chat Now
+                  <MessageCircle className="h-4 w-4 mr-2" /> Check
                 </Button>
               </div>
             </div>
