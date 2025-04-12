@@ -26,33 +26,50 @@ import {
 } from "@/components/ui/dialog";
 import Link from "next/link";
 import { Calendar } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   age: z.coerce.number().min(1, "This field is required"),
   sleep_hours: z.coerce.number().min(1, "This field is required"),
   work_hours: z.coerce.number().min(1, "This field is required"),
-  feels_anxious: z.enum(["Yes", "No"], {
-    required_error: "Please select an answer",
-  }),
-  has_support: z.enum(["Yes", "No"], {
-    required_error: "Please select an answer",
-  }),
-  eats_well: z.enum(["Yes", "No"], {
-    required_error: "Please select an answer",
-  }),
-  physical_activity: z.enum(["Yes", "No"], {
-    required_error: "Please select an answer",
-  }),
+  feels_anxious: z
+    .enum(["Yes", "No"])
+    .optional()
+    .refine((val) => val !== undefined, {
+      message: "Please select an answer",
+    }),
+  has_support: z
+    .enum(["Yes", "No"])
+    .optional()
+    .refine((val) => val !== undefined, {
+      message: "Please select an answer",
+    }),
+  eats_well: z
+    .enum(["Yes", "No"])
+    .optional()
+    .refine((val) => val !== undefined, {
+      message: "Please select an answer",
+    }),
+  physical_activity: z
+    .enum(["Yes", "No"])
+    .optional()
+    .refine((val) => val !== undefined, {
+      message: "Please select an answer",
+    }),
   uses_social_media_hours: z.coerce.number().min(1, "This field is required"),
-  has_sleep_disorder: z.enum(["Yes", "No"], {
-    required_error: "Please select an answer",
-  }),
+  has_sleep_disorder: z
+    .enum(["Yes", "No"])
+    .optional()
+    .refine((val) => val !== undefined, {
+      message: "Please select an answer",
+    }),
   satisfaction_level: z.coerce.number().min(1, "This field is required"),
 });
 
 type FormInput = z.infer<typeof formSchema>;
 
 export default function MentalCheckForm() {
+  const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [predictionResult, setPredictionResult] = useState<string>("");
 
@@ -92,6 +109,7 @@ export default function MentalCheckForm() {
 
   const closeModal = () => {
     setOpenModal(false);
+    router.refresh();
   };
 
   const getResultDescription = (result: string) => {
@@ -100,10 +118,12 @@ export default function MentalCheckForm() {
     switch (result.toLowerCase()) {
       case "healthy":
         return "Great job! Your responses indicate a healthy mental state. Continue maintaining your positive habits and self-care routines.";
-      case "stress":
-        return "Your responses indicate you may be experiencing stress. Consider practicing mindfulness, taking short breaks throughout the day, and ensuring you get enough rest. Talking to a friend or professional can also help manage stress levels. MindCare can help you,";
+      case "chronic stress":
+        return "Your responses indicate you may be experiencing Chronic Stress. Consider practicing mindfulness, taking short breaks throughout the day, and ensuring you get enough rest. Talking to a friend or professional can also help manage stress levels. MindCare can help you";
+      case "mild stress":
+        return "Your responses indicate you may be experiencing Mild Stress. Consider practicing mindfulness, taking short breaks throughout the day, and ensuring you get enough rest. Talking to a friend or professional can also help manage stress levels. MindCare can help you";
       case "depression":
-        return "Your responses suggest signs of depression. It's important to reach out to a mental health professional for proper assessment and support. Remember that seeking help is a sign of strength, not weakness. Consider activities that bring you joy and maintain social connections. MindCare can help you";
+        return "Your responses suggest signs of Depression. It's important to reach out to a mental health professional for proper assessment and support. Remember that seeking help is a sign of strength, not weakness. Consider activities that bring you joy and maintain social connections. MindCare can help you";
       default:
         return "Thank you for completing the assessment. Remember that mental health is an important part of overall wellbeing.";
     }
@@ -111,7 +131,12 @@ export default function MentalCheckForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow space-y-4">
-      <h1 className="text-xl font-bold">Mental Health Check</h1>
+      <h1 className="text-base md:text-xl font-bold">
+        Mental Health Check with model AI
+      </h1>
+      <p className="text-md text-muted-foreground">
+        Please answer these questions
+      </p>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Label htmlFor="age">Age</Label>
@@ -148,9 +173,9 @@ export default function MentalCheckForm() {
         <div>
           <Label htmlFor="feels_anxious">Feel Anxious Often?</Label>
           <Select
-            onValueChange={(val: "Yes" | "No") =>
-              setValue("feels_anxious", val)
-            }
+            onValueChange={(value) => {
+              setValue("feels_anxious", value as "Yes" | "No");
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select an answer" />
@@ -170,7 +195,9 @@ export default function MentalCheckForm() {
         <div>
           <Label htmlFor="has_support">Have Social Support?</Label>
           <Select
-            onValueChange={(val: "Yes" | "No") => setValue("has_support", val)}
+            onValueChange={(value) => {
+              setValue("has_support", value as "Yes" | "No");
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select an answer" />
@@ -188,7 +215,9 @@ export default function MentalCheckForm() {
         <div>
           <Label htmlFor="eats_well">Eat Healthy?</Label>
           <Select
-            onValueChange={(val: "Yes" | "No") => setValue("eats_well", val)}
+            onValueChange={(value) => {
+              setValue("eats_well", value as "Yes" | "No");
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select an answer" />
@@ -206,9 +235,9 @@ export default function MentalCheckForm() {
         <div>
           <Label htmlFor="physical_activity">Regular Physical Activity?</Label>
           <Select
-            onValueChange={(val: "Yes" | "No") =>
-              setValue("physical_activity", val)
-            }
+            onValueChange={(value) => {
+              setValue("physical_activity", value as "Yes" | "No");
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select an answer" />
@@ -244,9 +273,9 @@ export default function MentalCheckForm() {
         <div>
           <Label htmlFor="has_sleep_disorder">Have Sleep Disorder?</Label>
           <Select
-            onValueChange={(val: "Yes" | "No") =>
-              setValue("has_sleep_disorder", val)
-            }
+            onValueChange={(value) => {
+              setValue("has_sleep_disorder", value as "Yes" | "No");
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select an answer" />
@@ -300,13 +329,15 @@ export default function MentalCheckForm() {
               {getResultDescription(predictionResult)}
             </p>
           </div>
-          <DialogFooter className="flex items-center gap-">
-            <Link href="/bookings">
-              <Button>
-                <Calendar className="h-5 w-5" />
-                Booking Now
-              </Button>
-            </Link>
+          <DialogFooter className="flex flex-col md:flex-row items-center gap-4">
+            {predictionResult.toLowerCase() !== "healthy" && (
+              <Link href="/bookings">
+                <Button>
+                  <Calendar className="h-5 w-5" />
+                  Booking Now
+                </Button>
+              </Link>
+            )}
             <Button onClick={closeModal} variant="outline">
               Close
             </Button>
