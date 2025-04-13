@@ -22,6 +22,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { redirect } from "next/navigation"
 import { UserRole } from "@/types"
 import { client } from "@/lib/api"
+import { DeleteBookingButton } from "./delete-button"
 
 export default async function DashboardUser() {
   const session = await auth.api.getSession({
@@ -46,7 +47,6 @@ export default async function DashboardUser() {
   if (role === UserRole.PSYCHOLOGY) {
     return redirect("/dashboard-psychology")
   }
-
 
   const totalSessions = sessionsData.length
 
@@ -138,9 +138,7 @@ export default async function DashboardUser() {
       <div className="flex-1 container mx-auto p-4 md:p-6">
         <div className="mb-6 mt-3">
           <Link href="/bookings">
-            <Button>
-              Booking Now
-            </Button>
+            <Button>Booking Now</Button>
           </Link>
         </div>
         <div className="hidden md:grid md:grid-cols-2 gap-6">
@@ -223,7 +221,10 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
@@ -235,7 +236,9 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">There are no bookings waiting for confirmation.</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  There are no bookings waiting for confirmation.
+                </p>
               )}
             </CardContent>
           </Card>
@@ -318,11 +321,16 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
                               </Button>
+
+                              <DeleteBookingButton sessionId={session.id} />
                             </div>
                           </div>
                         </CardContent>
@@ -390,9 +398,7 @@ export default async function DashboardUser() {
                                 <div className="mt-2 space-y-1 border-t pt-2">
                                   <p className="font-medium">Session Schedule:</p>
                                   <p>Name: {session.bookingSchedule.psychologist.name}</p>
-                                  <p>
-                                    Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
-                                  </p>
+                                  <p>Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}</p>
                                   <p>
                                     Time:{" "}
                                     {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
@@ -414,7 +420,10 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
@@ -426,7 +435,9 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">There are no bookings waiting for confirmation.</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  There are no bookings waiting for confirmation.
+                </p>
               )}
             </TabsContent>
 
@@ -477,9 +488,7 @@ export default async function DashboardUser() {
                                 <div className="mt-2 space-y-1 border-t pt-2">
                                   <p className="font-medium">Session Schedule:</p>
                                   <p>Name: {session.bookingSchedule.psychologist.name}</p>
-                                  <p>
-                                    Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
-                                  </p>
+                                  <p>Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}</p>
                                   <p>
                                     Time:{" "}
                                     {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
@@ -500,11 +509,16 @@ export default async function DashboardUser() {
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
                               <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
                               </Button>
+
+                              <DeleteBookingButton sessionId={session.id} />
                             </div>
                           </div>
                         </CardContent>
@@ -521,4 +535,3 @@ export default async function DashboardUser() {
     </div>
   )
 }
-
