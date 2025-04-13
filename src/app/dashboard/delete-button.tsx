@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Trash2 } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,39 +13,43 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 interface DeleteBookingButtonProps {
-  sessionId: string
+  sessionId: number;
 }
 
 export function DeleteBookingButton({ sessionId }: DeleteBookingButtonProps) {
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const deleteBooking = async () => {
     try {
-      setIsDeleting(true)
+      setIsDeleting(true);
       const response = await fetch(`/api/bookings/sessions/${sessionId}`, {
         method: "DELETE",
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to delete booking")
+        throw new Error("Failed to delete booking");
       }
 
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
-      console.error("Error deleting booking:", error)
-      alert("Failed to delete booking. Please try again.")
+      console.error("Error deleting booking:", error);
+      alert("Failed to delete booking. Please try again.");
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
     }
-  }
+  };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-1 text-destructive">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1 text-destructive"
+        >
           <Trash2 className="h-4 w-4" />
           <span>Delete</span>
         </Button>
@@ -54,7 +58,8 @@ export function DeleteBookingButton({ sessionId }: DeleteBookingButtonProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete this booking. This action cannot be undone.
+            This will permanently delete this booking. This action cannot be
+            undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -69,5 +74,5 @@ export function DeleteBookingButton({ sessionId }: DeleteBookingButtonProps) {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }
