@@ -2,8 +2,9 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useEffect } from "react";
 
-const TiptapText = () => {
+const TiptapText = ({onContentChange, textData}) => {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -12,10 +13,26 @@ const TiptapText = () => {
       },
     },
     content: `<article>
-        <p>Article's Content</p>
+        ${textData}
     </article>`,
+    onUpdate: ({ editor }) => {
+      if (onContentChange) {
+        onContentChange(editor.getHTML());
+      }
+    },
   });
 
+    useEffect(() => {
+      if (!editor || !textData) return;
+      
+      const currentHtml = editor.getHTML();
+      const newHtml = `<h1>${textData}</h1>`;
+      
+      if (currentHtml !== newHtml) {
+        editor.commands.setContent(newHtml);
+      }
+    }, [textData, editor]);
+  
   return <EditorContent editor={editor} />;
 };
 

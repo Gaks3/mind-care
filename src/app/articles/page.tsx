@@ -1,97 +1,31 @@
+"use client";
+
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import ArticleCard from "@/components/ui/article-card";
-import { Article } from "@/types";
-
-const articles: Article[] = [
-  {
-    id: 101,
-    title: "The Importance of Mental Health: Why We Should Care?",
-    createdBy: "Bidan Ning Tyas",
-    thumbnail: "/about-picture.webp",
-    createdAt: "15th January 2024",
-  },
-  {
-    id: 102,
-    title: "Anxiety Disorder: Symptoms, Causes & How to Overcome It",
-    createdBy: "Dokter Ayu Purniah",
-    thumbnail: "/about-picture.webp",
-    createdAt: "22nd February 2023",
-  },
-  {
-    id: 103,
-    title: "How to Deal with Stress in the Midst of Everyday Busyness",
-    createdBy: "Dr. Hartati",
-    thumbnail: "/about-picture.webp",
-    createdAt: "5th April 2025",
-  },
-  {
-    id: 104,
-    title: "The Importance of Social Supports for Mental Health",
-    createdBy: "Psikolog Lestari",
-    thumbnail: "/about-picture.webp",
-    createdAt: "30th November 2022",
-  },
-  {
-    id: 105,
-    title: "Understanding Depression: Signs and Treatment Options",
-    createdBy: "Dr. Wahyu Setiawan",
-    thumbnail: "/about-picture.webp",
-    createdAt: "8th August 2023",
-  },
-  {
-    id: 106,
-    title: "Mindfulness Techniques for Better Mental Wellbeing",
-    createdBy: "Psikolog Dian Sastro",
-    thumbnail: "/about-picture.webp",
-    createdAt: "17th December 2024",
-  },
-  {
-    id: 107,
-    title: "The Connection Between Physical and Mental Health",
-    createdBy: "Dr. Andi Pratama",
-    thumbnail: "/about-picture.webp",
-    createdAt: "3rd June 2025",
-  },
-  {
-    id: 108,
-    title: "Breaking the Stigma: Talking Openly About Mental Health",
-    createdBy: "Bidan Rina Marlina",
-    thumbnail: "/about-picture.webp",
-    createdAt: "19th September 2021",
-  },
-  {
-    id: 109,
-    title: "Coping Mechanisms for Anxiety in the Digital Age",
-    createdBy: "Psikolog Agus Salim",
-    thumbnail: "/about-picture.webp",
-    createdAt: "25th July 2024",
-  },
-  {
-    id: 110,
-    title: "Work-Life Balance Strategies for Mental Health",
-    createdBy: "Dr. Siti Nurhaliza",
-    thumbnail: "/about-picture.webp",
-    createdAt: "10th October 2023",
-  },
-  {
-    id: 111,
-    title: "The Role of Nutrition in Mental Health Management",
-    createdBy: "Dokter Fitriani",
-    thumbnail: "/about-picture.webp",
-    createdAt: "14th May 2022",
-  },
-  {
-    id: 112,
-    title: "Building Resilience: Techniques for Mental Toughness",
-    createdBy: "Psikolog Bambang Sutrisno",
-    thumbnail: "/about-picture.webp",
-    createdAt: "28th February 2026",
-  },
-];
+import { useEffect, useState } from "react";
 
 const menu = ["Latest", "Popular", "Oldest"];
 
 const Articles = () => {
+
+  const [articlesData, setArticlesData] = useState([]);
+
+  useEffect(() => {
+    const getArticles = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/articles");
+
+        const data = await response.json();
+
+        setArticlesData(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getArticles();
+  }, []);
+
   return (
     <section className="container mx-auto">
       <div className="flex justify-center md:pt-10 pt-4 md:pb-8 pb-4 px-6 md:px-0">
@@ -133,16 +67,7 @@ const Articles = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 lg:px-10 xl:px-28">
-        {articles.map((article, index) => (
-          <ArticleCard
-            id={article.id}
-            key={index}
-            title={article.title}
-            createdBy={article.createdBy}
-            thumbnail={article.thumbnail}
-            createdAt={article.createdAt}
-          />
-        ))}
+        <ArticleCard datas={articlesData} />
       </div>
 
       <div className="flex justify-center mt-14 items-center">

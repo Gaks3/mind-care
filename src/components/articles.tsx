@@ -1,39 +1,28 @@
-import React from "react";
-import { Article } from "@/types";
-import ArticleCard from "./ui/article-card";
+"use client"
 
-const articles: Article[] = [
-  {
-    id: 1,
-    title: "The Importance of Mental Health: Why We Should Care?",
-    createdBy: "Bidan Ning Tyas",
-    thumbnail: "/about-picture.webp",
-    createdAt: "11th March 2025",
-},
-{
-    id: 2,
-    title: "Anxiety Disorder : Symptoms, Causes & How to Overcome It",
-    createdBy: "Dokter Ayu Purniah",
-    thumbnail: "/about-picture.webp",
-    createdAt: "11th March 2025",
-},
-{
-    id: 3,
-    title: "How to Deal with Stress in the Midst of Everyday Busyness",
-    createdBy: "Dr. Hartati",
-    thumbnail: "/about-picture.webp",
-    createdAt: "11th March 2025",
-},
-{
-    id: 4,
-    title: "The Importance of Social Supports for Mental Health",
-    createdBy: "Psikolog Lestari",
-    thumbnail: "/about-picture.webp",
-    createdAt: "11th March 2025",
-}
-];
+import ArticleCard from "./ui/article-card";
+import { useEffect, useState } from "react";
 
 const ArticleSection = () => {
+
+    const [articlesData, setArticlesData] = useState([]);
+  
+    useEffect(() => {
+      const getArticles = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/articles");
+  
+          const data = await response.json();
+  
+          setArticlesData(data.data.slice(0, 4));
+        } catch (error) {
+          console.log(error);
+        }
+      };
+  
+      getArticles();
+    }, []);
+
   return (
     <section className="container mx-auto py-16 px-6 lg:px-28">
       <div className="mb-12 text-center">
@@ -46,15 +35,7 @@ const ArticleSection = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {articles.map((article, index) => (
-          <ArticleCard
-            id={article.id}
-            key={index}
-            title={article.title}
-            createdBy={article.createdBy}
-            thumbnail={article.thumbnail}
-            createdAt={article.createdAt} />
-        ))}
+        <ArticleCard datas={articlesData}/>
       </div>
     </section>
   );
