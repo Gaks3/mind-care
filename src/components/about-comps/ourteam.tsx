@@ -41,7 +41,7 @@ const OurTeamAbout = () => {
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 group ">
                 {team.map(({ image, name, posisi, link }) => (
                         <div className="items-center">
-                            <img src={image} alt={name} className="rounded-full mx-auto object-cover w-[100px] h-[100px] mb-4" />
+                            <img src={image} alt={name} className="rounded-full mx-auto object-cover w-[150px] h-[150px] mb-4 ring-2 ring-primary ring-offset-4" />
                             <a className="font-semibold md:text-xl text-sm hover:text-primary hover:underline" href={link}>{name}</a>
                             <p className="text-sm">{posisi}</p>
                         </div>
