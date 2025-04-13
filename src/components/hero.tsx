@@ -62,7 +62,9 @@ export default function Hero() {
                   size="sm"
                   className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  <MessageCircle className="h-4 w-4 mr-2" /> Check
+                  <Link href="/check" className="flex items-center gap-3">
+                    <MessageCircle className="h-4 w-4 mr-2" /> Check
+                  </Link>
                 </Button>
               </div>
             </div>

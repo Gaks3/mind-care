@@ -96,6 +96,7 @@ export default function MentalCheckForm() {
     onSuccess: (data) => {
       setPredictionResult(data.prediction);
       setOpenModal(true);
+      router.refresh();
       reset();
     },
     onError: () => {
@@ -109,7 +110,12 @@ export default function MentalCheckForm() {
 
   const closeModal = () => {
     setOpenModal(false);
-    router.refresh();
+    setTimeout(() => {
+      router.refresh();
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+    }, 100);
   };
 
   const getResultDescription = (result: string) => {
@@ -313,7 +319,13 @@ export default function MentalCheckForm() {
         </Button>
       </form>
 
-      <Dialog open={openModal} onOpenChange={setOpenModal}>
+      <Dialog
+        open={openModal}
+        onOpenChange={(open) => {
+          if (!open) closeModal();
+          else setOpenModal(true);
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Prediction Result</DialogTitle>
