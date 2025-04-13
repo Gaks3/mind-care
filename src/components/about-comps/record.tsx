@@ -2,19 +2,19 @@ import React from "react";
 
 const records = [
   {
-    data: "700,000+",
+    data: "57,000+",
     desc: "Stories shared with MindCare since 2021"
   },
   {
-    data: "108,500+", 
+    data: "27,500+", 
     desc: "Active users accessing services"
   },
   {
-    data: "325+",
+    data: "315+",
     desc: "Qualified therapists available for consultation"
   },
   {
-    data: "86,800+",
+    data: "18,800+",
     desc: "Clients reporting positive progress (80% success rate)"
   }
 ];
