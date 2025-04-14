@@ -29,9 +29,9 @@ import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  age: z.coerce.number().min(1, "This field is required"),
-  sleep_hours: z.coerce.number().min(1, "This field is required"),
-  work_hours: z.coerce.number().min(1, "This field is required"),
+  age: z.coerce.string().min(1, "This field is required"),
+  sleep_hours: z.coerce.string().min(1, "This field is required"),
+  work_hours: z.coerce.string().min(1, "This field is required"),
   feels_anxious: z
     .enum(["Yes", "No"])
     .optional()
@@ -56,14 +56,14 @@ const formSchema = z.object({
     .refine((val) => val !== undefined, {
       message: "Please select an answer",
     }),
-  uses_social_media_hours: z.coerce.number().min(1, "This field is required"),
+  uses_social_media_hours: z.coerce.string().min(1, "This field is required"),
   has_sleep_disorder: z
     .enum(["Yes", "No"])
     .optional()
     .refine((val) => val !== undefined, {
       message: "Please select an answer",
     }),
-  satisfaction_level: z.coerce.number().min(1, "This field is required"),
+  satisfaction_level: z.coerce.string().min(1, "This field is required"),
 });
 
 type FormInput = z.infer<typeof formSchema>;
@@ -148,7 +148,7 @@ export default function MentalCheckForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Label htmlFor="age">Age</Label>
-          <Input placeholder="Example: 18" type="number" {...register("age")} />
+          <Input placeholder="Example: 18" type="text" {...register("age")} />
           {errors.age && (
             <p className="text-red-500 text-sm">{errors.age.message}</p>
           )}
@@ -158,7 +158,7 @@ export default function MentalCheckForm() {
           <Label htmlFor="sleep_hours">Sleep Hours</Label>
           <Input
             placeholder="Example: 7.5"
-            type="number"
+            type="text"
             {...register("sleep_hours")}
           />
           {errors.sleep_hours && (
@@ -170,7 +170,7 @@ export default function MentalCheckForm() {
           <Label htmlFor="work_hours">Work/Study Hours</Label>
           <Input
             placeholder="Example: 8"
-            type="number"
+            type="text"
             {...register("work_hours")}
           />
           {errors.work_hours && (
@@ -268,7 +268,7 @@ export default function MentalCheckForm() {
           </Label>
           <Input
             placeholder="Example: 2.5"
-            type="number"
+            type="text"
             {...register("uses_social_media_hours")}
           />
           {errors.uses_social_media_hours && (
@@ -306,7 +306,7 @@ export default function MentalCheckForm() {
           </Label>
           <Input
             placeholder="Example: 3"
-            type="number"
+            type="text"
             {...register("satisfaction_level")}
           />
           {errors.satisfaction_level && (
