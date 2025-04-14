@@ -25,6 +25,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
+  if (pathname.startsWith("/bookings") && session.user.role === "PSYCHOLOGY") {
+    return NextResponse.redirect(new URL("/dashboard-psychology", request.url));
+  }
+
   return NextResponse.next();
 }
 
