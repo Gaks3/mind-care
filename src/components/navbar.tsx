@@ -1,19 +1,28 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Brain, CalendarHeart, BrainCircuit, UserRoundSearch, Hospital, Newspaper } from "lucide-react"
-import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { authClient } from "@/lib/auth-client"
-import { UserRole } from "@/types"
-import { usePathname } from "next/navigation"
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Menu,
+  X,
+  Brain,
+  CalendarHeart,
+  BrainCircuit,
+  UserRoundSearch,
+  Hospital,
+  Newspaper,
+} from "lucide-react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { authClient } from "@/lib/auth-client";
+import { UserRole } from "@/types";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const { data: session } = authClient.useSession()
-  const [isOpen, setIsOpen] = useState(false)
-  const navRef = useRef<HTMLDivElement | null>(null)
-  const pathname = usePathname()
+  const { data: session } = authClient.useSession();
+  const [isOpen, setIsOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -22,16 +31,16 @@ export default function Navbar() {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const linkClass = (href: string) =>
     ` py-2 font-medium flex items-center gap-2 transition-all duration-200 ${
       pathname === href
         ? "text-primary border-b-2 border-primary"
         : "text-gray-600 hover:text-primary"
-    }`
+    }`;
 
   return (
     <header
@@ -52,7 +61,10 @@ export default function Navbar() {
               <Newspaper className="ml-2 h-4 w-4" />
               Articles
             </Link>
-            <Link href="/test-psychology" className={linkClass("/test-psychology")}>
+            <Link
+              href="/test-psychology"
+              className={linkClass("/test-psychology")}
+            >
               <BrainCircuit className="ml-2 h-4 w-4" />
               Psychology Test
             </Link>
@@ -135,10 +147,21 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-              <Link href="/" className={linkClass("/")}>Articles</Link>
-              <Link href="/test-psychology" className={linkClass("/test-psychology")}>Psychology Test</Link>
-              <Link href="/about" className={linkClass("/about")}>About Us</Link>
-              <Link href="/bookings" className={linkClass("/bookings")}>List of Psychologists</Link>
+              <Link href="/" className={linkClass("/")}>
+                Articles
+              </Link>
+              <Link
+                href="/test-psychology"
+                className={linkClass("/test-psychology")}
+              >
+                Psychology Test
+              </Link>
+              <Link href="/about" className={linkClass("/about")}>
+                About Us
+              </Link>
+              <Link href="/bookings" className={linkClass("/bookings")}>
+                List of Psychologists
+              </Link>
 
               <div className="pt-4 pb-3 border-t border-gray-200">
                 {session ? (
@@ -182,5 +205,5 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }
