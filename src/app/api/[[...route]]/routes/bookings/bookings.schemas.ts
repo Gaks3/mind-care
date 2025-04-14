@@ -23,6 +23,7 @@ export const selectSessionSchema = z.object({
   status: bookingStatusSchema,
   userId: z.string(),
   bookingId: z.number(),
+  reason: z.string().nullable().optional(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });

@@ -29,11 +29,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { UserRole } from "@/types";
 import { client } from "@/lib/api";
 import { BookingActions } from "./functions/accept-reject-button";
 import { AddScheduleButton } from "./functions/add-schedule";
+import { DeleteBookingButton } from "../dashboard/delete-button";
 
 export default async function DashboardPsychologist() {
   const session = await auth.api.getSession({
@@ -49,6 +50,9 @@ export default async function DashboardPsychologist() {
 
   const user = session?.user;
   const role = session?.user?.role;
+
+  if (getBookingSession.status === 404) return notFound();
+
   const { data: allSessions } = await getBookingSession.json();
 
   if (role === UserRole.ADMIN) {
@@ -319,21 +323,19 @@ export default async function DashboardPsychologist() {
                               hour12: false,
                             })}
                           </p>
-                          {session.bookingSchedule.meetingLink && (
-                            <Button
-                              asChild
-                              variant="default"
-                              size="sm"
-                              className="mt-1"
-                            >
-                              <Link
-                                href={session.bookingSchedule.meetingLink}
-                                target="_blank"
-                              >
-                                Join Meeting
-                              </Link>
-                            </Button>
-                          )}
+                          <div className="flex gap-x-3 items-center mt-2">
+                            {session.bookingSchedule.meetingLink && (
+                              <Button asChild variant="default" size="sm">
+                                <Link
+                                  href={session.bookingSchedule.meetingLink}
+                                  target="_blank"
+                                >
+                                  Join Meeting
+                                </Link>
+                              </Button>
+                            )}
+                            <DeleteBookingButton sessionId={session.id} />
+                          </div>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
                               Updated at:{" "}
@@ -498,21 +500,19 @@ export default async function DashboardPsychologist() {
                               hour12: false,
                             })}
                           </p>
-                          {session.bookingSchedule.meetingLink && (
-                            <Button
-                              asChild
-                              variant="default"
-                              size="sm"
-                              className="mt-1"
-                            >
-                              <Link
-                                href={session.bookingSchedule.meetingLink}
-                                target="_blank"
-                              >
-                                Join Meeting
-                              </Link>
-                            </Button>
-                          )}
+                          <div className="flex items-center mt-2 gap-x-3">
+                            {session.bookingSchedule.meetingLink && (
+                              <Button asChild variant="default" size="sm">
+                                <Link
+                                  href={session.bookingSchedule.meetingLink}
+                                  target="_blank"
+                                >
+                                  Join Meeting
+                                </Link>
+                              </Button>
+                            )}
+                            <DeleteBookingButton sessionId={session.id} />
+                          </div>
                           <div className="flex flex-col gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
                               Updated at:{" "}
