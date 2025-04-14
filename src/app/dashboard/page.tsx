@@ -1,7 +1,13 @@
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   CalendarCheck,
   Clock,
@@ -13,42 +19,47 @@ import {
   BarChart3,
   Calendar,
   Brain,
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Link from "next/link"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { redirect } from "next/navigation"
-import { UserRole } from "@/types"
-import { client } from "@/lib/api"
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { redirect } from "next/navigation";
+import { UserRole } from "@/types";
+import { client } from "@/lib/api";
+import { DeleteBookingButton } from "./delete-button";
 
 export default async function DashboardUser() {
   const session = await auth.api.getSession({
     headers: await headers(),
-  })
+  });
 
   const sessionsResponse = await client.api.bookings.sessions.$get(undefined, {
     init: {
       headers: await headers(),
     },
-  })
+  });
 
-  const { data: sessionsData } = await sessionsResponse.json()
+  const { data: sessionsData } = await sessionsResponse.json();
 
-  const user = session?.user
-  const role = session?.user?.role
+  const user = session?.user;
+  const role = session?.user?.role;
 
   if (role === UserRole.ADMIN) {
-    return redirect("/admin")
+    return redirect("/admin");
   }
 
   if (role === UserRole.PSYCHOLOGY) {
-    return redirect("/dashboard-psychology")
+    return redirect("/dashboard-psychology");
   }
 
-
-  const totalSessions = sessionsData.length
+  const totalSessions = sessionsData.length;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -66,7 +77,10 @@ export default async function DashboardUser() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.image || ""} alt={user?.name || "User"} />
+                    <AvatarImage
+                      src={user?.image || ""}
+                      alt={user?.name || "User"}
+                    />
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       {user?.name?.charAt(0) || <User />}
                     </AvatarFallback>
@@ -80,11 +94,11 @@ export default async function DashboardUser() {
                   <LogOut className="mr-2 h-4 w-4" />
                   <form
                     action={async () => {
-                      "use server"
+                      "use server";
                       await auth.api.signOut({
                         headers: await headers(),
-                      })
-                      redirect("/")
+                      });
+                      redirect("/");
                     }}
                   >
                     <Button type="submit" size="xs" variant="ghost">
@@ -102,7 +116,9 @@ export default async function DashboardUser() {
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {user?.name} 👋</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                Welcome, {user?.name} 👋
+              </h1>
               <p className="text-primary-foreground/80">email: {user?.email}</p>
             </div>
             <div className="flex gap-4">
@@ -112,9 +128,15 @@ export default async function DashboardUser() {
                     <Calendar className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Upcoming Sessions</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">
+                      Upcoming Sessions
+                    </p>
                     <p className="text-xl font-bold">
-                      {sessionsData.filter((session) => session.status !== "ACCEPTED").length}
+                      {
+                        sessionsData.filter(
+                          (session) => session.status !== "ACCEPTED",
+                        ).length
+                      }
                     </p>
                   </div>
                 </CardContent>
@@ -125,7 +147,9 @@ export default async function DashboardUser() {
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">All Sessions</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">
+                      All Sessions
+                    </p>
                     <p className="text-xl font-bold">{totalSessions}</p>
                   </div>
                 </CardContent>
@@ -138,9 +162,7 @@ export default async function DashboardUser() {
       <div className="flex-1 container mx-auto p-4 md:p-6">
         <div className="mb-6 mt-3">
           <Link href="/bookings">
-            <Button>
-              Booking Now
-            </Button>
+            <Button>Booking Now</Button>
           </Link>
         </div>
         <div className="hidden md:grid md:grid-cols-2 gap-6">
@@ -150,14 +172,21 @@ export default async function DashboardUser() {
                 <CalendarCheck className="h-5 w-5 text-primary" />
                 Booking Pending
               </CardTitle>
-              <CardDescription>Session waiting for confirmation</CardDescription>
+              <CardDescription>
+                Session waiting for confirmation
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              {sessionsData.filter((session) => session.status !== "ACCEPTED").length > 0 ? (
+              {sessionsData.filter((session) => session.status !== "ACCEPTED")
+                .length > 0 ? (
                 <div className="space-y-4">
                   {sessionsData
                     .filter((session) => session.status !== "ACCEPTED")
-                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime(),
+                    )
                     .map((session) => (
                       <Card key={session.id} className="overflow-hidden border">
                         <CardContent className="p-0">
@@ -170,32 +199,67 @@ export default async function DashboardUser() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Online Consult</h3>
-                                <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>
-                                  {session.status === "REJECTED" ? "Rejected" : "Waiting"}
+                                <Badge
+                                  variant={`${
+                                    session.status === "REJECTED"
+                                      ? "destructive"
+                                      : "outline"
+                                  }`}
+                                >
+                                  {session.status === "REJECTED"
+                                    ? "Rejected"
+                                    : "Waiting"}
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
-                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p className="font-medium">
+                                  Booking ID: {session.bookingId}
+                                </p>
                                 <p>Status: {session.status}</p>
                                 {session.bookingSchedule && (
                                   <div className="mt-2 space-y-1 border-t pt-2">
-                                    <p className="font-medium">Session Schedule:</p>
-                                    <p>Name: {session.bookingSchedule.psychologist.name}</p>
+                                    <p className="font-medium">
+                                      Session Schedule:
+                                    </p>
                                     <p>
-                                      Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                      Name:{" "}
+                                      {
+                                        session.bookingSchedule.psychologist
+                                          .name
+                                      }
+                                    </p>
+                                    <p>
+                                      Date:{" "}
+                                      {new Date(
+                                        session.bookingSchedule.dateTime,
+                                      ).toLocaleDateString("id-ID")}
                                     </p>
                                     <p>
                                       Time:{" "}
-                                      {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                      {new Date(
+                                        session.bookingSchedule.dateTime,
+                                      ).toLocaleTimeString("id-ID", {
                                         hour: "2-digit",
                                         minute: "2-digit",
                                         hour12: false,
                                       })}
                                     </p>
-                                    <p>Reject Reason: {session.reason}</p>
+                                    {session.status === "REJECTED" && (
+                                      <p>Reject Reason: {session.reason}</p>
+                                    )}
                                     {session.bookingSchedule.meetingLink && (
-                                      <Button asChild variant="default" size="sm" className="mt-1">
-                                        <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                      <Button
+                                        asChild
+                                        variant="default"
+                                        size="sm"
+                                        className="mt-1"
+                                      >
+                                        <Link
+                                          href={
+                                            session.bookingSchedule.meetingLink
+                                          }
+                                          target="_blank"
+                                        >
                                           Join Meeting
                                         </Link>
                                       </Button>
@@ -207,27 +271,44 @@ export default async function DashboardUser() {
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                              <p className="text-muted-foreground text-base">Booking was created on :</p>
+                              <p className="text-muted-foreground text-base">
+                                Booking was created on :
+                              </p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                                {new Date(session.createdAt).toLocaleDateString(
+                                  "id-ID",
+                                )}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  hour12: false,
-                                })}
+                                {new Date(session.createdAt).toLocaleTimeString(
+                                  "id-ID",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false,
+                                  },
+                                )}
                               </span>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="flex items-center gap-1"
+                              >
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
                               </Button>
+
+                              <DeleteBookingButton sessionId={session.id} />
                             </div>
                           </div>
                         </CardContent>
@@ -235,7 +316,9 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">There are no bookings waiting for confirmation.</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  There are no bookings waiting for confirmation.
+                </p>
               )}
             </CardContent>
           </Card>
@@ -249,11 +332,16 @@ export default async function DashboardUser() {
               <CardDescription>Confirmed session</CardDescription>
             </CardHeader>
             <CardContent>
-              {sessionsData.filter((session) => session.status === "ACCEPTED").length > 0 ? (
+              {sessionsData.filter((session) => session.status === "ACCEPTED")
+                .length > 0 ? (
                 <div className="space-y-4">
                   {sessionsData
                     .filter((session) => session.status === "ACCEPTED")
-                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime(),
+                    )
                     .map((session) => (
                       <Card key={session.id} className="overflow-hidden border">
                         <CardContent className="p-0">
@@ -271,26 +359,51 @@ export default async function DashboardUser() {
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
-                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p className="font-medium">
+                                  Booking ID: {session.bookingId}
+                                </p>
                                 <p>Status: {session.status}</p>
                                 {session.bookingSchedule && (
                                   <div className="mt-2 space-y-1 border-t pt-2">
-                                    <p className="font-medium">Session Schedule:</p>
-                                    <p>Name: {session.bookingSchedule.psychologist.name}</p>
+                                    <p className="font-medium">
+                                      Session Schedule:
+                                    </p>
                                     <p>
-                                      Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                      Name:{" "}
+                                      {
+                                        session.bookingSchedule.psychologist
+                                          .name
+                                      }
+                                    </p>
+                                    <p>
+                                      Date:{" "}
+                                      {new Date(
+                                        session.bookingSchedule.dateTime,
+                                      ).toLocaleDateString("id-ID")}
                                     </p>
                                     <p>
                                       Time:{" "}
-                                      {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                      {new Date(
+                                        session.bookingSchedule.dateTime,
+                                      ).toLocaleTimeString("id-ID", {
                                         hour: "2-digit",
                                         minute: "2-digit",
                                         hour12: false,
                                       })}
                                     </p>
                                     {session.bookingSchedule.meetingLink && (
-                                      <Button asChild variant="default" size="sm" className="mt-1">
-                                        <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                      <Button
+                                        asChild
+                                        variant="default"
+                                        size="sm"
+                                        className="mt-1"
+                                      >
+                                        <Link
+                                          href={
+                                            session.bookingSchedule.meetingLink
+                                          }
+                                          target="_blank"
+                                        >
                                           Join Meeting
                                         </Link>
                                       </Button>
@@ -302,27 +415,44 @@ export default async function DashboardUser() {
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                              <p className="text-muted-foreground text-base">Booking was created on :</p>
+                              <p className="text-muted-foreground text-base">
+                                Booking was created on :
+                              </p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                                {new Date(session.createdAt).toLocaleDateString(
+                                  "id-ID",
+                                )}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  hour12: false,
-                                })}
+                                {new Date(session.createdAt).toLocaleTimeString(
+                                  "id-ID",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false,
+                                  },
+                                )}
                               </span>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="flex items-center gap-1"
+                              >
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
                               </Button>
+
+                              <DeleteBookingButton sessionId={session.id} />
                             </div>
                           </div>
                         </CardContent>
@@ -330,7 +460,9 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">There are no confirmed bookings</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  There are no confirmed bookings
+                </p>
               )}
             </CardContent>
           </Card>
@@ -344,11 +476,16 @@ export default async function DashboardUser() {
             </TabsList>
 
             <TabsContent value="pending" className="mt-4">
-              {sessionsData.filter((session) => session.status !== "ACCEPTED").length > 0 ? (
+              {sessionsData.filter((session) => session.status !== "ACCEPTED")
+                .length > 0 ? (
                 <div className="space-y-4">
                   {sessionsData
                     .filter((session) => session.status !== "ACCEPTED")
-                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime(),
+                    )
                     .map((session) => (
                       <Card key={session.id} className="overflow-hidden border">
                         <CardContent className="p-0">
@@ -361,50 +498,89 @@ export default async function DashboardUser() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-medium">Online Consult</h3>
-                                <Badge variant={`${session.status === "REJECTED" ? "destructive" : "outline"}`}>
-                                  {session.status === "REJECTED" ? "Rejected" : "Waiting"}
+                                <Badge
+                                  variant={`${
+                                    session.status === "REJECTED"
+                                      ? "destructive"
+                                      : "outline"
+                                  }`}
+                                >
+                                  {session.status === "REJECTED"
+                                    ? "Rejected"
+                                    : "Waiting"}
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
-                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p className="font-medium">
+                                  Booking ID: {session.bookingId}
+                                </p>
                                 <p>Status: {session.status}</p>
                               </div>
                             </div>
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col gap-2 text-sm">
-                              <p className="text-muted-foreground text-base">Booking was created on :</p>
+                              <p className="text-muted-foreground text-base">
+                                Booking was created on :
+                              </p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                                {new Date(session.createdAt).toLocaleDateString(
+                                  "id-ID",
+                                )}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  hour12: false,
-                                })}
+                                {new Date(session.createdAt).toLocaleTimeString(
+                                  "id-ID",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false,
+                                  },
+                                )}
                               </span>
                               {session.bookingSchedule && (
                                 <div className="mt-2 space-y-1 border-t pt-2">
-                                  <p className="font-medium">Session Schedule:</p>
-                                  <p>Name: {session.bookingSchedule.psychologist.name}</p>
+                                  <p className="font-medium">
+                                    Session Schedule:
+                                  </p>
                                   <p>
-                                    Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                    Name:{" "}
+                                    {session.bookingSchedule.psychologist.name}
+                                  </p>
+                                  <p>
+                                    Date:{" "}
+                                    {new Date(
+                                      session.bookingSchedule.dateTime,
+                                    ).toLocaleDateString("id-ID")}
                                   </p>
                                   <p>
                                     Time:{" "}
-                                    {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                    {new Date(
+                                      session.bookingSchedule.dateTime,
+                                    ).toLocaleTimeString("id-ID", {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                       hour12: false,
                                     })}
                                   </p>
-                                  <p>Reject Reason: {session.reason}</p>
+                                  {session.status === "REJECTED" && (
+                                    <p>Reject Reason: {session.reason}</p>
+                                  )}
                                   {session.bookingSchedule.meetingLink && (
-                                    <Button asChild variant="default" size="sm" className="mt-1">
-                                      <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                    <Button
+                                      asChild
+                                      variant="default"
+                                      size="sm"
+                                      className="mt-1"
+                                    >
+                                      <Link
+                                        href={
+                                          session.bookingSchedule.meetingLink
+                                        }
+                                        target="_blank"
+                                      >
                                         Join Meeting
                                       </Link>
                                     </Button>
@@ -413,12 +589,22 @@ export default async function DashboardUser() {
                               )}
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
-                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="flex items-center gap-1"
+                              >
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
                               </Button>
+
+                              <DeleteBookingButton sessionId={session.id} />
                             </div>
                           </div>
                         </CardContent>
@@ -426,16 +612,23 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">There are no bookings waiting for confirmation.</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  There are no bookings waiting for confirmation.
+                </p>
               )}
             </TabsContent>
 
             <TabsContent value="accepted" className="mt-4">
-              {sessionsData.filter((session) => session.status === "ACCEPTED").length > 0 ? (
+              {sessionsData.filter((session) => session.status === "ACCEPTED")
+                .length > 0 ? (
                 <div className="space-y-4">
                   {sessionsData
                     .filter((session) => session.status === "ACCEPTED")
-                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime(),
+                    )
                     .map((session) => (
                       <Card key={session.id} className="overflow-hidden border">
                         <CardContent className="p-0">
@@ -453,44 +646,73 @@ export default async function DashboardUser() {
                                 </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
-                                <p className="font-medium">Booking ID: {session.bookingId}</p>
+                                <p className="font-medium">
+                                  Booking ID: {session.bookingId}
+                                </p>
                                 <p>Status: {session.status}</p>
                               </div>
                             </div>
                           </div>
                           <div className="p-4 bg-muted/30">
                             <div className="flex flex-col gap-2 text-sm">
-                              <p className="text-muted-foreground text-base">Booking was created on :</p>
+                              <p className="text-muted-foreground text-base">
+                                Booking was created on :
+                              </p>
                               <span className="flex items-center gap-1">
                                 <CalendarCheck className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                                {new Date(session.createdAt).toLocaleDateString(
+                                  "id-ID",
+                                )}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-4 w-4 text-primary" />
-                                {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  hour12: false,
-                                })}
+                                {new Date(session.createdAt).toLocaleTimeString(
+                                  "id-ID",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false,
+                                  },
+                                )}
                               </span>
                               {session.bookingSchedule && (
                                 <div className="mt-2 space-y-1 border-t pt-2">
-                                  <p className="font-medium">Session Schedule:</p>
-                                  <p>Name: {session.bookingSchedule.psychologist.name}</p>
+                                  <p className="font-medium">
+                                    Session Schedule:
+                                  </p>
                                   <p>
-                                    Date: {new Date(session.bookingSchedule.dateTime).toLocaleDateString("id-ID")}
+                                    Name:{" "}
+                                    {session.bookingSchedule.psychologist.name}
+                                  </p>
+                                  <p>
+                                    Date:{" "}
+                                    {new Date(
+                                      session.bookingSchedule.dateTime,
+                                    ).toLocaleDateString("id-ID")}
                                   </p>
                                   <p>
                                     Time:{" "}
-                                    {new Date(session.bookingSchedule.dateTime).toLocaleTimeString("id-ID", {
+                                    {new Date(
+                                      session.bookingSchedule.dateTime,
+                                    ).toLocaleTimeString("id-ID", {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                       hour12: false,
                                     })}
                                   </p>
                                   {session.bookingSchedule.meetingLink && (
-                                    <Button asChild variant="default" size="sm" className="mt-1">
-                                      <Link href={session.bookingSchedule.meetingLink} target="_blank">
+                                    <Button
+                                      asChild
+                                      variant="default"
+                                      size="sm"
+                                      className="mt-1"
+                                    >
+                                      <Link
+                                        href={
+                                          session.bookingSchedule.meetingLink
+                                        }
+                                        target="_blank"
+                                      >
                                         Join Meeting
                                       </Link>
                                     </Button>
@@ -499,12 +721,22 @@ export default async function DashboardUser() {
                               )}
                             </div>
                             <div className="flex flex-col gap-2 mt-3">
-                              <Button asChild variant="outline" size="sm" className="flex items-center gap-1">
-                                <Link href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`} target="_blank">
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="flex items-center gap-1"
+                              >
+                                <Link
+                                  href={`https://wa.me/${session.bookingSchedule.psychologist.phoneNumber}`}
+                                  target="_blank"
+                                >
                                   <Phone className="h-4 w-4 text-green-600" />
                                   <span>WhatsApp</span>
                                 </Link>
                               </Button>
+
+                              <DeleteBookingButton sessionId={session.id} />
                             </div>
                           </div>
                         </CardContent>
@@ -512,13 +744,14 @@ export default async function DashboardUser() {
                     ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">There are no confirmed bookings</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  There are no confirmed bookings
+                </p>
               )}
             </TabsContent>
           </Tabs>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
