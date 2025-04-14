@@ -72,10 +72,13 @@ export default function Navbar() {
               <Hospital className="ml-2 h-4 w-4" />
               About Us
             </Link>
-            <Link href="/bookings" className={linkClass("/bookings")}>
-              <UserRoundSearch className="ml-2 h-4 w-4" />
-              List of Psychologists
-            </Link>
+
+            {session?.user.role !== UserRole.PSYCHOLOGY && (
+              <Link href="/bookings" className={linkClass("/bookings")}>
+                <UserRoundSearch className="ml-2 h-4 w-4" />
+                List of Psychologists
+              </Link>
+            )}
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
@@ -111,12 +114,13 @@ export default function Navbar() {
                 </Link>
               </div>
             )}
-
-            <Link href="/bookings">
-              <Button className="bg-primary hover:bg-primary/90 rounded-xl">
-                Booking <CalendarHeart className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            {session?.user.role !== UserRole.PSYCHOLOGY && (
+              <Link href="/bookings">
+                <Button className="bg-primary hover:bg-primary/90 rounded-xl">
+                  Booking <CalendarHeart className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            )}
           </div>
 
           <div className="lg:hidden">
@@ -159,9 +163,11 @@ export default function Navbar() {
               <Link href="/about" className={linkClass("/about")}>
                 About Us
               </Link>
-              <Link href="/bookings" className={linkClass("/bookings")}>
-                List of Psychologists
-              </Link>
+              {session?.user.role !== UserRole.PSYCHOLOGY && (
+                <Link href="/bookings" className={linkClass("/bookings")}>
+                  List of Psychologists
+                </Link>
+              )}
 
               <div className="pt-4 pb-3 border-t border-gray-200">
                 {session ? (
@@ -194,11 +200,14 @@ export default function Navbar() {
                     </Button>
                   </Link>
                 )}
-                <Link href="/bookings">
-                  <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg">
-                    Booking
-                  </Button>
-                </Link>
+
+                {session?.user.role !== UserRole.PSYCHOLOGY && (
+                  <Link href="/bookings">
+                    <Button className="w-full bg-primary hover:bg-primary/90 rounded-lg">
+                      Booking
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </motion.div>
