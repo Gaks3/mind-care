@@ -45,7 +45,7 @@ export default function Navbar() {
           </div>
 
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link href="/" className={linkClass("/")}>
+            <Link href="/article" className={linkClass("/article")}>
               <Newspaper className="ml-2 h-4 w-4" />
               Articles
             </Link>
