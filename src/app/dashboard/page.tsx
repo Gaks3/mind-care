@@ -244,7 +244,9 @@ export default async function DashboardUser() {
                                         hour12: false,
                                       })}
                                     </p>
-                                    <p>Reject Reason: {session.reason}</p>
+                                    {session.status === "REJECTED" && (
+                                      <p>Reject Reason: {session.reason}</p>
+                                    )}
                                     {session.bookingSchedule.meetingLink && (
                                       <Button
                                         asChild
@@ -563,7 +565,9 @@ export default async function DashboardUser() {
                                       hour12: false,
                                     })}
                                   </p>
-                                  <p>Reject Reason: {session.reason}</p>
+                                  {session.status === "REJECTED" && (
+                                    <p>Reject Reason: {session.reason}</p>
+                                  )}
                                   {session.bookingSchedule.meetingLink && (
                                     <Button
                                       asChild
