@@ -14,6 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 interface DeleteBookingButtonProps {
   sessionId: number;
@@ -32,11 +33,11 @@ export function DeleteBookingButton({ sessionId }: DeleteBookingButtonProps) {
       if (!response.ok) {
         throw new Error("Failed to delete booking");
       }
-
+      toast.success("Booking was deleted successfully");
       window.location.reload();
     } catch (error) {
       console.error("Error deleting booking:", error);
-      alert("Failed to delete booking. Please try again.");
+      toast.error("Failed to delete booking. Please try again.");
     } finally {
       setIsDeleting(false);
     }
