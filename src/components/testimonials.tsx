@@ -6,37 +6,37 @@ const datas = [
     name: "LY",
     service: "e-counseling",
     review: "Exceptional service! My psychologist provided unwavering support and listened with genuine empathy.",
-    date: "12th March 2025"
+    date: "10th January 2025"
 },
 {
     name: "LY",
     service: "e-counseling",
     review: "Though initially nervous, I found my psychologist to be warm, attentive, and completely non-judgmental.",
-    date: "12th March 2025"
+    date: "22th January 2025"
 },
 {
     name: "LY",
     service: "e-counseling",
     review: "Breakthrough session! My psychologist helped me uncover core issues and offered practical solutions.",
-    date: "12th March 2025"
+    date: "30th January 2025"
 },
 {
     name: "LY",
     service: "e-counseling",
     review: "Outstanding care! I felt truly heard and supported throughout my counseling journey.",
-    date: "12th March 2025"
+    date: "12th Febuary 2025"
 },
 {
     name: "LY",
     service: "e-counseling",
     review: "From skepticism to trust - my psychologist's patience and expertise made all the difference.",
-    date: "12th March 2025"
+    date: "23th Febuary 2025"
 },
 {
     name: "LY",
     service: "e-counseling",
     review: "Transformative experience! The guidance I received helped me navigate my challenges effectively.",
-    date: "12th March 2025"
+    date: "4th March 2025"
 }
 ];
 

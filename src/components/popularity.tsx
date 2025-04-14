@@ -8,7 +8,7 @@ const stats = [
     icon: <Users className="h-8 w-8" />,
   },
   {
-    data: "325+",
+    data: "315+",
     proof: "Profesional therapists ready to support you.",
     icon: <MessageSquare className="h-8 w-8" />,
   },

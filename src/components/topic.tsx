@@ -37,7 +37,7 @@ export default function Topic() {
             {topikTypes.map((topik, i) => (
               <div
                 key={i}
-                className="text-xs font-medium bg-blue-100 text-gray-800 px-3 py-2 rounded-xl flex items-center justify-center"
+                className="text-xs font-medium bg-blue-200 text-gray-700 px-5 py-2 rounded-2xl flex items-center justify-center"
               >
                 {topik}
               </div>
