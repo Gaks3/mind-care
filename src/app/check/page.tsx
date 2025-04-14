@@ -130,6 +130,8 @@ export default function MentalCheckForm() {
         return "Your responses indicate you may be experiencing Mild Stress. Consider practicing mindfulness, taking short breaks throughout the day, and ensuring you get enough rest. Talking to a friend or professional can also help manage stress levels. MindCare can help you";
       case "depression":
         return "Your responses suggest signs of Depression. It's important to reach out to a mental health professional for proper assessment and support. Remember that seeking help is a sign of strength, not weakness. Consider activities that bring you joy and maintain social connections. MindCare can help you";
+      case "anxiety disorder":
+        return "Your responses suggest signs of Anxiety Disorder. It's important to reach out to a mental health professional for proper assessment and support. Remember that seeking help is a sign of strength, not weakness. Consider activities that bring you joy and maintain social connections. MindCare can help you";
       default:
         return "Thank you for completing the assessment. Remember that mental health is an important part of overall wellbeing.";
     }
