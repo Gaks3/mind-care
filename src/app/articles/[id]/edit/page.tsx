@@ -7,6 +7,8 @@ import TiptapTitle from "@/components/tiptap-title";
 import { useState, useEffect } from "react";
 import FormatDate from "@/components/ui/format-date";
 import TiptapEditor from "@/components/tiptapEditor";
+import { FileEdit } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const EditMode = ({ params }) => {
   const { id } = params;
@@ -15,9 +17,13 @@ const EditMode = ({ params }) => {
   const [userData, setUserData] = useState([]);
   const [contentText, setContentText] = useState("");
   const [titleText, setTitleText] = useState("");
+  const [currentEditMode, setCurrentEditMode] = useState(null);
+  const [closeEditor, setCloseEditor] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getArticles = async () => {
+      setIsLoading(true)
       try {
         const response = await fetch(
           `http://localhost:3000/api/articles/${id}`,
@@ -29,82 +35,95 @@ const EditMode = ({ params }) => {
         setUserData(data.data.user);
       } catch (error) {
         console.log(error);
+      }finally{
+        setIsLoading(false)
       }
     };
 
     getArticles();
   }, [id]);
 
-  useEffect(() => {
-    const addNewArticle = async (title, content) => {
-      try {
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("content", content);
-
-        await fetch(`http://localhost:3000/api/articles/${id}`, {
-          method: "PATCH",
-          body: formData,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    addNewArticle(titleText, contentText);
-  }, [id, titleText, contentText]);
-
   return (
-    <section className="container ml-auto flex">
-      <article className="py-8 px-4 lg:px-24 xl:px-60">
-      <p className="font-semibold text-primary">{articlesData.categories}</p>
-        <TiptapTitle
-          onContentChange={setTitleText}
-          titleData={articlesData.title}
-        />
-
-        <div className="flex items-center justify-between sm:justify-normal sm:gap-10 md:gap-20 mb-6">
-          <div className="flex items-center">
-            <Image
-              src={`/${userData.image}`}
-              width={1000}
-              height={1000}
-              alt="profile"
-              className="w-10 h-10 sm:w-14 sm:h-14 border-2 border-black/30 rounded-full mr-2"
+    <section className="container ml-auto flex relative">
+      {isLoading ? (
+        <Loader2 className="h-14 w-14 animate-spin mx-auto text-primary mt-10 mb-2" />
+      ) : (        
+        <>
+        <article className="py-8 px-4 lg:px-24 xl:px-60">
+          <p
+            onClick={() => setCurrentEditMode(1)}
+            className="font-semibold text-primary"
+          >
+            {articlesData.categories}
+          </p>
+          <div className="" onClick={() => setCurrentEditMode(2)}>
+            <TiptapTitle
+              onContentChange={setTitleText}
+              titleData={articlesData.title}
             />
-            <p className="sm:text-lg md:text-xl font-semibold">
-              {userData.name}
-            </p>
           </div>
-          <div className="flex items-center">
-            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-            <p className="sm:text-lg md:text-xl font-semibold">
-              <FormatDate dateString={articlesData.createdAt}/>
-            </p>
+  
+          <div className="flex items-center justify-between sm:justify-normal sm:gap-10 md:gap-20 mb-6">
+            <div className="flex items-center">
+              <Image
+                src={`/${userData.image}`}
+                width={1000}
+                height={1000}
+                alt="profile"
+                className="w-10 h-10 sm:w-14 sm:h-14 border-2 border-black/30 rounded-full mr-2"
+              />
+              <p className="sm:text-lg md:text-xl font-semibold">
+                {userData.name}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
+              <p className="sm:text-lg md:text-xl font-semibold">
+                <FormatDate dateString={articlesData.createdAt} />
+              </p>
+            </div>
+            <div className="flex items-center">
+              <Eye className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
+              <p className="sm:text-lg md:text-xl font-semibold">
+                {articlesData.view}
+              </p>
+            </div>
           </div>
-          <div className="flex items-center">
-            <Eye className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-            <p className="sm:text-lg md:text-xl font-semibold">
-              {articlesData.view}
-            </p>
+  
+          <Image
+            src={`/${articlesData.thumbnail}`}
+            width={1000}
+            height={500}
+            alt="Thumbnail"
+            className="rounded-xl mx-auto mb-6"
+            onClick={() => setCurrentEditMode(3)}
+          />
+  
+          <div className="" onClick={() => setCurrentEditMode(4)}>
+            <TiptapText
+              onContentChange={setContentText}
+              textData={articlesData.content}
+            />
           </div>
-        </div>
+        </article>
+        {closeEditor ? (
+          <TiptapEditor
+            editMode={currentEditMode}
+            onClose={() => setCloseEditor(false)}
+            title={titleText}
+            content={contentText}
+            categoriesData={articlesData.categories}
+          />
+        ) : (
+          <><div onClick={()=>setCloseEditor(true)} className="flex cursor-pointer border-[1px] border-primary h-fit px-2 py-1 rounded-lg items-center absolute right-2 top-2">
+            <p className="text-primary font-medium text-lg">Editor</p>
+            <FileEdit className="text-primary" />
+          </div>
+          </>
+        )}
+        </>
+      )}
 
-        <Image
-          src={`/${articlesData.thumbnail}`}
-          width={1000}
-          height={500}
-          alt="Thumbnail"
-          className="rounded-xl mx-auto mb-6"
-        />
-
-        <TiptapText
-          onContentChange={setContentText}
-          textData={articlesData.content}
-        />
-      </article>
-
-      <TiptapEditor/>
     </section>
   );
 };

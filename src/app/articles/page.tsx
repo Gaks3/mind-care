@@ -1,14 +1,15 @@
 "use client";
 
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search } from "lucide-react";
 import ArticleCard from "@/components/ui/article-card";
 import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const menu = ["Latest", "Popular", "Oldest"];
 
 const Articles = () => {
-
   const [articlesData, setArticlesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getArticles = async () => {
@@ -20,6 +21,8 @@ const Articles = () => {
         setArticlesData(data.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -54,33 +57,14 @@ const Articles = () => {
         ))}
       </div>
 
-      <div className="flex justify-center mb-6 items-center">
-        <ChevronLeft className="w-7 h-7" />
-        <ul className="flex gap-1 lg:gap-2 text-xl lg:text-2xl px-2 lg:px-4">
-          <li className="bg-primary text-white py-1 px-4 lg:px-5 rounded-lg">
-            1
-          </li>
-          <li className="py-1 px-4 lg:px-5 rounded-lg">2</li>
-          <li className="py-1 px-4 lg:px-5 rounded-lg">3</li>
-        </ul>
-        <ChevronRight className="lg:w-9 lg:h-9 w-7 h-7" />
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 lg:px-10 xl:px-28">
-        <ArticleCard datas={articlesData} />
-      </div>
-
-      <div className="flex justify-center mt-14 items-center">
-        <ChevronLeft className="w-7 h-7" />
-        <ul className="flex gap-1 lg:gap-2 text-xl lg:text-2xl px-2 lg:px-4">
-          <li className="bg-primary text-white py-1 px-4 lg:px-5 rounded-lg">
-            1
-          </li>
-          <li className="py-1 px-4 lg:px-5 rounded-lg">2</li>
-          <li className="py-1 px-4 lg:px-5 rounded-lg">3</li>
-        </ul>
-        <ChevronRight className="lg:w-9 lg:h-9 w-7 h-7" />
-      </div>
+      {isLoading ? (
+        <Loader2 className="h-14 w-14 animate-spin mx-auto text-primary mt-10 mb-2" />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 lg:px-10 xl:px-28">
+          <ArticleCard datas={articlesData} />
+        </div>
+      )}
     </section>
   );
 };
