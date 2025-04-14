@@ -12,9 +12,9 @@ const TiptapText = ({onContentChange, textData}) => {
         class: "text-base text-justify [&_ul]:list-disc [&_ol]:list-decimal [&_ul>li]:ml-10 [&_ol>li]:ml-6 md:text-lg xl:text-xl",
       },
     },
-    content: `<article>
+    content: `<p>
         ${textData}
-    </article>`,
+    </p>`,
     onUpdate: ({ editor }) => {
       if (onContentChange) {
         onContentChange(editor.getHTML());

@@ -15,17 +15,16 @@ async function getAllArticles() {
 }
 
 export default async function Article({ params }) {
-
   const { id } = params;
   const articles = await getArticle(id);
   const articlesData = articles.data;
 
-  const allArticles = await getAllArticles()
-  console.log(allArticles)
+  const allArticles = await getAllArticles();
 
   return (
     <section className="container mx-auto">
       <article className="py-8 px-4 lg:px-24 xl:px-60">
+        <p className="font-semibold text-primary">{articlesData.categories}</p>
         <h1 className="text-3xl md:text-4xl font-semibold mb-6">
           {articlesData.title}
         </h1>
@@ -83,7 +82,7 @@ export default async function Article({ params }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 lg:px-28">
-          <ArticleCard datas={allArticles.data}/>
+          <ArticleCard datas={allArticles.data} />
         </div>
       </div>
     </section>

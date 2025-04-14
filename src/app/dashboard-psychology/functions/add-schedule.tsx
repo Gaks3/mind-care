@@ -151,8 +151,7 @@ export function AddScheduleButton() {
 
   const isFormValid = date && time;
 
-  const isArticleValid =
-    categories.length === 0 || !fileImage.current || !inputTitle.current.value;
+  const isArticleValid = categories.length === 0 || !fileImage.current || !inputTitle.current.value;
 
   return (
     <>

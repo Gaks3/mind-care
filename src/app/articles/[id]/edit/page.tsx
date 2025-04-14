@@ -6,6 +6,7 @@ import TiptapText from "@/components/tiptap-text";
 import TiptapTitle from "@/components/tiptap-title";
 import { useState, useEffect } from "react";
 import FormatDate from "@/components/ui/format-date";
+import TiptapEditor from "@/components/tiptapEditor";
 
 const EditMode = ({ params }) => {
   const { id } = params;
@@ -40,8 +41,6 @@ const EditMode = ({ params }) => {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
-        // formData.append("image", image);
-        formData.append("categories", "Mind Health");
 
         await fetch(`http://localhost:3000/api/articles/${id}`, {
           method: "PATCH",
@@ -56,8 +55,9 @@ const EditMode = ({ params }) => {
   }, [id, titleText, contentText]);
 
   return (
-    <section className="container mx-auto">
+    <section className="container ml-auto flex">
       <article className="py-8 px-4 lg:px-24 xl:px-60">
+      <p className="font-semibold text-primary">{articlesData.categories}</p>
         <TiptapTitle
           onContentChange={setTitleText}
           titleData={articlesData.title}
@@ -103,6 +103,8 @@ const EditMode = ({ params }) => {
           textData={articlesData.content}
         />
       </article>
+
+      <TiptapEditor/>
     </section>
   );
 };
