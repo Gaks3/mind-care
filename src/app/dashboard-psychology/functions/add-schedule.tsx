@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -11,33 +11,41 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Label } from "@/components/ui/label"
-import { CalendarPlus, Loader2 } from "lucide-react"
-import { format, set } from "date-fns"
-import { id } from "date-fns/locale"
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { CalendarPlus, Loader2 } from "lucide-react";
+import { format, set } from "date-fns";
+import { id } from "date-fns/locale";
 
 export function AddScheduleButton() {
-  const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [date, setDate] = useState<Date | undefined>(undefined)
-  const [time, setTime] = useState<string | undefined>(undefined)
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [time, setTime] = useState<string | undefined>(undefined);
 
   const timeOptions = Array.from({ length: 25 }, (_, i) => {
-    const hour = Math.floor(i / 2) + 8
-    const minute = (i % 2) * 30
-    return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`
-  })
+    const hour = Math.floor(i / 2) + 8;
+    const minute = (i % 2) * 30;
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  });
 
   const handleSubmit = async () => {
-    if (!date || !time) return
+    if (!date || !time) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
-    const [hours, minutes] = time.split(":").map(Number)
-    const dateTime = set(date, { hours, minutes, seconds: 0, milliseconds: 0 })
+    const [hours, minutes] = time.split(":").map(Number);
+    const dateTime = set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
 
     try {
       const response = await fetch("/api/bookings/schedules", {
@@ -50,29 +58,32 @@ export function AddScheduleButton() {
           meetingLink: "",
           isBooked: false,
         }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to add schedule")
+        throw new Error("Failed to add schedule");
       }
 
-      setDate(undefined)
-      setTime(undefined)
-      setIsOpen(false)
+      setDate(undefined);
+      setTime(undefined);
+      setIsOpen(false);
 
-      router.refresh()
+      router.refresh();
     } catch (error) {
-      console.error("Error adding schedule:", error)
+      console.error("Error adding schedule:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const isFormValid = date && time
+  const isFormValid = date && time;
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} className="bg-primary hover:bg-primary/90">
+      <Button
+        onClick={() => setIsOpen(true)}
+        className="bg-primary hover:bg-primary/90"
+      >
         <CalendarPlus className="h-4 w-4 mr-2" />
         Add Schedule
       </Button>
@@ -81,7 +92,9 @@ export function AddScheduleButton() {
         <DialogContent className="sm:max-w-[425px] mx-auto">
           <DialogHeader>
             <DialogTitle>Add New Schedule</DialogTitle>
-            <DialogDescription>Select a date and time for the new consultation schedule.</DialogDescription>
+            <DialogDescription>
+              Select a date and time for the new consultation schedule.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-6 py-4">
@@ -92,7 +105,6 @@ export function AddScheduleButton() {
                 selected={date}
                 onSelect={setDate}
                 className="rounded-md border mx-auto"
-                locale={id}
                 disabled={(date) => date < new Date()}
               />
             </div>
@@ -123,7 +135,6 @@ export function AddScheduleButton() {
                       minutes: Number.parseInt(time.split(":")[1]),
                     }),
                     "EEEE, dd MMMM yyyy - HH:mm",
-                    { locale: id },
                   )}
                 </span>
               </div>
@@ -131,7 +142,11 @@ export function AddScheduleButton() {
           </div>
 
           <DialogFooter>
-            <Button onClick={handleSubmit} disabled={!isFormValid || isLoading} className="w-full sm:w-auto">
+            <Button
+              onClick={handleSubmit}
+              disabled={!isFormValid || isLoading}
+              className="w-full sm:w-auto"
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -145,5 +160,5 @@ export function AddScheduleButton() {
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }
