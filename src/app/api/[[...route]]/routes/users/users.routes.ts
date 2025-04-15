@@ -17,6 +17,7 @@ import {
   selectUserSchema,
   updateUserSchema,
 } from "./users.schemas";
+import { selectPsychologistTopicSchema } from "../topics/topics.schemas";
 
 const tags = ["Users"];
 
@@ -40,7 +41,13 @@ export const listPsychologists = createRoute({
   middleware: authMiddleware(),
   responses: {
     [HTTPStatusCodes.OK]: jsonContent(
-      z.object({ data: z.array(selectUserSchema) }),
+      z.object({
+        data: z.array(
+          selectUserSchema.extend({
+            psychologyTopic: z.array(selectPsychologistTopicSchema),
+          }),
+        ),
+      }),
       "The list of psychologists",
     ),
   },
