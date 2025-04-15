@@ -33,7 +33,7 @@ const ArticleCard = ({ datas }) => {
               <CalendarPlus className="w-4 h-4 inline" />
               <FormatDate dateString={e.createdAt} />
             </p>
-            <h3 className="font-bold text-lg leading-tight text-gray-900">
+            <h3 className="font-bold text-lg leading-tight line-clamp-3 text-gray-900 ">
               {e.title}
             </h3>
           </CardHeader>

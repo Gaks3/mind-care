@@ -10,6 +10,7 @@ import TiptapEditor from "@/components/tiptapEditor";
 import { FileEdit } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { toast } from "sonner";
 
 const EditMode = ({ params }) => {
   const { id } = params;

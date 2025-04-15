@@ -3,6 +3,7 @@
 import { X, ImagePlus } from "lucide-react";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import {toast} from "sonner"
 
 const topikTypes = [
   "Depression",
@@ -63,8 +64,10 @@ const TiptapEditor = ({
       }
 
       return await response.json();
+      toast.success("Successfully to create article")
     } catch (error) {
       console.log(error);
+      toast.error("Failed to create article")
     } finally {
       setIsLoading(false);
       router.refresh()

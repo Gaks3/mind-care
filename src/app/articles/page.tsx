@@ -61,7 +61,7 @@ const Articles = () => {
       {isLoading ? (
         <Loader2 className="h-14 w-14 animate-spin mx-auto text-primary mt-10 mb-2" />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 lg:px-10 xl:px-28">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-6 lg:px-10 xl:px-28">
           <ArticleCard datas={articlesData} />
         </div>
       )}

@@ -22,6 +22,7 @@ export default async function Article({ params }) {
   const articlesData = articles.data;
 
   const allArticles = await getAllArticles();
+  console.log(allArticles.data)
 
   return (
     <section className="container mx-auto">
@@ -32,8 +33,8 @@ export default async function Article({ params }) {
         </h1>
 
         <div className="flex items-center justify-between sm:justify-normal sm:gap-10 md:gap-20 mb-6">
-          <div className="flex items-center gap-x-3">
-            <Avatar className="h-14 w-14 border-2 rounded-full border-black flex items-center justify-center">
+          <div className="flex items-center">
+            <Avatar className="h-14 w-14 flex items-center justify-center">
               <AvatarImage
                 src={articlesData?.user.image || ""}
                 alt={articlesData?.user.name || "User"}
@@ -42,13 +43,13 @@ export default async function Article({ params }) {
                 <User />
               </AvatarFallback>
             </Avatar>
-            <p className="sm:text-lg md:text-xl font-semibold">
+            <p className="sm:text-sm md:text-lg font-semibold">
               {articlesData.user.name}
             </p>
           </div>
           <div className="flex items-center">
             <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-            <p className="sm:text-lg md:text-xl font-semibold">
+            <p className="sm:text-sm md:text-lg font-semibold">
               <FormatDate dateString={articlesData.createdAt} />
             </p>
           </div>
