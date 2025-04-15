@@ -37,15 +37,26 @@ import { UserRole } from "@/types";
 import { insertUserSchema } from "@/app/api/[[...route]]/routes/users/users.schemas";
 import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import MultipleSelector, { Option } from "@/components/ui/multi-select";
 
-type FormValues = z.infer<typeof insertUserSchema>;
+const createUserSchema = insertUserSchema.omit({ topics: true }).extend({
+  topics: z.array(
+    z.object({
+      value: z.string(),
+      label: z.string(),
+    }),
+  ),
+});
+type FormValues = z.infer<typeof createUserSchema>;
 
 export default function AddUserPage() {
+  const [topics, setTopics] = useState<Option[]>([]);
+
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(insertUserSchema),
+    resolver: zodResolver(createUserSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -68,12 +79,22 @@ export default function AddUserPage() {
           year: "",
         },
       ]);
+      form.setValue("topics", []);
     }
   }, [selectedRole, form]);
 
   const addUserMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      return client.api.users.$post({ json: data });
+      const formattedTopics = data.topics.map(({ value }) => ({
+        topicId: Number(value),
+      }));
+
+      return client.api.users.$post({
+        json: {
+          ...data,
+          topics: formattedTopics,
+        },
+      });
     },
     onSuccess: () => {
       toast.success("User created successfully");
@@ -105,6 +126,24 @@ export default function AddUserPage() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    const getTopics = async () => {
+      const res = await client.api.topics.$get();
+
+      if (res.ok) {
+        const json = await res.json();
+        setTopics(
+          json.data.map((value) => ({
+            value: String(value.id),
+            label: value.name,
+          })),
+        );
+      }
+    };
+
+    getTopics();
+  }, []);
 
   return (
     <div className="container mx-auto py-6 max-w-2xl">
@@ -359,6 +398,23 @@ export default function AddUserPage() {
                       </div>
                     ))}
                   </div>
+
+                  <FormField
+                    control={form.control}
+                    name="topics"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Topics</FormLabel>
+                        <FormControl>
+                          <MultipleSelector
+                            {...field}
+                            defaultOptions={topics}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </>
               )}
 
