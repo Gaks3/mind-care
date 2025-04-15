@@ -14,7 +14,7 @@ const ArticleSection = () => {
   
           const data = await response.json();
   
-          setArticlesData(data.data.slice(0, 4));
+          setArticlesData(data.data.slice(0, 3));
         } catch (error) {
           console.log(error);
         }
@@ -34,7 +34,7 @@ const ArticleSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <ArticleCard datas={articlesData}/>
       </div>
     </section>
