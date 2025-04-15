@@ -55,11 +55,11 @@ export default async function PsychologistsList() {
                 <div>
                   <CardTitle className="text-lg">{psychologist.name}</CardTitle>
                   <CardDescription>
-                    <Badge variant="outline" className="mt-1 mb-3">
+                    <Badge variant="outline" className="mt-1 mb-2">
                       {psychologist.role}
                     </Badge>
-                    <div className="flex items-center gap-2 mb-5">
-                      <PhoneCall className="w-4 h-4 mb-[2px]" />
+                    <div className="flex items-center gap-2 mb-2">
+                      <PhoneCall className="w-4 h-4" />
                       <p className="text-muted-foreground">
                         {psychologist.phoneNumber}
                       </p>
