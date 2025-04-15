@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Instagram, Brain, Activity, CalendarHeart } from "lucide-react";
+import FooterArticles from "./footer-article";
 
 export default function Footer() {
   return (
@@ -85,40 +86,7 @@ export default function Footer() {
               <h3 className="text-xl font-semibold mb-4">
                 Interesting Articles
               </h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:underline block border border-blue-400 p-3 rounded-md bg-blue-700/30"
-                  >
-                    The Importance of Mental Health: Why We Should Care?
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:underline block border border-blue-400 p-3 rounded-md bg-blue-700/30"
-                  >
-                    Anxiety Disorder : Symptoms, Causes & How to Overcome It
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:underline block border border-blue-400 p-3 rounded-md bg-blue-700/30"
-                  >
-                    How to Deal with Stress in the Midst of Everyday Busyness 
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:underline block border border-blue-400 p-3 rounded-md bg-blue-700/30"
-                  >
-                    The Importance of Social Supports for Mental Health
-                  </Link>
-                </li>
-              </ul>
+              <FooterArticles/>
             </div>
           </div>
 

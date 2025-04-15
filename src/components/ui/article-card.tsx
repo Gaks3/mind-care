@@ -17,7 +17,7 @@ const ArticleCard = ({ datas }) => {
       {datas.map((e, i) => (
         <Card
           key={i}
-          className="w-full sm:w-[300px] md:w-[300px] lg:w-[300px] h-auto overflow-hidden border-none rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
+          className="w-full h-full overflow-hidden border-none rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
         >
           <div className="relative h-48 overflow-hidden">
             <Image
@@ -51,7 +51,7 @@ const ArticleCard = ({ datas }) => {
               <p className="text-sm mt-2 font-medium">{e.user.name}</p>
             </div>
           </CardContent>
-          <CardFooter className="mt- pt-2">
+          <CardFooter className="mt-auto pt-2">
             <Link
               href={`/articles/${e.id}`}
               className="text-blue-600 text-sm font-semibold flex items-center group hover:text-blue-800 transition-colors"

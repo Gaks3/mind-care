@@ -63,11 +63,11 @@ const TiptapEditor = ({
         throw new Error(errorData.message || "Update failed");
       }
 
+      toast.success("Successfully to edit article")
       return await response.json();
-      toast.success("Successfully to create article")
     } catch (error) {
       console.log(error);
-      toast.error("Failed to create article")
+      toast.error("Failed to edit article")
     } finally {
       setIsLoading(false);
       router.refresh()

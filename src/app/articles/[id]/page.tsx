@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Calendar, Eye, User } from "lucide-react";
-import ArticleCard from "@/components/ui/article-card";
+import ArticlesPage from "@/components/articles-page";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import FormatDate from "@/components/ui/format-date";
 
@@ -86,9 +86,9 @@ export default async function Article({ params }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 lg:px-28">
-          <ArticleCard datas={allArticles.data} />
-        </div>
+        <div className="grid grid-cols-1  xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 lg:px-0">
+        <ArticlesPage />
+      </div>
       </div>
     </section>
   );
