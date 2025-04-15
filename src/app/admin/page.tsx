@@ -29,9 +29,16 @@ export default async function AdminDashboard() {
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">User Management</h2>
+
+        <div className="flex gap-x-4 items-center">
+        <Link href="/admin/topics">
+          <Button size="lg" variant="outline">Add Topics</Button>
+        </Link>
+
         <Link href="/admin/add">
           <Button size="lg">Add User</Button>
         </Link>
+        </div>
       </div>
       <DataTable columns={columns} data={usersData} defaultFilter="name" />
     </div>
