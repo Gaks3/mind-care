@@ -1,10 +1,11 @@
 import { client } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CalendarHeart, School, PhoneCall } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 function getInitials(name: string): string {
   return name
@@ -18,15 +19,18 @@ function getInitials(name: string): string {
 
 export default async function PsychologistDetail({ params }) {
   const { id } = params;
-  const psychologistDetail = await client.api.users.psychologists[":id"].$get({
-    param: {
-      id,
-    }
-  }, {
-    init: {
-      headers: await headers(),
+  const psychologistDetail = await client.api.users.psychologists[":id"].$get(
+    {
+      param: {
+        id,
+      },
     },
-  });
+    {
+      init: {
+        headers: await headers(),
+      },
+    },
+  );
 
   const { data: psychologist } = await psychologistDetail.json();
 
@@ -50,10 +54,22 @@ export default async function PsychologistDetail({ params }) {
                     {getInitials(psychologist.name)}
                   </AvatarFallback>
                 </Avatar>
+
+                <div className="flex flex-wrap justify-center gap-2 mb-3 w-full">
+                  {psychologist.psychologyTopic.map((item) => (
+                    <Badge key={item.topic.id} className="text-xs">
+                      {item.topic.name}
+                    </Badge>
+                  ))}
+                </div>
+
                 <CardTitle className="text-xl font-bold">
                   <h1>{psychologist.name}</h1>
-                  <div className="flex items-center">
-                    <PhoneCall className="w-4 h-4 mr-2" /><p className="text-base text-muted-foreground">{psychologist.phoneNumber}</p>
+                  <div className="flex items-center justify-center mt-2">
+                    <PhoneCall className="w-4 h-4 mr-2" />
+                    <p className="text-base text-muted-foreground">
+                      {psychologist.phoneNumber}
+                    </p>
                   </div>
                 </CardTitle>
               </div>
@@ -84,16 +100,24 @@ export default async function PsychologistDetail({ params }) {
               <div>
                 <h3 className="text-lg font-semibold mb-3">Education</h3>
                 <div className="space-y-3">
-                  {psychologist.education && psychologist.education.length > 0 ? (
+                  {psychologist.education &&
+                  psychologist.education.length > 0 ? (
                     psychologist.education.map((edu, index) => (
-                      <div key={index} className="flex items-start gap-3 p-2 rounded-md border">
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 p-2 rounded-md border"
+                      >
                         <div className="flex-shrink-0 mt-1">
                           <School className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
                           <div className="font-medium">{edu.institution}</div>
-                          <div className="text-sm text-muted-foreground">{edu.degree}</div>
-                          <div className="text-xs text-muted-foreground">{edu.year}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {edu.degree}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {edu.year}
+                          </div>
                         </div>
                       </div>
                     ))
@@ -104,8 +128,12 @@ export default async function PsychologistDetail({ params }) {
                           <School className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                          <div className="font-medium">Universitas Gadjah Mada</div>
-                          <div className="text-sm text-muted-foreground">2022 - Sarjana Psikologi</div>
+                          <div className="font-medium">
+                            Universitas Gadjah Mada
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            2022 - Sarjana Psikologi
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-start gap-3 p-2 rounded-md border">
@@ -114,14 +142,15 @@ export default async function PsychologistDetail({ params }) {
                         </div>
                         <div>
                           <div className="font-medium">SMKN 2 Yogyakarta</div>
-                          <div className="text-sm text-muted-foreground">2018 - Psikologi</div>
+                          <div className="text-sm text-muted-foreground">
+                            2018 - Psikologi
+                          </div>
                         </div>
                       </div>
                     </>
                   )}
                 </div>
               </div>
-
             </CardContent>
           </Card>
         </div>
