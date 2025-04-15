@@ -29,6 +29,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard-psychology", request.url));
   }
 
+  if (
+    pathname.startsWith("/articles") &&
+    session.user.role !== "PSYCHOLOGY" &&
+    pathname.endsWith("/edit")
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
   return NextResponse.next();
 }
 
@@ -38,5 +45,6 @@ export const config = {
     "/admin/:path*",
     "/bookings/:path*",
     "/dashboard-psychology",
+    "/articles/:path*",
   ],
 };
