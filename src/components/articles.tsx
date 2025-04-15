@@ -13,7 +13,7 @@ const ArticleSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1  xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 lg:px-0">
+      <div className="grid grid-cols-1  xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 lg:px-4">
         <ArticlesPage />
       </div>
     </section>

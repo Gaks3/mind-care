@@ -3,15 +3,12 @@ import { Calendar, Eye, User } from "lucide-react";
 import ArticlesPage from "@/components/articles-page";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import FormatDate from "@/components/ui/format-date";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 async function getArticle(id) {
   const response = await fetch(`http://localhost:3000/api/articles/${id}`);
-
-  return response.json();
-}
-
-async function getAllArticles() {
-  const response = await fetch(`http://localhost:3000/api/articles`);
 
   return response.json();
 }
@@ -21,8 +18,12 @@ export default async function Article({ params }) {
   const articles = await getArticle(id);
   const articlesData = articles.data;
 
-  const allArticles = await getAllArticles();
-  console.log(allArticles.data)
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+  
+    const user = session?.user;
+
 
   return (
     <section className="container mx-auto">
@@ -73,6 +74,18 @@ export default async function Article({ params }) {
           dangerouslySetInnerHTML={{ __html: articlesData.content }}
           className="text-base text-justify [&_ul]:list-disc [&_ol]:list-decimal [&_ul>li]:ml-10 [&_ol>li]:ml-6 md:text-lg xl:text-xl"
         />
+
+        {articlesData.user.id === user?.id && (
+        <div className="flex justify-end mt-10">
+          <Link
+            href={`/articles/${id}/edit`}
+            className="w-fit bg-primary text-white rounded-md py-2 px-6 text-lg font-semibold cursor-pointer"
+          >
+            Edit Article
+          </Link>
+        </div>
+        )}
+
       </article>
 
       <div className="w-full">
@@ -87,8 +100,8 @@ export default async function Article({ params }) {
         </div>
 
         <div className="grid grid-cols-1  xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 lg:px-0">
-        <ArticlesPage />
-      </div>
+          <ArticlesPage />
+        </div>
       </div>
     </section>
   );
