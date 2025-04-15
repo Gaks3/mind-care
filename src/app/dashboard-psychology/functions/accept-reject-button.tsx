@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,24 +13,26 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { toast } from "sonner"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 export function BookingActions({ sessionId }: { sessionId: number }) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [actionType, setActionType] = useState<"accept" | "reject" | null>(null)
-  const [meetingLink, setMeetingLink] = useState("")
-  const [rejectReason, setRejectReason] = useState("")
-  const [acceptOpen, setAcceptOpen] = useState(false)
-  const [rejectOpen, setRejectOpen] = useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [actionType, setActionType] = useState<"accept" | "reject" | null>(
+    null,
+  );
+  const [meetingLink, setMeetingLink] = useState("");
+  const [rejectReason, setRejectReason] = useState("");
+  const [acceptOpen, setAcceptOpen] = useState(false);
+  const [rejectOpen, setRejectOpen] = useState(false);
 
   const handleAcceptSubmit = async () => {
-    if (!meetingLink.trim()) return
+    if (!meetingLink.trim()) return;
 
-    setIsLoading(true)
-    setActionType("accept")
+    setIsLoading(true);
+    setActionType("accept");
     try {
       const response = await fetch(`/api/bookings/sessions/${sessionId}`, {
         method: "PATCH",
@@ -42,28 +44,28 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
           reason: "",
           meetingLink: meetingLink,
         }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to accept booking")
+        throw new Error("Failed to accept booking");
       }
 
-      router.refresh()
-      setAcceptOpen(false)
+      router.refresh();
+      setAcceptOpen(false);
     } catch (error) {
-      console.error(error)
-      toast.error("Please input a valid URL")
+      console.error(error);
+      toast.error("Please input a valid URL");
     } finally {
-      setIsLoading(false)
-      setActionType(null)
+      setIsLoading(false);
+      setActionType(null);
     }
-  }
+  };
 
   const handleRejectSubmit = async () => {
-    if (!rejectReason.trim()) return
+    if (!rejectReason.trim()) return;
 
-    setIsLoading(true)
-    setActionType("reject")
+    setIsLoading(true);
+    setActionType("reject");
     try {
       const response = await fetch(`/api/bookings/sessions/${sessionId}`, {
         method: "PATCH",
@@ -75,22 +77,22 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
           reason: rejectReason,
           meetingLink: undefined,
         }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to reject booking")
+        throw new Error("Failed to reject booking");
       }
 
-      router.refresh()
-      setRejectOpen(false)
+      router.refresh();
+      setRejectOpen(false);
     } catch (error) {
-      console.error("Error rejecting booking:", error)
-      toast.error("Something went wrong")
+      console.error("Error rejecting booking:", error);
+      toast.error("Something went wrong");
     } finally {
-      setIsLoading(false)
-      setActionType(null)
+      setIsLoading(false);
+      setActionType(null);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col sm:flex-row gap-2 mt-3">
@@ -113,7 +115,12 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
         )}
       </Button>
 
-      <Button onClick={() => setRejectOpen(true)} variant="destructive" size="sm" disabled={isLoading}>
+      <Button
+        onClick={() => setRejectOpen(true)}
+        variant="destructive"
+        size="sm"
+        disabled={isLoading}
+      >
         {isLoading && actionType === "reject" ? (
           <>
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -202,6 +209,5 @@ export function BookingActions({ sessionId }: { sessionId: number }) {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
-

@@ -1,56 +1,84 @@
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalendarCheck, Clock, User, LogOut, ChevronDown, BarChart3, Calendar, Brain, CheckCircle } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Link from "next/link"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { redirect } from "next/navigation"
-import { UserRole } from "@/types"
-import { client } from "@/lib/api"
-import { BookingActions } from "./functions/accept-reject-button"
-import { AddScheduleButton } from "./functions/add-schedule"
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  CalendarCheck,
+  Clock,
+  User,
+  LogOut,
+  ChevronDown,
+  BarChart3,
+  Calendar,
+  Brain,
+  CheckCircle,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { notFound, redirect } from "next/navigation";
+import { UserRole } from "@/types";
+import { client } from "@/lib/api";
+import { BookingActions } from "./functions/accept-reject-button";
+import { AddScheduleButton } from "./functions/add-schedule";
+import { DeleteBookingButton } from "../dashboard/delete-button";
 
 export default async function DashboardPsychologist() {
   const session = await auth.api.getSession({
     headers: await headers(),
-  })
+  });
 
-  const getBookingSession = await client.api.bookings.sessions.psychologist.$get(undefined, {
-    init: {
-      headers: await headers(),
-    },
-  })
+  const getBookingSession =
+    await client.api.bookings.sessions.psychologist.$get(undefined, {
+      init: {
+        headers: await headers(),
+      },
+    });
 
-  const user = session?.user
-  const role = session?.user?.role
-  const { data: allSessions } = await getBookingSession.json()
+  const user = session?.user;
+  const role = session?.user?.role;
+
+  if (getBookingSession.status === 404) return notFound();
+
+  const { data: allSessions } = await getBookingSession.json();
 
   if (role === UserRole.ADMIN) {
-    return redirect("/admin")
+    return redirect("/admin");
   }
 
   if (role === UserRole.USER) {
-    return redirect("/dashboard")
+    return redirect("/dashboard");
   }
 
   const pendingSessions = allSessions.filter(
     (session) => session.status !== "ACCEPTED" && session.status !== "REJECTED",
-  )
-  const acceptedSessions = allSessions.filter((session) => session.status === "ACCEPTED")
+  );
+  const acceptedSessions = allSessions.filter(
+    (session) => session.status === "ACCEPTED",
+  );
 
   const sortedPendingSessions = [...pendingSessions].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  )
+  );
 
   const sortedAcceptedSessions = [...acceptedSessions].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  )
+  );
 
-  const totalSessions = allSessions.length
+  const totalSessions = allSessions.length;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -68,7 +96,10 @@ export default async function DashboardPsychologist() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.image || ""} alt={user?.name || "User"} />
+                    <AvatarImage
+                      src={user?.image || ""}
+                      alt={user?.name || "User"}
+                    />
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       {user?.name?.charAt(0) || <User />}
                     </AvatarFallback>
@@ -78,21 +109,15 @@ export default async function DashboardPsychologist() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Link href="/profile" className="flex items-center gap-2">
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
                 <DropdownMenuItem className="text-destructive focus:text-destructive">
                   <LogOut className="mr-2 h-4 w-4 cursor-pointer" />
                   <form
                     action={async () => {
-                      "use server"
+                      "use server";
                       await auth.api.signOut({
                         headers: await headers(),
-                      })
-                      redirect("/")
+                      });
+                      redirect("/");
                     }}
                   >
                     <Button type="submit" size="xs" variant="ghost">
@@ -110,7 +135,9 @@ export default async function DashboardPsychologist() {
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {user?.name} 👋</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                Welcome, {user?.name} 👋
+              </h1>
               <p className="text-primary-foreground/80">email: {user?.email}</p>
             </div>
             <div className="flex gap-4">
@@ -120,8 +147,12 @@ export default async function DashboardPsychologist() {
                     <Calendar className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Upcoming session</p>
-                    <p className="text-xl font-bold">{pendingSessions.length}</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">
+                      Upcoming session
+                    </p>
+                    <p className="text-xl font-bold">
+                      {pendingSessions.length}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -131,7 +162,9 @@ export default async function DashboardPsychologist() {
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">All sessions</p>
+                    <p className="text-sm font-medium text-primary-foreground/80">
+                      All sessions
+                    </p>
                     <p className="text-xl font-bold">{totalSessions}</p>
                   </div>
                 </CardContent>
@@ -163,7 +196,9 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Session #{session.id}</h3>
+                              <h3 className="font-medium">
+                                Session #{session.id}
+                              </h3>
                               <Badge variant="outline">Waiting</Badge>
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
@@ -173,26 +208,40 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                            <p className="text-muted-foreground text-base">Booking was created on :</p>
+                            <p className="text-muted-foreground text-base">
+                              Booking was created on :
+                            </p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                              {new Date(session.createdAt).toLocaleDateString(
+                                "id-ID",
+                              )}
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })}
+                              {new Date(session.createdAt).toLocaleTimeString(
+                                "id-ID",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
-                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                          })}</p>
+                          <p className="text-muted-foreground text-base">
+                            By : {session.user.name}
+                          </p>
+                          <p className="text-muted-foreground text-base">
+                            Time :{" "}
+                            {new Date(
+                              session.bookingSchedule.dateTime,
+                            ).toLocaleString("id-ID", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -202,7 +251,9 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">No pending sessions</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  No pending sessions
+                </p>
               )}
             </CardContent>
           </Card>
@@ -224,7 +275,9 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Sesi #{session.id}</h3>
+                              <h3 className="font-medium">
+                                Sesi #{session.id}
+                              </h3>
                               <Badge variant="default" className="bg-primary">
                                 Confirmed
                               </Badge>
@@ -236,41 +289,67 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
-                            <p className="text-muted-foreground text-base">Booking was created on :</p>
+                            <p className="text-muted-foreground text-base">
+                              Booking was created on :
+                            </p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                              {new Date(session.createdAt).toLocaleDateString(
+                                "id-ID",
+                              )}
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })}
+                              {new Date(session.createdAt).toLocaleTimeString(
+                                "id-ID",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
-                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                          })}</p>
-                          {session.bookingSchedule.meetingLink && (
-                            <Button asChild variant="default" size="sm" className="mt-1">
-                              <Link href={session.bookingSchedule.meetingLink} target="_blank">
-                                Join Meeting
-                              </Link>
-                            </Button>
-                          )}
+                          <p className="text-muted-foreground text-base">
+                            By : {session.user.name}
+                          </p>
+                          <p className="text-muted-foreground text-base">
+                            Time :{" "}
+                            {new Date(
+                              session.bookingSchedule.dateTime,
+                            ).toLocaleString("id-ID", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </p>
+                          <div className="flex gap-x-3 items-center mt-2">
+                            {session.bookingSchedule.meetingLink && (
+                              <Button asChild variant="default" size="sm">
+                                <Link
+                                  href={session.bookingSchedule.meetingLink}
+                                  target="_blank"
+                                >
+                                  Join Meeting
+                                </Link>
+                              </Button>
+                            )}
+                            <DeleteBookingButton sessionId={session.id} />
+                          </div>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
-                              Updated at: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
-                              {new Date(session.updatedAt).toLocaleTimeString("id-ID", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })}
+                              Updated at:{" "}
+                              {new Date(session.updatedAt).toLocaleDateString(
+                                "id-ID",
+                              )}{" "}
+                              {new Date(session.updatedAt).toLocaleTimeString(
+                                "id-ID",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )}
                             </p>
                           </div>
                         </div>
@@ -279,7 +358,9 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">No confirmed booking</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  No confirmed booking
+                </p>
               )}
             </CardContent>
           </Card>
@@ -301,7 +382,9 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Session #{session.id}</h3>
+                              <h3 className="font-medium">
+                                Session #{session.id}
+                              </h3>
                               <Badge variant="outline">Waiting</Badge>
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">
@@ -311,26 +394,40 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col gap-2 text-sm mb-3">
-                            <p className="text-muted-foreground text-base">Booking was created on :</p>
+                            <p className="text-muted-foreground text-base">
+                              Booking was created on :
+                            </p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                              {new Date(session.createdAt).toLocaleDateString(
+                                "id-ID",
+                              )}
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })}
+                              {new Date(session.createdAt).toLocaleTimeString(
+                                "id-ID",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
-                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                          })}</p>
+                          <p className="text-muted-foreground text-base">
+                            By : {session.user.name}
+                          </p>
+                          <p className="text-muted-foreground text-base">
+                            Time :{" "}
+                            {new Date(
+                              session.bookingSchedule.dateTime,
+                            ).toLocaleString("id-ID", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </p>
                           <div className="flex flex-col sm:flex-row gap-2 mt-3">
                             <BookingActions sessionId={session.id} />
                           </div>
@@ -340,7 +437,9 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">No pending sessions</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  No pending sessions
+                </p>
               )}
             </TabsContent>
 
@@ -353,7 +452,9 @@ export default async function DashboardPsychologist() {
                         <div className="flex items-start p-4 border-b">
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <h3 className="font-medium">Session #{session.id}</h3>
+                              <h3 className="font-medium">
+                                Session #{session.id}
+                              </h3>
                               <Badge variant="default" className="bg-primary">
                                 Confirmed
                               </Badge>
@@ -365,41 +466,67 @@ export default async function DashboardPsychologist() {
                         </div>
                         <div className="p-4 bg-muted/30">
                           <div className="flex flex-col gap-2 text-sm">
-                            <p className="text-muted-foreground text-base">Booking was created on :</p>
+                            <p className="text-muted-foreground text-base">
+                              Booking was created on :
+                            </p>
                             <span className="flex items-center gap-1">
                               <CalendarCheck className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleDateString("id-ID")}
+                              {new Date(session.createdAt).toLocaleDateString(
+                                "id-ID",
+                              )}
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="h-4 w-4 text-primary" />
-                              {new Date(session.createdAt).toLocaleTimeString("id-ID", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })}
+                              {new Date(session.createdAt).toLocaleTimeString(
+                                "id-ID",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-base">By : {session.user.name}</p>
-                          <p className="text-muted-foreground text-base">Time : {new Date(session.bookingSchedule.dateTime).toLocaleString("id-ID", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                          })}</p>
-                          {session.bookingSchedule.meetingLink && (
-                            <Button asChild variant="default" size="sm" className="mt-1">
-                              <Link href={session.bookingSchedule.meetingLink} target="_blank">
-                                Join Meeting
-                              </Link>
-                            </Button>
-                          )}
+                          <p className="text-muted-foreground text-base">
+                            By : {session.user.name}
+                          </p>
+                          <p className="text-muted-foreground text-base">
+                            Time :{" "}
+                            {new Date(
+                              session.bookingSchedule.dateTime,
+                            ).toLocaleString("id-ID", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </p>
+                          <div className="flex items-center mt-2 gap-x-3">
+                            {session.bookingSchedule.meetingLink && (
+                              <Button asChild variant="default" size="sm">
+                                <Link
+                                  href={session.bookingSchedule.meetingLink}
+                                  target="_blank"
+                                >
+                                  Join Meeting
+                                </Link>
+                              </Button>
+                            )}
+                            <DeleteBookingButton sessionId={session.id} />
+                          </div>
                           <div className="flex flex-col gap-2 mt-3">
                             <p className="text-sm text-muted-foreground">
-                              Updated at: {new Date(session.updatedAt).toLocaleDateString("id-ID")}{" "}
-                              {new Date(session.updatedAt).toLocaleTimeString("id-ID", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })}
+                              Updated at:{" "}
+                              {new Date(session.updatedAt).toLocaleDateString(
+                                "id-ID",
+                              )}{" "}
+                              {new Date(session.updatedAt).toLocaleTimeString(
+                                "id-ID",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )}
                             </p>
                           </div>
                         </div>
@@ -408,13 +535,14 @@ export default async function DashboardPsychologist() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-6 text-muted-foreground">No confirmed booking</p>
+                <p className="text-center py-6 text-muted-foreground">
+                  No confirmed booking
+                </p>
               )}
             </TabsContent>
           </Tabs>
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -65,7 +65,7 @@ export default function SignInPage() {
           toast.error("Invalid Email or Password");
           setIsSubmitting(false);
         },
-      }
+      },
     );
   }
 
@@ -87,7 +87,7 @@ export default function SignInPage() {
             Sign In
           </CardTitle>
           <CardDescription className="text-center text-gray-500">
-            Yuk, Masuk ke Akunmu Dulu!
+            Login to your account
           </CardDescription>
         </CardHeader>
 
@@ -108,7 +108,7 @@ export default function SignInPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="Masukkan Email"
+                          placeholder="Enter your email"
                           className="pl-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
                         />
@@ -135,7 +135,7 @@ export default function SignInPage() {
                       </div>
                       <FormControl>
                         <Input
-                          placeholder="Masukkan Kata Sandi"
+                          placeholder="Enter your password"
                           type={showPassword ? "text" : "password"}
                           className="pl-10 pr-10 py-2 bg-transparent border-gray-200 rounded-lg focus:ring-primary focus:border-primary"
                           {...field}
@@ -180,7 +180,7 @@ export default function SignInPage() {
 
         <CardFooter className="flex justify-center px-8 py-6">
           <p className="text-sm text-gray-600">
-            Belum punya akun?{" "}
+            Dont have account?{" "}
             <Link
               href="/sign-up"
               className="text-primary font-medium hover:underline"

@@ -3,17 +3,17 @@ import { cn } from "@/lib/utils";
 
 const stats = [
   {
-    data: "108.500+ Users",
+    data: "27.500+ Users",
     proof: "Chat, messages, audio sessions, and video.",
     icon: <Users className="h-8 w-8" />,
   },
   {
-    data: "325+",
+    data: "315+",
     proof: "Profesional therapists ready to support you.",
     icon: <MessageSquare className="h-8 w-8" />,
   },
   {
-    data: "106.800+",
+    data: "36.800+",
     proof: "Clients helped",
     icon: <Award className="h-8 w-8" />,
   },

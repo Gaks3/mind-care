@@ -1,130 +1,146 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
+"use client";
 
-import { useState } from "react"
-import { format, parseISO } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
-import { Label } from "@/components/ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { toast } from "sonner"
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { client } from "@/lib/api"
+import { useState } from "react";
+import { format, parseISO } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { toast } from "sonner";
+import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { client } from "@/lib/api";
 
 interface BookingSchedule {
-  id: number
-  psychologistId: string
-  isBooked: boolean
-  dateTime: string
-  meetingLink: string | null
-  createdAt: string
-  updatedAt: string
+  id: number;
+  psychologistId: string;
+  isBooked: boolean;
+  dateTime: string;
+  meetingLink: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface BookingFormProps {
-  bookingSchedules: BookingSchedule[]
-  psychologistId: string
-  psychologistName: string
-  userId: string
+  bookingSchedules: BookingSchedule[];
+  psychologistId: string;
+  psychologistName: string;
+  userId: string;
 }
 
 const formSchema = z.object({
   bookingId: z.number({
     required_error: "Please select a date",
   }),
-})
+});
 
-type BookingFormValues = z.infer<typeof formSchema>
+type BookingFormValues = z.infer<typeof formSchema>;
 
-export default function BookingForm({ bookingSchedules, psychologistId, psychologistName, userId }: BookingFormProps) {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [selectedSlot, setSelectedSlot] = useState<BookingSchedule | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+export default function BookingForm({
+  bookingSchedules,
+  psychologistId,
+  psychologistName,
+  userId,
+}: BookingFormProps) {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<BookingSchedule | null>(
+    null,
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       bookingId: 0,
     },
-  })
+  });
 
-  const schedulesByDate = bookingSchedules.reduce(
-    (acc, schedule) => {
-      const dateKey = format(parseISO(schedule.dateTime), "yyyy-MM-dd")
-      if (!acc[dateKey]) {
-        acc[dateKey] = []
-      }
-      acc[dateKey].push(schedule)
-      return acc
-    },
-    {} as Record<string, BookingSchedule[]>,
-  )
+  const schedulesByDate = bookingSchedules.reduce((acc, schedule) => {
+    const dateKey = format(parseISO(schedule.dateTime), "yyyy-MM-dd");
+    if (!acc[dateKey]) {
+      acc[dateKey] = [];
+    }
+    acc[dateKey].push(schedule);
+    return acc;
+  }, {} as Record<string, BookingSchedule[]>);
 
   const getTimeSlotsForDate = (date: Date | null) => {
-    if (!date) return []
-    const dateKey = format(date, "yyyy-MM-dd")
-    return schedulesByDate[dateKey] || []
-  }
+    if (!date) return [];
+    const dateKey = format(date, "yyyy-MM-dd");
+    return schedulesByDate[dateKey] || [];
+  };
 
   const formatTimeSlot = (dateTimeStr: string) => {
-    const dateTime = parseISO(dateTimeStr)
-    return format(dateTime, "HH:mm")
-  }
+    const dateTime = parseISO(dateTimeStr);
+    return format(dateTime, "HH:mm");
+  };
 
   const hasAvailableSlots = (date: Date) => {
-    const dateKey = format(date, "yyyy-MM-dd")
-    const slots = schedulesByDate[dateKey] || []
-    return slots.some((slot) => !slot.isBooked)
-  }
+    const dateKey = format(date, "yyyy-MM-dd");
+    const slots = schedulesByDate[dateKey] || [];
+    return slots.some((slot) => !slot.isBooked);
+  };
 
-  const datesWithSlots = Object.keys(schedulesByDate).map((dateStr) => new Date(dateStr))
+  const datesWithSlots = Object.keys(schedulesByDate).map(
+    (dateStr) => new Date(dateStr),
+  );
 
-  const selectedDateTimeSlots = getTimeSlotsForDate(selectedDate)
+  const selectedDateTimeSlots = getTimeSlotsForDate(selectedDate);
 
   const filteredTimeSlots = selectedDateTimeSlots.filter(
-    (slot) => !psychologistId || slot.psychologistId === psychologistId
-  )
+    (slot) => !psychologistId || slot.psychologistId === psychologistId,
+  );
 
   const handleSelectTimeSlot = (slot: BookingSchedule) => {
-    setSelectedSlot(slot)
-    form.setValue("bookingId", slot.id)
-  }
+    setSelectedSlot(slot);
+    form.setValue("bookingId", slot.id);
+  };
 
   const onSubmit = async (data: BookingFormValues) => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
 
       const response = await client.api.bookings.sessions.$post({
         json: {
-          bookingId: data.bookingId
-        }
-      })
+          bookingId: data.bookingId,
+        },
+      });
 
       if (response.ok) {
-        await response.json()
-        toast.success(`Booking with ${psychologistName} successfully created`)
+        await response.json();
+        toast.success(`Booking with ${psychologistName} successfully created`);
         form.reset({
           bookingId: 0,
-        })
-        setSelectedDate(null)
-        setSelectedSlot(null)
+        });
+        setSelectedDate(null);
+        setSelectedSlot(null);
       } else {
-        toast.error("This schedule is already booked")
+        toast.error("This schedule is already booked");
       }
     } catch (error) {
-      console.error("Error submitting form:", error)
-      toast.error("Failed to booking")
+      console.error("Error submitting form:", error);
+      toast.error("Failed to booking");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -147,14 +163,18 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                     )}
                     onClick={() => {
                       if (selectedSlot) {
-                        setSelectedSlot(null)
-                        form.setValue("bookingId", 0, { shouldValidate: false })
+                        setSelectedSlot(null);
+                        form.setValue("bookingId", 0, {
+                          shouldValidate: false,
+                        });
                       }
                     }}
                     type="button"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {selectedDate ? format(selectedDate, "dd MMMM yyyy") : "Select date"}
+                    {selectedDate
+                      ? format(selectedDate, "dd MMMM yyyy")
+                      : "Select date"}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -162,10 +182,12 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                     mode="single"
                     selected={selectedDate}
                     onSelect={(date) => {
-                      setSelectedDate(date)
+                      setSelectedDate(date);
                       if (selectedSlot) {
-                        setSelectedSlot(null)
-                        form.setValue("bookingId", 0, { shouldValidate: false })
+                        setSelectedSlot(null);
+                        form.setValue("bookingId", 0, {
+                          shouldValidate: false,
+                        });
                       }
                     }}
                     modifiers={{
@@ -202,8 +224,18 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                                 <Button
                                   key={slot.id}
                                   type="button"
-                                  variant={selectedSlot?.id === slot.id ? "default" : slot.isBooked ? "outline" : "secondary"}
-                                  className={cn("justify-center", slot.isBooked && "opacity-50 cursor-not-allowed")}
+                                  variant={
+                                    selectedSlot?.id === slot.id
+                                      ? "default"
+                                      : slot.isBooked
+                                      ? "outline"
+                                      : "secondary"
+                                  }
+                                  className={cn(
+                                    "justify-center",
+                                    slot.isBooked &&
+                                      "opacity-50 cursor-not-allowed",
+                                  )}
                                   disabled={slot.isBooked}
                                   onClick={() => handleSelectTimeSlot(slot)}
                                 >
@@ -212,10 +244,14 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
                               ))}
                             </div>
                           ) : (
-                            <p className="text-center text-muted-foreground py-4">No available time slots</p>
+                            <p className="text-center text-muted-foreground py-4">
+                              No available time slots
+                            </p>
                           )}
                           {form.formState.errors.bookingId && (
-                            <p className="text-sm font-medium text-destructive">{form.formState.errors.bookingId.message}</p>
+                            <p className="text-sm font-medium text-destructive">
+                              {form.formState.errors.bookingId.message}
+                            </p>
                           )}
                         </>
                       )}
@@ -226,12 +262,16 @@ export default function BookingForm({ bookingSchedules, psychologistId, psycholo
             />
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full" disabled={!selectedSlot || isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={!selectedSlot || isSubmitting}
+            >
               {isSubmitting ? "Processing..." : "Booking now"}
             </Button>
           </CardFooter>
         </Card>
       </form>
     </Form>
-  )
+  );
 }

@@ -17,6 +17,7 @@ import {
   RemoveScheduleRoute,
   RemoveSessionRoute,
 } from "./bookings.routes";
+import { UserRole } from "@/types";
 
 export const listSchedules: AppRouteHandler<ListSchedulesRoute> = async (c) => {
   const data = await db.bookingSchedule.findMany();
@@ -294,6 +295,9 @@ export const removeSession: AppRouteHandler<RemoveSessionRoute> = async (c) => {
     where: {
       id,
     },
+    include: {
+      bookingSchedule: true,
+    },
   });
 
   if (!session)
@@ -302,7 +306,11 @@ export const removeSession: AppRouteHandler<RemoveSessionRoute> = async (c) => {
       HTTPStatusCodes.NOT_FOUND,
     );
 
-  if (session.userId !== user.id)
+  if (
+    session.userId !== user.id &&
+    user.role !== UserRole.PSYCHOLOGY &&
+    session.bookingSchedule.psychologistId !== user.id
+  )
     return c.json(
       { message: HTTPStatusPhrases.FORBIDDEN },
       HTTPStatusCodes.FORBIDDEN,

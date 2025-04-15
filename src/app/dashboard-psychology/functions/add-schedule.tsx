@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -59,12 +60,22 @@ export function AddScheduleButton() {
       .toString()
       .padStart(2, "0")}`;
   });
+    const hour = Math.floor(i / 2) + 8;
+    const minute = (i % 2) * 30;
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  });
 
   const handleSubmit = async () => {
     if (!date || !time) return;
+    if (!date || !time) return;
 
     setIsLoading(true);
+    setIsLoading(true);
 
+    const [hours, minutes] = time.split(":").map(Number);
+    const dateTime = set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
     const [hours, minutes] = time.split(":").map(Number);
     const dateTime = set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
 
@@ -80,11 +91,16 @@ export function AddScheduleButton() {
           isBooked: false,
         }),
       });
+      });
 
       if (!response.ok) {
         throw new Error("Failed to add schedule");
+        throw new Error("Failed to add schedule");
       }
 
+      setDate(undefined);
+      setTime(undefined);
+      setIsOpen(false);
       setDate(undefined);
       setTime(undefined);
       setIsOpen(false);
@@ -159,6 +175,10 @@ export function AddScheduleButton() {
         onClick={() => setIsOpen(true)}
         className="bg-primary hover:bg-primary/90"
       >
+      <Button
+        onClick={() => setIsOpen(true)}
+        className="bg-primary hover:bg-primary/90"
+      >
         <CalendarPlus className="h-4 w-4 mr-2" />
         Add Schedule
       </Button>
@@ -178,6 +198,9 @@ export function AddScheduleButton() {
             <DialogDescription>
               Select a date and time for the new consultation schedule.
             </DialogDescription>
+            <DialogDescription>
+              Select a date and time for the new consultation schedule.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-6 py-4">
@@ -188,7 +211,6 @@ export function AddScheduleButton() {
                 selected={date}
                 onSelect={setDate}
                 className="rounded-md border mx-auto"
-                locale={id}
                 disabled={(date) => date < new Date()}
               />
             </div>
@@ -219,7 +241,6 @@ export function AddScheduleButton() {
                       minutes: Number.parseInt(time.split(":")[1]),
                     }),
                     "EEEE, dd MMMM yyyy - HH:mm",
-                    { locale: id },
                   )}
                 </span>
               </div>
@@ -227,6 +248,11 @@ export function AddScheduleButton() {
           </div>
 
           <DialogFooter>
+            <Button
+              onClick={handleSubmit}
+              disabled={!isFormValid || isLoading}
+              className="w-full sm:w-auto"
+            >
             <Button
               onClick={handleSubmit}
               disabled={!isFormValid || isLoading}
