@@ -1,34 +1,11 @@
 "use client";
 
 import { Search } from "lucide-react";
-import ArticleCard from "@/components/ui/article-card";
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import ArticlesPage from "@/components/articles-page";
 
 const menu = ["Latest", "Popular", "Oldest"];
 
 const Articles = () => {
-  const [articlesData, setArticlesData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const getArticles = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/articles");
-
-        const data = await response.json();
-
-        setArticlesData(data.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getArticles();
-  }, []);
-
   return (
     <section className="container mx-auto">
       <div className="flex justify-center md:pt-10 pt-4 md:pb-8 pb-4 px-6 md:px-0">
@@ -57,14 +34,9 @@ const Articles = () => {
         ))}
       </div>
 
-
-      {isLoading ? (
-        <Loader2 className="h-14 w-14 animate-spin mx-auto text-primary mt-10 mb-2" />
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 px-6 lg:px-10 xl:px-28">
-          <ArticleCard datas={articlesData} />
-        </div>
-      )}
+      <div className="grid grid-cols-1 xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 lg:px-10">
+        <ArticlesPage />
+      </div>
     </section>
   );
 };
