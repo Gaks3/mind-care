@@ -1,6 +1,6 @@
 <div align="center" >
   <br />
-      <img src="https://github.com/user-attachments/assets/0dfc0dc5-9017-41d2-b64a-23c3234e647b" alt="Project Banner" style="border-radius: 15px;">
+      <img src="https://github.com/user-attachments/assets/ef5242ec-4d4a-4cd4-9335-6560aa19fd79" alt="Project Banner">
   <br />
 </div>
 
