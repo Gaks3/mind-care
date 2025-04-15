@@ -1,6 +1,8 @@
 import Image from "next/image";
-import { Calendar, Eye } from "lucide-react";
+import { Calendar, Eye, User } from "lucide-react";
 import ArticleCard from "@/components/ui/article-card";
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import FormatDate from "@/components/ui/format-date";
 
 async function getArticle(id) {
   const response = await fetch(`http://localhost:3000/api/articles/${id}`);
@@ -30,14 +32,16 @@ export default async function Article({ params }) {
         </h1>
 
         <div className="flex items-center justify-between sm:justify-normal sm:gap-10 md:gap-20 mb-6">
-          <div className="flex items-center">
-            <Image
-              src={`/${articlesData.user.image}`}
-              width={1000}
-              height={1000}
-              alt="profile"
-              className="w-10 h-10 sm:w-14 sm:h-14 border-2 border-black/30 rounded-full mr-2"
-            />
+          <div className="flex items-center gap-x-3">
+            <Avatar className="h-14 w-14 border-2 rounded-full border-black flex items-center justify-center">
+              <AvatarImage
+                src={articlesData?.user.image || ""}
+                alt={articlesData?.user.name || "User"}
+              />
+              <AvatarFallback className="text-black">
+                <User />
+              </AvatarFallback>
+            </Avatar>
             <p className="sm:text-lg md:text-xl font-semibold">
               {articlesData.user.name}
             </p>
@@ -45,7 +49,7 @@ export default async function Article({ params }) {
           <div className="flex items-center">
             <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
             <p className="sm:text-lg md:text-xl font-semibold">
-              {articlesData.createdAt}
+              <FormatDate dateString={articlesData.createdAt} />
             </p>
           </div>
           <div className="flex items-center">

@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -23,7 +22,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { CalendarPlus, Loader2, FilePlus, ImagePlus, X } from "lucide-react";
 import { format, set } from "date-fns";
-import { id } from "date-fns/locale";
+import { toast } from "sonner";
 
 const topikTypes = [
   "Depression",
@@ -60,22 +59,12 @@ export function AddScheduleButton() {
       .toString()
       .padStart(2, "0")}`;
   });
-    const hour = Math.floor(i / 2) + 8;
-    const minute = (i % 2) * 30;
-    return `${hour.toString().padStart(2, "0")}:${minute
-      .toString()
-      .padStart(2, "0")}`;
-  });
 
   const handleSubmit = async () => {
     if (!date || !time) return;
-    if (!date || !time) return;
 
     setIsLoading(true);
-    setIsLoading(true);
 
-    const [hours, minutes] = time.split(":").map(Number);
-    const dateTime = set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
     const [hours, minutes] = time.split(":").map(Number);
     const dateTime = set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
 
@@ -91,23 +80,21 @@ export function AddScheduleButton() {
           isBooked: false,
         }),
       });
-      });
 
       if (!response.ok) {
-        throw new Error("Failed to add schedule");
         throw new Error("Failed to add schedule");
       }
 
       setDate(undefined);
       setTime(undefined);
       setIsOpen(false);
-      setDate(undefined);
-      setTime(undefined);
-      setIsOpen(false);
+
+      toast.success("Schedule created sucessfully");
 
       router.refresh();
     } catch (error) {
       console.error("Error adding schedule:", error);
+      toast.error("Faied to create schedule");
     } finally {
       setIsLoading(false);
     }
@@ -137,9 +124,12 @@ export function AddScheduleButton() {
 
       const data = await res.json();
 
+      if (res.ok) {
+        toast.success("Article created successfully");
+      }
       return router.push(`/articles/${data.data.id}/edit`);
     } catch (error) {
-      console.log(error);
+      toast.error("Failed to create article");
     } finally {
       setIsLoadingArticle(false);
     }
@@ -167,14 +157,11 @@ export function AddScheduleButton() {
 
   const isFormValid = date && time;
 
-  const isArticleValid = categories.length === 0 || !fileImage.current || !inputTitle.current.value;
+  const isArticleValid =
+    categories.length === 0 || !fileImage.current || !inputTitle.current?.value;
 
   return (
     <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        className="bg-primary hover:bg-primary/90"
-      >
       <Button
         onClick={() => setIsOpen(true)}
         className="bg-primary hover:bg-primary/90"
@@ -195,9 +182,6 @@ export function AddScheduleButton() {
         <DialogContent className="sm:max-w-[425px] mx-auto">
           <DialogHeader>
             <DialogTitle>Add New Schedule</DialogTitle>
-            <DialogDescription>
-              Select a date and time for the new consultation schedule.
-            </DialogDescription>
             <DialogDescription>
               Select a date and time for the new consultation schedule.
             </DialogDescription>
@@ -248,11 +232,6 @@ export function AddScheduleButton() {
           </div>
 
           <DialogFooter>
-            <Button
-              onClick={handleSubmit}
-              disabled={!isFormValid || isLoading}
-              className="w-full sm:w-auto"
-            >
             <Button
               onClick={handleSubmit}
               disabled={!isFormValid || isLoading}
@@ -336,7 +315,7 @@ export function AddScheduleButton() {
             <Button
               onClick={() =>
                 handleSubmitArticle(
-                  inputTitle.current.value,
+                  inputTitle.current?.value,
                   "Article's Content",
                   fileImage.current,
                   selectedCategories,

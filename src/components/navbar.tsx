@@ -57,7 +57,7 @@ export default function Navbar() {
           </div>
 
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link href="/article" className={linkClass("/article")}>
+            <Link href="/articles" className={linkClass("/articles")}>
               <Newspaper className="ml-2 h-4 w-4" />
               Articles
             </Link>
@@ -151,7 +151,7 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-              <Link href="/" className={linkClass("/")}>
+              <Link href="/articles" className={linkClass("/articles")}>
                 Articles
               </Link>
               <Link
