@@ -22,7 +22,7 @@ export default async function Article({ params }) {
   const articlesData = articles.data;
 
   const allArticles = await getAllArticles();
-  console.log(allArticles.data)
+  console.log(allArticles.data);
 
   return (
     <section className="container mx-auto">
@@ -86,9 +86,9 @@ export default async function Article({ params }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1  xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 lg:px-0">
-        <ArticlesPage />
-      </div>
+        <div className="grid grid-cols-1 xl:grid-cols-3 xl:gap-12 lg:gap-6 gap-y-10 px-6 md:px-10 lg:px-0">
+          <ArticlesPage />
+        </div>
       </div>
     </section>
   );
