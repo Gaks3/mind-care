@@ -34,6 +34,13 @@ export const listPsychologists: AppRouteHandler<
     where: {
       role: "PSYCHOLOGY",
     },
+    include: {
+      psychologyTopic: {
+        include: {
+          topic: true,
+        },
+      },
+    },
   });
 
   return c.json(
@@ -86,7 +93,11 @@ export const getOnePsychologist: AppRouteHandler<GetOnePsychologist> = async (
     },
     include: {
       bookingSchedule: true,
-      psychologyTopic: true,
+      psychologyTopic: {
+        include: {
+          topic: true,
+        },
+      },
       education: true,
       reviewPsychologistId: {
         include: {
@@ -150,6 +161,13 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
         },
       }),
       phoneNumber: data.phoneNumber,
+      ...(data.topics && {
+        psychologyTopic: {
+          createMany: {
+            data: data.topics,
+          },
+        },
+      }),
     },
   });
 
@@ -206,6 +224,13 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
         education: {
           createMany: {
             data: data.educations,
+          },
+        },
+      }),
+      ...(data.topics && {
+        psychologyTopic: {
+          createMany: {
+            data: data.topics,
           },
         },
       }),

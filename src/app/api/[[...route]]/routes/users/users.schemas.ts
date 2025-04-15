@@ -1,6 +1,7 @@
 import { $Enums } from "@prisma/client";
 import { z } from "zod";
 import { imageSchema } from "../../type/image.type";
+import { selectPsychologistTopicSchema } from "../topics/topics.schemas";
 
 export const roleSchema = z.enum([
   $Enums.UserRole.ADMIN,
@@ -49,12 +50,7 @@ export const selectPsyhologySchema = selectUserSchema.and(
         meetingLink: z.string().nullable(),
       }),
     ),
-    psychologyTopic: z.array(
-      z.object({
-        userId: z.string(),
-        topicId: z.number(),
-      }),
-    ),
+    psychologyTopic: z.array(selectPsychologistTopicSchema),
     education: z.array(educationSchema),
     reviewPsychologistId: z.array(
       z.object({
@@ -131,6 +127,7 @@ export const insertUserSchema = z.object({
   description: z.string().optional(),
   educations: z.array(educationSchema).optional(),
   phoneNumber: z.string().optional(),
+  topics: z.array(z.object({ topicId: z.number() })).optional(),
 });
 
 export const updateUserSchema = z.object({
@@ -143,4 +140,5 @@ export const updateUserSchema = z.object({
   phoneNumber: z.string().optional(),
   status: statusSchema.optional(),
   educations: z.array(educationSchema).optional(),
+  topics: z.array(z.object({ topicId: z.number() })).optional(),
 });
