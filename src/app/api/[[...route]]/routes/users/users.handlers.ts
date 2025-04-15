@@ -34,6 +34,13 @@ export const listPsychologists: AppRouteHandler<
     where: {
       role: "PSYCHOLOGY",
     },
+    include: {
+      psychologyTopic: {
+        include: {
+          topic: true,
+        },
+      },
+    },
   });
 
   return c.json(
@@ -86,7 +93,11 @@ export const getOnePsychologist: AppRouteHandler<GetOnePsychologist> = async (
     },
     include: {
       bookingSchedule: true,
-      psychologyTopic: true,
+      psychologyTopic: {
+        include: {
+          topic: true,
+        },
+      },
       education: true,
       reviewPsychologistId: {
         include: {
