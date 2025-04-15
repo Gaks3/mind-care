@@ -150,6 +150,13 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
         },
       }),
       phoneNumber: data.phoneNumber,
+      ...(data.topics && {
+        psychologyTopic: {
+          createMany: {
+            data: data.topics,
+          },
+        },
+      }),
     },
   });
 
@@ -206,6 +213,13 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
         education: {
           createMany: {
             data: data.educations,
+          },
+        },
+      }),
+      ...(data.topics && {
+        psychologyTopic: {
+          createMany: {
+            data: data.topics,
           },
         },
       }),
