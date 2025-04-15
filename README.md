@@ -1,3 +1,13 @@
+<div align="center">
+  <br />
+      <img src="https://github.com/user-attachments/assets/0dfc0dc5-9017-41d2-b64a-23c3234e647b" alt="Project Banner">
+  <br />
+</div>
+
+
+  <br />
+  <br />
+  
 # MindCare 🧠
 
 **MindCare** adalah platform kesehatan mental modern yang menawarkan konsultasi
