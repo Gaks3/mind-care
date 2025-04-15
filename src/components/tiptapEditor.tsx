@@ -1,7 +1,8 @@
 "use client";
 
-import { X } from "lucide-react";
-import { useState } from "react";
+import { X, ImagePlus } from "lucide-react";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 const topikTypes = [
   "Depression",
@@ -16,13 +17,23 @@ const topikTypes = [
   "Insomnia",
 ];
 
-const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => {
-  const dataCate = categoriesData.split(',')
+const TiptapEditor = ({
+  editMode,
+  onClose,
+  title,
+  content,
+  categoriesData,
+  id,
+}) => {
+  const router = useRouter();
+  const dataCate = categoriesData.split(",");
 
-  const checkData = dataCate.map(item => topikTypes.indexOf(item));
+  const checkData = dataCate.map((item) => topikTypes.indexOf(item));
 
   const [categories, setCategories] = useState<number[]>(checkData || []);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const fileName = useRef(null);
+  const fileImage = useRef(null);
 
   const handleCategories = (i: number) => {
     setCategories((prev) => {
@@ -33,22 +44,71 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
     });
   };
 
-  const addNewArticle = async (title, content, image, categories) => {
+  const addNewArticle = async (titles, contents, category) => {
+    setIsLoading(true);
     try {
       const formData = new FormData();
-      formData.append("title", title);
-      formData.append("content", content);
-      formData.append("image", image);
-      formData.append("categories", categories);
+      formData.append("title", titles);
+      formData.append("content", contents);
+      formData.append("categories", category);
 
-      await fetch(`http://localhost:3000/api/articles/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/articles/${id}`, {
         method: "PATCH",
         body: formData,
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Update failed");
+      }
+
+      return await response.json();
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+      router.refresh()
     }
   };
+
+  const handleImage = async (image) => {
+    if (!fileImage.current) return;
+
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+
+      const response = await fetch(`http://localhost:3000/api/articles/${id}`, {
+        method: "PATCH",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Update failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+      router.refresh()
+    }
+  };
+
+  const handleInput = (e) => {
+    if (e.target.files.length > 0 && e.target.files) {
+      fileName.current.textContent = `Selected: ${e.target.files[0].name}`;
+      fileImage.current = e.target.files[0];
+    } else {
+      fileName.current.textContent = "Insert Image";
+    }
+  };
+
+  const selectedCategories = categories.map((index) => topikTypes[index]);
 
   const MODES = {
     CATEGORIES: 1,
@@ -90,6 +150,21 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
                 </div>
               ))}
             </div>
+
+            {!isLoading ? (
+              <div
+                onClick={() =>
+                  addNewArticle(title, content, selectedCategories)
+                }
+                className="bg-primary w-fit px-6 py-2 cursor-pointer hover:bg-blue-700 text-white rounded-md right-0 absolute"
+              >
+                Save Edit
+              </div>
+            ) : (
+              <div className="bg-blue-400 w-fit px-6 py-2 cursor-not-allowed text-white rounded-md right-0 absolute">
+                Loading...
+              </div>
+            )}
           </div>
         );
       case MODES.TITLE:
@@ -101,6 +176,21 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
             </div>
 
             <p className="pt-1">Just type on the title input</p>
+
+            {!isLoading ? (
+              <div
+                onClick={() =>
+                  addNewArticle(title, content, selectedCategories)
+                }
+                className="bg-primary w-fit px-6 py-2 cursor-pointer hover:bg-blue-700 text-white rounded-md right-0 absolute"
+              >
+                Save Edit
+              </div>
+            ) : (
+              <div className="bg-blue-400 w-fit px-6 py-2 cursor-not-allowed text-white rounded-md right-0 absolute">
+                Loading...
+              </div>
+            )}
           </div>
         );
       case MODES.IMAGE:
@@ -111,9 +201,31 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
               <X onClick={onClose} className="cursor-pointer" />
             </div>
 
-            <p className="pt-1">
-              Click the categories, title, image, or content to edit the article
-            </p>
+            <div className="border-[1px] border-black/70 h-32 rounded-md bg-white relative flex flex-col justify-center items-center">
+              <ImagePlus className="w-10 h-10 text-black/70" />
+              <p ref={fileName} className="text-black/70 font-medium">
+                Enter new image
+              </p>
+              <input
+                onChange={handleInput}
+                type="file"
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                className="w-full h-full opacity-0 absolute cursor-pointer"
+              />
+            </div>
+
+            {!isLoading ? (
+              <div
+                onClick={() => handleImage(fileImage.current)}
+                className="bg-primary w-fit px-6 py-2 cursor-pointer hover:bg-blue-700 text-white rounded-md right-0 absolute mt-2"
+              >
+                Save Edit
+              </div>
+            ) : (
+              <div className="bg-blue-400 w-fit px-6 py-2 cursor-not-allowed text-white rounded-md right-0 absolute mt-2">
+                Loading...
+              </div>
+            )}
           </div>
         );
       case MODES.CONTENT:
@@ -127,6 +239,21 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
             <p className="pt-1">
               Click the categories, title, image, or content to edit the article
             </p>
+
+            {!isLoading ? (
+              <div
+                onClick={() =>
+                  addNewArticle(title, content, selectedCategories)
+                }
+                className="bg-primary w-fit px-6 py-2 cursor-pointer hover:bg-blue-700 text-white rounded-md right-0 absolute"
+              >
+                Save Edit
+              </div>
+            ) : (
+              <div className="bg-blue-400 w-fit px-6 py-2 cursor-not-allowed text-white rounded-md right-0 absolute">
+                Loading...
+              </div>
+            )}
           </div>
         );
       default:
@@ -140,6 +267,21 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
             <p className="pt-1">
               Click the categories, title, image, or content to edit the article
             </p>
+
+            {!isLoading ? (
+              <div
+                onClick={() =>
+                  addNewArticle(title, content, selectedCategories)
+                }
+                className="bg-primary w-fit px-6 py-2 cursor-pointer hover:bg-blue-700 text-white rounded-md right-0 absolute"
+              >
+                Save Edit
+              </div>
+            ) : (
+              <div className="bg-blue-400 w-fit px-6 py-2 cursor-not-allowed text-white rounded-md right-0 absolute">
+                Loading...
+              </div>
+            )}
           </div>
         );
     }
@@ -148,9 +290,6 @@ const TiptapEditor = ({ editMode, onClose, title, content, categoriesData }) => 
   return (
     <section className="w-80 fixed z-20 right-0 bg-white border-l-[1px] border-black h-screen">
       {renderEditContent()}
-      <div onClick={()=>addNewArticle(title, content)} className="bg-primary w-fit px-6 py-2 cursor-pointer hover:bg-blue-700 text-white rounded-md right-0 absolute">
-        Save Edit
-      </div>
     </section>
   );
 };

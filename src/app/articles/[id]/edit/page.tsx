@@ -43,8 +43,21 @@ const EditMode = ({ params }) => {
     getArticles();
   }, [id]);
 
+  const handleTitle = ()=>{
+    if(titleText){
+      return titleText
+    }
+    return articlesData.title
+  }
+  const handleContent = ()=>{
+    if(contentText){
+      return contentText
+    }
+    return articlesData.content
+  }
+
   return (
-    <section className="container ml-auto flex relative">
+    <section className="container flex relative">
       {isLoading ? (
         <Loader2 className="h-14 w-14 animate-spin mx-auto text-primary mt-10 mb-2" />
       ) : (        
@@ -110,9 +123,10 @@ const EditMode = ({ params }) => {
           <TiptapEditor
             editMode={currentEditMode}
             onClose={() => setCloseEditor(false)}
-            title={titleText}
-            content={contentText}
+            title={handleTitle()}
+            content={handleContent()}
             categoriesData={articlesData.categories}
+            id={id}
           />
         ) : (
           <><div onClick={()=>setCloseEditor(true)} className="flex cursor-pointer border-[1px] border-primary h-fit px-2 py-1 rounded-lg items-center absolute right-2 top-2">
