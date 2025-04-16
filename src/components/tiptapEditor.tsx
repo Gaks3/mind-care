@@ -178,7 +178,7 @@ const TiptapEditor = ({
               <X onClick={onClose} className="cursor-pointer" />
             </div>
 
-            <p className="pt-1">Just type on the title input</p>
+            <p className="pt-1">Just type on the title field</p>
 
             {!isLoading ? (
               <div
@@ -240,7 +240,7 @@ const TiptapEditor = ({
             </div>
 
             <p className="pt-1">
-              Click the categories, title, image, or content to edit the article
+            Just type on the content field
             </p>
 
             {!isLoading ? (

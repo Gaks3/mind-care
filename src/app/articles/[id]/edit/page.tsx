@@ -80,15 +80,15 @@ const EditMode = ({ params }) => {
 
             <div className="flex items-center justify-between sm:justify-normal sm:gap-10 md:gap-20 mb-6">
               <div className="flex items-center">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src={userData?.image || ""}
-                    alt={userData?.name || "User"}
-                  />
-                  <AvatarFallback className="bg-primary text-primary-foreground">
-                    <User />
-                  </AvatarFallback>
-                </Avatar>
+              <Avatar className="h-14 w-14 flex items-center justify-center">
+              <AvatarImage
+                src={articlesData?.user.image || ""}
+                alt={articlesData?.user.name || "User"}
+              />
+              <AvatarFallback className="text-black">
+                <User />
+              </AvatarFallback>
+            </Avatar>
                 <p className="sm:text-lg md:text-xl font-semibold">
                   {userData.name}
                 </p>
